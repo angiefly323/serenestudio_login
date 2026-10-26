@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serene Studio - 申請集運及運費</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body { background-color: #f4f6f9; color: #333; display: flex; min-height: 100vh; overflow-x: hidden; }
+        
+        /* 側邊欄 (Sidebar) */
+        .sidebar { width: 250px; background-color: #ffffff; border-right: 1px solid #e5e7eb; position: fixed; height: 100%; z-index: 1000; transition: 0.3s; }
+        .logo-area { background: #743133; padding: 20px; text-align: center; display: flex; justify-content: center; align-items: center; min-height: 120px; }
+        .logo-area img { width: 90%; max-width: 180px; height: auto; }
+        .menu-list { list-style: none; padding: 10px 0; }
+        .menu-list li a { display: flex; align-items: center; padding: 15px 24px; color: #4b5563; text-decoration: none; font-size: 15px; transition: 0.2s; }
+        .menu-list li a i { width: 24px; font-size: 18px; margin-right: 10px; color: #9ca3af; }
+        .menu-list li a:hover, .menu-list li.active a { background-color: #fdf8f8; color: #743133; border-right: 4px solid #743133; font-weight: 600; }
+        .menu-list li.active a i { color: #743133; }
+
+        /* 主內容區 */
+        .main-content { flex: 1; margin-left: 250px; transition: 0.3s; width: calc(100% - 250px); padding-bottom: 50px;}
+        .topbar { background: #fff; padding: 15px 24px; display: flex; align-items: center; border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; z-index: 99; }
+        .page-title { font-size: 18px; font-weight: 600; margin-left: 15px;}
+        .content-area { padding: 24px; max-width: 1000px; margin: 0 auto; }
+
+        /* 注意事項提示框 (重要條款) */
+        .notice-box { background: #fffbeb; border: 1px solid #fde68a; border-left: 4px solid #f59e0b; padding: 16px; border-radius: 6px; margin-bottom: 24px; font-size: 13.5px; color: #555; line-height: 1.6; }
+        .notice-box ul { margin-left: 20px; margin-top: 8px; }
+        .notice-box li { margin-bottom: 4px; }
+        .notice-box strong { color: #b45309; }
+
+        /* 集運訂單卡片 */
+        .ship-card { background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin-bottom: 16px; overflow: hidden; border: 1px solid #eee; }
+        .ship-summary { padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: background 0.2s; }
+        .ship-summary:hover { background: #fafafa; }
+        
+        .ship-info { display: flex; flex: 1; justify-content: space-between; align-items: center; padding-right: 20px; flex-wrap: wrap; gap: 10px; }
+        .ship-id { font-size: 16px; font-weight: 700; color: #111; }
+        .ship-meta { font-size: 13px; color: #666; margin-top: 4px; }
+        .ship-price { font-size: 18px; font-weight: 700; color: #743133; }
+        
+        /* 狀態標籤 (依照要求顏色) */
+        .badge { padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block; white-space: nowrap; }
+        .badge.pending-pay { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; } /* 待支付 (紅色搶眼) */
+        .badge.paid { background: #e0f2fe; color: #0369a1; } /* 已付款 (淺藍) */
+        .badge.shipping { background: #f3e8ff; color: #7e22ce; } /* 正在寄往香港途中 (紫色) */
+        .badge.ready-pickup { background: #fef08a; color: #854d0e; } /* 待自取 (黃色) */
+        .badge.sf-sent { background: #ccfbf1; color: #0f766e; } /* 順豐寄出 (青綠) */
+        .badge.completed { background: #dcfce3; color: #166534; } /* 訂單完成 (深綠) */
+        
+        .toggle-icon { font-size: 18px; color: #aaa; transition: transform 0.3s; }
+        .ship-card.open .toggle-icon { transform: rotate(180deg); }
+
+        /* 訂單展開細項 */
+        .ship-details { display: none; padding: 24px; border-top: 1px solid #eee; background: #fdfdfd; }
+        .ship-card.open .ship-details { display: block; }
+        
+        .details-box { background: #f9f9f9; padding: 16px; border-radius: 8px; margin-bottom: 16px; border: 1px solid #eee; font-size: 14px; }
+        .tracking-num { font-family: monospace; font-size: 15px; font-weight: bold; color: #111; background: #eee; padding: 2px 6px; border-radius: 4px; }
+        
+        /* 內部物品清單表格 */
+        .item-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+        .item-table th { text-align: left; padding: 10px; font-size: 13px; color: #666; border-bottom: 2px solid #ddd; }
+        .item-table td { padding: 12px 10px; font-size: 14px; color: #333; border-bottom: 1px solid #eee; }
+        
+        /* 立即支付按鈕 */
+        .btn-pay-now { background: #743133; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 14px; animation: pulse 2s infinite; }
+        .btn-pay-now:hover { background: #5a2527; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(116,49,51,0.4); } 70% { box-shadow: 0 0 0 8px rgba(116,49,51,0); } 100% { box-shadow: 0 0 0 0 rgba(116,49,51,0); } }
+
+        /* 彈出支付視窗 (Modal) */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 2000; display: none; justify-content: center; align-items: center; padding: 20px; }
+        .modal-box { background: #fff; width: 100%; max-width: 500px; border-radius: 12px; padding: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .modal-header h3 { font-size: 18px; color: #111; }
+        .close-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: #888; }
+        
+        /* 支付方式 Tabs */
+        .pay-tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+        .pay-tab { flex: 1; text-align: center; padding: 10px; background: #f0f0f0; color: #555; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; transition: 0.2s; border: 1px solid transparent; }
+        .pay-tab.active { background: #fdf8f8; color: #743133; border-color: #743133; }
+        
+        .pay-content { display: none; background: #f9f9f9; padding: 20px; border-radius: 8px; border: 1px solid #eee; text-align: center; margin-bottom: 20px; }
+        .pay-content.active { display: block; }
+        .qr-placeholder { width: 150px; height: 150px; background: #fff; border: 1px dashed #ccc; display: inline-flex; justify-content: center; align-items: center; margin: 10px 0; color: #aaa; }
+        
+        .upload-section { margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px; }
+        .upload-btn { display: block; width: 100%; background: #fff; border: 2px dashed #743133; color: #743133; padding: 12px; text-align: center; border-radius: 8px; font-weight: 600; cursor: pointer; margin-bottom: 12px; }
+        .whatsapp-cs { display: block; width: 100%; background: #25D366; color: #fff; text-decoration: none; text-align: center; padding: 12px; border-radius: 8px; font-weight: 600; }
+
+        /* 手機版適應 */
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-250px); }
+            .main-content { margin-left: 0; width: 100%; }
+            .ship-info { flex-direction: column; align-items: flex-start; }
+            .item-table th { display: none; }
+            .item-table td { display: block; text-align: right; border: none; padding: 6px 10px; }
+            .item-table td::before { content: attr(data-label); float: left; font-weight: 600; color: #666; }
+            .item-table tr { display: block; border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 側邊欄 -->
+    <nav class="sidebar" id="sidebar">
+        <div class="logo-area">
+            <img src="Serenestudio_2.png" alt="Serene Studio Logo">
+        </div>
+        <ul class="menu-list">
+            <li><a href="dashboard.html"><i class="fa-solid fa-house"></i> 我的帳戶首頁</a></li>
+            <li><a href="orders.html"><i class="fa-solid fa-file-invoice-dollar"></i> 代購訂單紀錄</a></li>
+            <li><a href="tracking.html"><i class="fa-solid fa-box-open"></i> 韓國倉及物流追蹤</a></li>
+            <li class="active"><a href="consolidation.html"><i class="fa-solid fa-plane-departure"></i> 申請集運及運費</a></li>
+            <li><a href="#"><i class="fa-solid fa-calculator"></i> 運費計算機</a></li>
+            <li><a href="#"><i class="fa-solid fa-fire"></i> 韓國網購情報</a></li>
+            <li style="margin-top: 20px; border-top: 1px solid #eee;"><a href="index.html"><i class="fa-solid fa-arrow-right-from-bracket"></i> 登出帳戶</a></li>
+        </ul>
+    </nav>
+
+    <!-- 主內容區 -->
+    <main class="main-content">
+        <header class="topbar">
+            <button class="toggle-btn" onclick="toggleSidebar()" style="background: none; border: none; font-size: 20px; cursor: pointer;"><i class="fa-solid fa-bars"></i></button>
+            <div class="page-title">集運單及國際運費</div>
+        </header>
+
+        <div class="content-area">
+            
+            <!-- 集運注意事項 -->
+            <div class="notice-box">
+                <strong><i class="fa-solid fa-circle-info"></i> 國際集運注意事項：</strong>
+                <ul>
+                    <li>國際運費計算方式會以貨品的 <strong>「實際重量」與「體積重」兩者取其大</strong> 作為收費標準。</li>
+                    <li>當收到【待支付】運費通知後，請於 <strong>3天內</strong> 繳付並上傳憑證，逾期將暫緩發貨並可能產生額外倉租。</li>
+                    <li>選擇順豐到付的客人，國際運費需先於本網支付，本地派件運費將由順豐派遞員直接收取。</li>
+                </ul>
+            </div>
+
+            <!-- 卡片 1: 待支付 (需付款) -->
+            <div class="ship-card" onclick="toggleCard(this)">
+                <div class="ship-summary">
+                    <div class="ship-info">
+                        <div>
+                            <div class="ship-id">集運單號 #SHP-261025-A1</div>
+                            <div class="ship-meta">申請日期: 2026-10-25 | 總重量: 1.2kg</div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <span class="ship-price">HK$ 67.00</span>
+                            <span class="badge pending-pay">待支付</span>
+                            <button class="btn-pay-now" onclick="openPaymentModal(event, 'HK$ 67.00', 'SHP-261025-A1')">立即支付</button>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-down toggle-icon"></i>
+                </div>
+                
+                <div class="ship-details" onclick="event.stopPropagation();">
+                    <div class="details-box">
+                        <strong>收貨方式：</strong> 預約觀塘工作室自取 <br>
+                        <strong>客服備註：</strong> 已協助拆去鞋盒，總重量減輕 0.3kg。
+                    </div>
+                    <h4>包含貨品：</h4>
+                    <table class="item-table">
+                        <thead><tr><th>貨品名稱</th><th>來自訂單</th><th>數量</th></tr></thead>
+                        <tbody>
+                            <tr><td data-label="貨品名稱">NCT 官方周邊手燈</td><td data-label="來自訂單">#ORD-261023-01</td><td data-label="數量">1</td></tr>
+                            <tr><td data-label="貨品名稱">MLB 厚底運動鞋</td><td data-label="來自訂單">#ORD-261018-05</td><td data-label="數量">1</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 卡片 2: 正在寄往香港途中 -->
+            <div class="ship-card" onclick="toggleCard(this)">
+                <div class="ship-summary">
+                    <div class="ship-info">
+                        <div>
+                            <div class="ship-id">集運單號 #SHP-261020-B2</div>
+                            <div class="ship-meta">申請日期: 2026-10-20 | 總重量: 0.4kg</div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <span class="ship-price">HK$ 22.00</span>
+                            <span class="badge shipping">正在寄往香港途中</span>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-down toggle-icon"></i>
+                </div>
+                <div class="ship-details" onclick="event.stopPropagation();">
+                    <div class="details-box">
+                        <strong>收貨方式：</strong> 順豐到付 (智能櫃 H852M011P) <br>
+                        <strong>物流進度：</strong> 預計 10 月 28 日抵達香港工作室進行拆箱分發。
+                    </div>
+                    <table class="item-table">
+                        <thead><tr><th>貨品名稱</th><th>來自訂單</th><th>數量</th></tr></thead>
+                        <tbody>
+                            <tr><td data-label="貨品名稱">Olive Young 痘痘貼</td><td data-label="來自訂單">#ORD-261023-01</td><td data-label="數量">2</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 卡片 3: 順豐寄出 -->
+            <div class="ship-card" onclick="toggleCard(this)">
+                <div class="ship-summary">
+                    <div class="ship-info">
+                        <div>
+                            <div class="ship-id">集運單號 #SHP-261015-C3</div>
+                            <div class="ship-meta">申請日期: 2026-10-15 | 總重量: 2.1kg</div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <span class="ship-price">HK$ 82.00</span>
+                            <span class="badge sf-sent">順豐已寄出</span>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-down toggle-icon"></i>
+                </div>
+                <div class="ship-details" onclick="event.stopPropagation();">
+                    <div class="details-box">
+                        <strong>順豐運單號碼：</strong> <span class="tracking-num">SF1234567890123</span> 
+                        <a href="https://htm.sf-express.com/hk/tc/dynamic_function/waybill/" target="_blank" style="margin-left:10px; color:#2563eb; font-size:13px;">點此追蹤</a>
+                    </div>
+                    <table class="item-table">
+                        <thead><tr><th>貨品名稱</th><th>來自訂單</th><th>數量</th></tr></thead>
+                        <tbody>
+                            <tr><td data-label="貨品名稱">Babor 精華安瓶組</td><td data-label="來自訂單">#ORD-261010-09</td><td data-label="數量">3</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 卡片 4: 待自取 -->
+            <div class="ship-card" onclick="toggleCard(this)">
+                <div class="ship-summary">
+                    <div class="ship-info">
+                        <div>
+                            <div class="ship-id">集運單號 #SHP-261012-D4</div>
+                            <div class="ship-meta">申請日期: 2026-10-12 | 總重量: 0.8kg</div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <span class="ship-price">HK$ 37.00</span>
+                            <span class="badge ready-pickup">待自取</span>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-down toggle-icon"></i>
+                </div>
+                <div class="ship-details" onclick="event.stopPropagation();">
+                    <div class="details-box" style="border-left: 4px solid #f59e0b;">
+                        <strong>自取地點：</strong> 觀塘成業街 xx 號 xx 中心 xx 室 <br>
+                        <strong>預約自取：</strong> <a href="#" style="color:#743133; font-weight:bold;">點擊開啟預約日曆</a><br>
+                        <span style="font-size:12px; color:#888;">*取件時請出示此頁面或向職員報上電話號碼。</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- 支付及上傳證明 Modal -->
+    <div class="modal-overlay" id="paymentModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>支付國際運費</h3>
+                <button class="close-btn" onclick="closePaymentModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div style="text-align: center; margin-bottom: 20px;">
+                <div style="font-size: 14px; color: #666;">集運單號: <span id="modalOrderNo" style="font-weight:bold; color:#111;">-</span></div>
+                <div style="font-size: 28px; font-weight: bold; color: #743133; margin-top: 5px;" id="modalAmount">HK$ 0.00</div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="pay-tabs">
+                <div class="pay-tab active" onclick="switchPayTab('fps')">轉數快 FPS</div>
+                <div class="pay-tab" onclick="switchPayTab('payme')">PayMe</div>
+                <div class="pay-tab" onclick="switchPayTab('bank')">銀行轉賬</div>
+            </div>
+
+            <!-- 支付內容區 -->
+            <div id="tab-fps" class="pay-content active">
+                <p style="font-size: 14px; margin-bottom: 10px;">請轉賬至以下 FPS 識別碼：</p>
+                <div style="font-size: 24px; font-weight: bold; letter-spacing: 2px;">1234567</div>
+                <p style="font-size: 12px; color: #888; margin-top: 5px;">收款人名稱: Serene Studio</p>
+            </div>
+
+            <div id="tab-payme" class="pay-content">
+                <p style="font-size: 14px; margin-bottom: 10px;">請掃描下方 QR Code 或點擊連結：</p>
+                <div class="qr-placeholder"><i class="fa-solid fa-qrcode" style="font-size:40px;"></i></div><br>
+                <a href="#" style="font-size: 13px; color: #2563eb;">點擊開啟 PayMe App</a>
+            </div>
+
+            <div id="tab-bank" class="pay-content">
+                <p style="font-size: 14px; margin-bottom: 10px;">請轉賬至以下匯豐銀行戶口：</p>
+                <div style="font-size: 18px; font-weight: bold; margin-bottom: 5px;">123-456789-001</div>
+                <p style="font-size: 13px;">Fung L** Y** (Serene Studio)</p>
+            </div>
+
+            <!-- 上傳證明區 -->
+            <div class="upload-section">
+                <!-- 隱藏的檔案上傳 input -->
+                <input type="file" id="receiptUpload" style="display:none;" accept="image/*">
+                
+                <button class="upload-btn" onclick="document.getElementById('receiptUpload').click();">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> 於此處上傳入數截圖
+                </button>
+                
+                <div style="text-align: center; margin: 10px 0; font-size: 12px; color: #888;">或</div>
+                
+                <a href="https://wa.me/85200000000?text=你好，我已支付集運運費！" target="_blank" class="whatsapp-cs">
+                    <i class="fa-brands fa-whatsapp"></i> 經 WhatsApp 傳送給客服
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 開關側邊欄
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.style.transform = sidebar.style.transform === 'translateX(0px)' ? 'translateX(-250px)' : 'translateX(0px)';
+        }
+
+        // 開關卡片展開
+        function toggleCard(card) {
+            card.classList.toggle('open');
+        }
+
+        // 打開支付視窗 (阻止卡片展開，並傳入金額與單號)
+        function openPaymentModal(event, amount, orderNo) {
+            event.stopPropagation(); // 阻止觸發卡片的 onclick
+            document.getElementById('modalAmount').innerText = amount;
+            document.getElementById('modalOrderNo').innerText = orderNo;
+            document.getElementById('paymentModal').style.display = 'flex';
+        }
+
+        // 關閉支付視窗
+        function closePaymentModal() {
+            document.getElementById('paymentModal').style.display = 'none';
+        }
+
+        // 切換支付方式 Tab
+        function switchPayTab(tabId) {
+            // 重置所有 tab 按鈕
+            document.querySelectorAll('.pay-tab').forEach(tab => tab.classList.remove('active'));
+            // 重置所有內容
+            document.querySelectorAll('.pay-content').forEach(content => content.classList.remove('active'));
+            
+            // 啟用所選的 tab
+            event.target.classList.add('active');
+            document.getElementById('tab-' + tabId).classList.add('active');
+        }
+
+        // 模擬上傳成功
+        document.getElementById('receiptUpload').addEventListener('change', function() {
+            if(this.files.length > 0) {
+                alert('上傳成功！客服會盡快為你核對款項並安排發貨。');
+                closePaymentModal();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serene Studio - 會員帳戶資料</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body { background-color: #f4f6f9; color: #333; display: flex; min-height: 100vh; overflow-x: hidden; }
+        
+        /* 側邊欄 (Sidebar) - 已加入所有 8 個選單 */
+        .sidebar { width: 250px; background-color: #ffffff; border-right: 1px solid #e5e7eb; position: fixed; height: 100%; z-index: 1000; transition: 0.3s; }
+        .logo-area { background: #743133; padding: 20px; text-align: center; display: flex; justify-content: center; align-items: center; min-height: 120px; }
+        .logo-area img { width: 90%; max-width: 180px; height: auto; }
+        .menu-list { list-style: none; padding: 10px 0; }
+        .menu-list li a { display: flex; align-items: center; padding: 12px 24px; color: #4b5563; text-decoration: none; font-size: 15px; transition: 0.2s; }
+        .menu-list li a i { width: 24px; font-size: 16px; margin-right: 10px; color: #9ca3af; }
+        .menu-list li a:hover, .menu-list li.active a { background-color: #fdf8f8; color: #743133; border-right: 4px solid #743133; font-weight: 600; }
+        .menu-list li.active a i { color: #743133; }
+
+        /* 主內容區 */
+        .main-content { flex: 1; margin-left: 250px; transition: 0.3s; width: calc(100% - 250px); padding-bottom: 50px;}
+        .topbar { background: #fff; padding: 15px 24px; display: flex; align-items: center; border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; z-index: 99; }
+        .page-title { font-size: 18px; font-weight: 600; margin-left: 15px;}
+        .content-area { padding: 24px; max-width: 900px; margin: 0 auto; }
+
+        /* 卡片設計 */
+        .card { background: #fff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid #eee; margin-bottom: 30px; overflow: hidden; }
+        .card-header { background: #fdf8f8; color: #743133; padding: 16px 24px; font-size: 16px; font-weight: 700; border-bottom: 1px solid #f0d5d6; display: flex; align-items: center; gap: 10px; }
+        .card-body { padding: 24px; }
+
+        /* 會員數據區 (Stats) */
+        .stats-container { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+        .tier-badge { background: linear-gradient(135deg, #743133 0%, #a34649 100%); color: #fff; width: 100px; height: 100px; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 4px 12px rgba(116,49,51,0.2); flex-shrink: 0; }
+        .tier-badge i { font-size: 28px; margin-bottom: 6px; color: #fde68a; }
+        .tier-badge span { font-size: 13px; font-weight: 700; letter-spacing: 1px; }
+
+        .stats-info { flex: 1; min-width: 250px; }
+        .stats-title { font-size: 20px; font-weight: 700; color: #111; margin-bottom: 8px; }
+        .stats-desc { font-size: 14px; color: #666; margin-bottom: 16px; }
+        .highlight-num { color: #743133; font-weight: bold; font-size: 18px; }
+        
+        /* 進度條 */
+        .progress-bar-bg { background: #eee; height: 8px; border-radius: 10px; width: 100%; overflow: hidden; margin-bottom: 8px; }
+        .progress-bar-fill { background: #743133; height: 100%; border-radius: 10px; width: 80%; /* 模擬 8/10 次 */ transition: 1s; }
+        .progress-text { font-size: 12px; color: #888; text-align: right; }
+
+        /* 表單設計 */
+        .form-group { margin-bottom: 20px; max-width: 500px; }
+        .form-group label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; color: #444; }
+        
+        /* 一般輸入框 */
+        .input-field { width: 100%; padding: 12px 16px; font-size: 14px; border: 1px solid #ddd; border-radius: 8px; outline: none; transition: 0.2s; }
+        .input-field:focus { border-color: #743133; background: #fdf8f8; }
+
+        /* 唯讀/禁止變更的輸入框 */
+        .input-disabled-wrap { position: relative; display: flex; align-items: center; }
+        .input-disabled-wrap i { position: absolute; right: 16px; color: #aaa; font-size: 14px; }
+        .input-disabled { width: 100%; padding: 12px 40px 12px 16px; font-size: 14px; font-weight: 600; color: #666; background: #f4f6f9; border: 1px solid #e5e7eb; border-radius: 8px; cursor: not-allowed; outline: none; }
+
+        .btn-submit { background: #743133; color: #fff; border: none; padding: 12px 24px; font-size: 15px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: 0.2s; margin-top: 10px; }
+        .btn-submit:hover { background: #5a2527; box-shadow: 0 4px 10px rgba(116,49,51,0.2); }
+
+        /* 分隔線 */
+        .divider { height: 1px; background: #eee; margin: 30px 0; }
+
+        /* 手機版適應 */
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-250px); }
+            .main-content { margin-left: 0; width: 100%; }
+            .stats-container { flex-direction: column; text-align: center; }
+            .progress-text { text-align: center; }
+            .form-group { max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 側邊欄 (包含所有 8 頁) -->
+    <nav class="sidebar" id="sidebar">
+        <div class="logo-area">
+            <img src="Serenestudio_2.png" alt="Serene Studio Logo">
+        </div>
+        <ul class="menu-list">
+            <li><a href="dashboard.html"><i class="fa-solid fa-house"></i> 我的帳戶首頁</a></li>
+            <li><a href="orders.html"><i class="fa-solid fa-file-invoice-dollar"></i> 代購訂單紀錄</a></li>
+            <li><a href="tracking.html"><i class="fa-solid fa-box-open"></i> 韓國倉及物流追蹤</a></li>
+            <li><a href="consolidation.html"><i class="fa-solid fa-plane-departure"></i> 申請集運及運費</a></li>
+            <li><a href="calculator.html"><i class="fa-solid fa-calculator"></i> 運費計算機</a></li>
+            <li><a href="intel.html"><i class="fa-solid fa-fire"></i> 韓國網購情報</a></li>
+            <li><a href="guidelines.html"><i class="fa-solid fa-book-open"></i> 購物流程及須知</a></li>
+            <li class="active"><a href="profile.html"><i class="fa-solid fa-id-card"></i> 會員帳戶資料</a></li>
+            <li style="margin-top: 20px; border-top: 1px solid #eee;"><a href="index.html"><i class="fa-solid fa-arrow-right-from-bracket"></i> 登出帳戶</a></li>
+        </ul>
+    </nav>
+
+    <!-- 主內容區 -->
+    <main class="main-content">
+        <header class="topbar">
+            <button class="toggle-btn" onclick="toggleSidebar()" style="background: none; border: none; font-size: 20px; cursor: pointer;"><i class="fa-solid fa-bars"></i></button>
+            <div class="page-title">會員帳戶資料</div>
+        </header>
+
+        <div class="content-area">
+            
+            <!-- 區塊 1：會員購物紀錄 (未來優惠鋪墊) -->
+            <div class="card">
+                <div class="card-header"><i class="fa-solid fa-crown"></i> 會員等級及購物紀錄</div>
+                <div class="card-body">
+                    <div class="stats-container">
+                        
+                        <div class="tier-badge">
+                            <i class="fa-solid fa-gem"></i>
+                            <span>基本會員</span>
+                        </div>
+                        
+                        <div class="stats-info">
+                            <div class="stats-title">你好！歡迎回到 Serene Studio</div>
+                            <div class="stats-desc">
+                                你目前已累積代購及集運次數為：<span class="highlight-num">8 次</span>
+                            </div>
+                            
+                            <!-- 激勵進度條 -->
+                            <div class="progress-bar-bg">
+                                <div class="progress-bar-fill"></div>
+                            </div>
+                            <div class="progress-text">只差 <strong>2</strong> 次即可解鎖未來的「專屬會員優惠」及隱藏驚喜！</div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- 區塊 2：個人資料及密碼更改 -->
+            <div class="card">
+                <div class="card-header"><i class="fa-solid fa-user-shield"></i> 帳戶及安全設定</div>
+                <div class="card-body">
+                    
+                    <form onsubmit="event.preventDefault(); alert('資料尚未修改！請於連接後台數據庫後再試。');">
+                        
+                        <!-- 不可變更的電話號碼 -->
+                        <div class="form-group">
+                            <label>登記電話號碼 / 登入帳號 (無法變更)</label>
+                            <div class="input-disabled-wrap">
+                                <input type="text" class="input-disabled" value="+852 9123 4567" disabled>
+                                <i class="fa-solid fa-lock" title="基於保安理由，電話號碼無法自行更改"></i>
+                            </div>
+                            <p style="font-size: 12px; color: #888; margin-top: 6px;">如需更改登記電話號碼，請 WhatsApp 聯絡客服協助處理。</p>
+                        </div>
+
+                        <div class="divider"></div>
+
+                        <h3 style="font-size: 16px; color: #111; margin-bottom: 16px;">變更帳戶密碼</h3>
+
+                        <div class="form-group">
+                            <label>目前密碼 (或系統預設密碼)</label>
+                            <input type="password" class="input-field" placeholder="請輸入當前密碼" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>新密碼</label>
+                            <input type="password" class="input-field" id="newPassword" placeholder="最少 6 個字元" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>確認新密碼</label>
+                            <input type="password" class="input-field" id="confirmPassword" placeholder="請再次輸入新密碼" required>
+                        </div>
+
+                        <button type="submit" class="btn-submit" onclick="validatePassword(event)">儲存密碼設定</button>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // 控制側邊欄
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.style.transform = sidebar.style.transform === 'translateX(0px)' ? 'translateX(-250px)' : 'translateX(0px)';
+        }
+
+        // 簡單的密碼驗證邏輯
+        function validatePassword(event) {
+            const newPw = document.getElementById('newPassword').value;
+            const confirmPw = document.getElementById('confirmPassword').value;
+            
+            // 確保兩個密碼框都有輸入才進行檢查
+            if (newPw !== '' && confirmPw !== '') {
+                if (newPw !== confirmPw) {
+                    event.preventDefault(); // 阻止表單送出
+                    alert('❌ 錯誤：兩次輸入的新密碼不一致，請重新輸入！');
+                } else if (newPw.length < 6) {
+                    event.preventDefault();
+                    alert('❌ 錯誤：新密碼最少需要 6 個字元！');
+                } else {
+                    event.preventDefault();
+                    alert('✅ 密碼已成功更新！下次請使用新密碼登入。');
+                    // 這裡未來會加入連結 Google Sheets / 後台的 JavaScript 邏輯
+                    document.getElementById('newPassword').value = '';
+                    document.getElementById('confirmPassword').value = '';
+                }
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serene Studio - 購物流程及買家須知</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body { background-color: #f4f6f9; color: #333; display: flex; min-height: 100vh; overflow-x: hidden; }
+        
+        /* 側邊欄 (Sidebar) */
+        .sidebar { width: 250px; background-color: #ffffff; border-right: 1px solid #e5e7eb; position: fixed; height: 100%; z-index: 1000; transition: 0.3s; }
+        .logo-area { background: #743133; padding: 20px; text-align: center; display: flex; justify-content: center; align-items: center; min-height: 120px; }
+        .logo-area img { width: 90%; max-width: 180px; height: auto; }
+        .menu-list { list-style: none; padding: 10px 0; }
+        .menu-list li a { display: flex; align-items: center; padding: 15px 24px; color: #4b5563; text-decoration: none; font-size: 15px; transition: 0.2s; }
+        .menu-list li a i { width: 24px; font-size: 18px; margin-right: 10px; color: #9ca3af; }
+        .menu-list li a:hover, .menu-list li.active a { background-color: #fdf8f8; color: #743133; border-right: 4px solid #743133; font-weight: 600; }
+        .menu-list li.active a i { color: #743133; }
+
+        /* 主內容區 */
+        .main-content { flex: 1; margin-left: 250px; transition: 0.3s; width: calc(100% - 250px); padding-bottom: 50px;}
+        .topbar { background: #fff; padding: 15px 24px; display: flex; align-items: center; border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; z-index: 99; }
+        .page-title { font-size: 18px; font-weight: 600; margin-left: 15px;}
+        .content-area { padding: 24px; max-width: 1000px; margin: 0 auto; }
+
+        /* 卡片設計 */
+        .card { background: #fff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid #eee; margin-bottom: 30px; overflow: hidden; }
+        .card-header { background: #fdf8f8; color: #743133; padding: 16px 24px; font-size: 18px; font-weight: 700; border-bottom: 1px solid #f0d5d6; display: flex; align-items: center; gap: 10px; }
+        .card-body { padding: 24px; }
+
+        /* =========================================
+           新版：圖表箭嘴流程 (Flowchart) 
+        ========================================= */
+        .flowchart { display: flex; flex-direction: column; gap: 15px; align-items: center; }
+        
+        .flow-step { background: #fff; border: 2px solid #f0d5d6; border-radius: 12px; padding: 20px 16px; width: 100%; text-align: center; position: relative; transition: 0.2s; flex: 1; display: flex; flex-direction: column; }
+        .flow-step:hover { border-color: #743133; box-shadow: 0 4px 15px rgba(116,49,51,0.08); transform: translateY(-3px); }
+        
+        .step-num { position: absolute; top: -12px; left: 16px; background: #743133; color: #fff; font-size: 12px; font-weight: bold; padding: 2px 10px; border-radius: 20px; }
+        
+        .flow-icon { font-size: 28px; color: #743133; margin-bottom: 12px; margin-top: 5px; }
+        .flow-title { font-size: 15px; font-weight: 700; color: #111; margin-bottom: 10px; line-height: 1.4; }
+        .flow-desc { font-size: 13px; color: #555; line-height: 1.5; text-align: justify; flex-grow: 1; }
+        
+        .flow-highlight { background: #fffbeb; color: #b45309; padding: 6px; border-radius: 6px; font-size: 12px; font-weight: 600; margin-top: 12px; text-align: left; }
+
+        /* 箭嘴設計 */
+        .flow-arrow { color: #ccc; font-size: 24px; display: flex; justify-content: center; align-items: center; padding: 5px 0; }
+        .desktop-arrow { display: none; }
+        .mobile-arrow { display: block; }
+
+        /* 收費結構表格 */
+        .fee-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .fee-table th { text-align: left; padding: 12px 16px; background: #fafafa; border-bottom: 2px solid #eee; font-size: 14px; color: #333; }
+        .fee-table td { padding: 14px 16px; border-bottom: 1px solid #eee; font-size: 14px; color: #555; vertical-align: top; }
+        .fee-table tr:last-child td { border-bottom: none; }
+        .price-tag { color: #743133; font-weight: bold; font-size: 16px; }
+
+        /* 摺疊式條款 (Accordion) */
+        .accordion { border: 1px solid #eee; border-radius: 8px; margin-bottom: 12px; overflow: hidden; transition: 0.2s; }
+        .accordion-header { padding: 16px 20px; background: #fafafa; font-weight: 600; color: #333; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
+        .accordion-header:hover { background: #f4f6f9; }
+        .accordion-body { padding: 0 20px; max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out, padding 0.3s ease; font-size: 14px; color: #555; line-height: 1.6; background: #fff; }
+        .accordion.open { border-color: #743133; box-shadow: 0 2px 8px rgba(116,49,51,0.1); }
+        .accordion.open .accordion-header { background: #743133; color: #fff; }
+        .accordion.open .accordion-body { padding: 16px 20px; max-height: 500px; border-top: 1px solid #eee; }
+        .accordion-icon { transition: transform 0.3s; }
+        .accordion.open .accordion-icon { transform: rotate(180deg); }
+
+        /* 平板及電腦版適應 (讓流程圖變橫向) */
+        @media (min-width: 900px) {
+            .flowchart { flex-direction: row; align-items: stretch; gap: 10px; }
+            .flow-step { padding: 25px 16px; }
+            .flow-arrow { padding: 0 5px; color: #eab8b9; }
+            .desktop-arrow { display: block; }
+            .mobile-arrow { display: none; }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-250px); }
+            .main-content { margin-left: 0; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 側邊欄 -->
+    <nav class="sidebar" id="sidebar">
+        <div class="logo-area">
+            <img src="Serenestudio_2.png" alt="Serene Studio Logo">
+        </div>
+        <ul class="menu-list">
+            <li><a href="dashboard.html"><i class="fa-solid fa-house"></i> 我的帳戶首頁</a></li>
+            <li><a href="orders.html"><i class="fa-solid fa-file-invoice-dollar"></i> 代購訂單紀錄</a></li>
+            <li><a href="tracking.html"><i class="fa-solid fa-box-open"></i> 韓國倉及物流追蹤</a></li>
+            <li><a href="consolidation.html"><i class="fa-solid fa-plane-departure"></i> 申請集運及運費</a></li>
+            <li><a href="calculator.html"><i class="fa-solid fa-calculator"></i> 運費計算機</a></li>
+            <li><a href="intel.html"><i class="fa-solid fa-fire"></i> 韓國網購情報</a></li>
+            <li class="active"><a href="guidelines.html"><i class="fa-solid fa-book-open"></i> 購物流程及須知</a></li>
+            <li style="margin-top: 20px; border-top: 1px solid #eee;"><a href="index.html"><i class="fa-solid fa-arrow-right-from-bracket"></i> 登出帳戶</a></li>
+        </ul>
+    </nav>
+
+    <!-- 主內容區 -->
+    <main class="main-content">
+        <header class="topbar">
+            <button class="toggle-btn" onclick="toggleSidebar()" style="background: none; border: none; font-size: 20px; cursor: pointer;"><i class="fa-solid fa-bars"></i></button>
+            <div class="page-title">購物流程及買家須知</div>
+        </header>
+
+        <div class="content-area">
+            
+            <!-- 區塊 1：圖表式購物流程 -->
+            <div class="card">
+                <div class="card-header"><i class="fa-solid fa-share-nodes"></i> 兩段式代購及集運流程</div>
+                <div class="card-body" style="background-color: #fdfdfd;">
+                    
+                    <div class="flowchart">
+                        
+                        <!-- 步驟 1 -->
+                        <div class="flow-step">
+                            <div class="step-num">STEP 1</div>
+                            <div class="flow-icon"><i class="fa-solid fa-comment-dollar"></i></div>
+                            <div class="flow-title">提交連結<br>首付商品費用</div>
+                            <div class="flow-desc">WhatsApp 聯絡客服提交商品網址。確認報價後，透過 FPS/PayMe 支付商品費用。</div>
+                            <div class="flow-highlight"><i class="fa-solid fa-key"></i> 首次落單即獲發專屬系統登入資料</div>
+                        </div>
+
+                        <!-- 箭嘴 -->
+                        <div class="flow-arrow">
+                            <i class="fa-solid fa-arrow-right desktop-arrow"></i>
+                            <i class="fa-solid fa-arrow-down mobile-arrow"></i>
+                        </div>
+
+                        <!-- 步驟 2 -->
+                        <div class="flow-step">
+                            <div class="step-num">STEP 2</div>
+                            <div class="flow-icon"><i class="fa-solid fa-box-open"></i></div>
+                            <div class="flow-title">韓國倉代收<br>處理加值服務</div>
+                            <div class="flow-desc">貨品抵達韓國工作室。如需代拆專、棄鞋盒等減重服務，請務必於第一步付款前提出。</div>
+                            <div class="flow-highlight" style="background:#f0fdf4; color:#166534;"><i class="fa-solid fa-camera"></i> 可於系統查看入庫實拍</div>
+                        </div>
+
+                        <!-- 箭嘴 -->
+                        <div class="flow-arrow">
+                            <i class="fa-solid fa-arrow-right desktop-arrow"></i>
+                            <i class="fa-solid fa-arrow-down mobile-arrow"></i>
+                        </div>
+
+                        <!-- 步驟 3 -->
+                        <div class="flow-step">
+                            <div class="step-num">STEP 3</div>
+                            <div class="flow-icon"><i class="fa-solid fa-plane-departure"></i></div>
+                            <div class="flow-title">申請集運<br>支付國際運費</div>
+                            <div class="flow-desc">於系統勾選想寄回香港的貨品，選擇收貨方式。客服核對重量後，請於 3 日內完成次付運費。</div>
+                        </div>
+
+                        <!-- 箭嘴 -->
+                        <div class="flow-arrow">
+                            <i class="fa-solid fa-arrow-right desktop-arrow"></i>
+                            <i class="fa-solid fa-arrow-down mobile-arrow"></i>
+                        </div>
+
+                        <!-- 步驟 4 -->
+                        <div class="flow-step">
+                            <div class="step-num">STEP 4</div>
+                            <div class="flow-icon"><i class="fa-solid fa-box-check"></i></div>
+                            <div class="flow-title">貨品抵港<br>預約自取/順豐</div>
+                            <div class="flow-desc">空運需時 3-5 個工作天。抵港後，可預約時間到觀塘工作室自取，或等待順豐派送更新。</div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- 區塊 2：收費標準 (不變) -->
+            <div class="card">
+                <div class="card-header"><i class="fa-solid fa-coins"></i> 透明收費標準</div>
+                <div class="card-body" style="padding: 10px 24px 24px 24px;">
+                    <table class="fee-table">
+                        <thead>
+                            <tr>
+                                <th>收費項目</th>
+                                <th>計算方式及說明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>代購手續費</strong></td>
+                                <td>
+                                    <span class="price-tag">劃一 ₩5,000 / 每件</span><br>
+                                    無隱藏收費。折合港幣約 $30。同店舖同款多件（如批發）手續費另有折扣，請向客服查詢。
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>參考匯率</strong></td>
+                                <td>
+                                    <span class="price-tag">KRW / 165</span><br>
+                                    匯率會跟隨市場每週浮動調整，落單時以客服最終報價為準。
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>國際空運費 (韓至港)</strong></td>
+                                <td>
+                                    <span class="price-tag">首 0.5kg HK$ 22 | 續重 0.5kg +HK$ 15</span><br>
+                                    採用微階梯收費，計法公平。注意：運費按「實際重量」與「體積重 (長x闊x高/6000)」兩者取其大計算。
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>香港本地運費</strong></td>
+                                <td>
+                                    觀塘工作室自取 <span class="price-tag">免費</span><br>
+                                    順豐到付則由派件員/智能櫃直接向客人收取。
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 區塊 3：條款及細則 (不變) -->
+            <div class="card">
+                <div class="card-header"><i class="fa-solid fa-scale-balanced"></i> 買家須知及條款</div>
+                <div class="card-body">
+                    
+                    <div class="accordion" onclick="toggleAccordion(this)">
+                        <div class="accordion-header">
+                            1. 退貨及換貨條款 <i class="fa-solid fa-chevron-down accordion-icon"></i>
+                        </div>
+                        <div class="accordion-body">
+                            代購服務屬「客製化委託」，一旦完成韓國網站下單，<strong>恕不接受任何理由（如色差、尺寸不合、改變心意）之退款或換貨</strong>。<br><br>
+                            如收到貨品後發現嚴重瑕疵或發錯款式，請於簽收後 24 小時內連同「完整開箱影片」聯絡客服，我們將盡力協助向韓國賣家交涉，但無法保證退換成功，產生之來回韓國運費需由買家承擔。
+                        </div>
+                    </div>
+
+                    <div class="accordion" onclick="toggleAccordion(this)">
+                        <div class="accordion-header">
+                            2. 韓國倉存倉及棄單處理 <i class="fa-solid fa-chevron-down accordion-icon"></i>
+                        </div>
+                        <div class="accordion-body">
+                            貨品到達韓國倉後，提供 <strong>14天

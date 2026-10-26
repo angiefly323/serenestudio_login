@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serene Studio - 我的帳戶</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body { background-color: #f4f6f9; color: #333; display: flex; min-height: 100vh; overflow-x: hidden; }
+        
+        /* 側邊欄 (Sidebar) */
+        .sidebar { width: 250px; background-color: #ffffff; border-right: 1px solid #e5e7eb; transition: 0.3s; position: fixed; height: 100%; z-index: 1000; }
+        .sidebar.hidden { transform: translateX(-250px); }
+        .logo-area { padding: 20px; text-align: center; border-bottom: 1px solid #e5e7eb; background: #743133; color: white; font-weight: bold; font-size: 18px; letter-spacing: 1px;}
+        .menu-list { list-style: none; padding: 10px 0; }
+        .menu-list li a { display: flex; align-items: center; padding: 15px 24px; color: #4b5563; text-decoration: none; font-size: 15px; transition: 0.2s; }
+        .menu-list li a i { width: 24px; font-size: 18px; margin-right: 10px; color: #9ca3af; }
+        .menu-list li a:hover, .menu-list li.active a { background-color: #fdf8f8; color: #743133; border-right: 4px solid #743133; font-weight: 600; }
+        .menu-list li.active a i { color: #743133; }
+
+        /* 主內容區 (Main Content) */
+        .main-content { flex: 1; margin-left: 250px; transition: 0.3s; width: calc(100% - 250px); }
+        .main-content.expanded { margin-left: 0; width: 100%; }
+
+        /* 頂部導航 (Top Bar) */
+        .topbar { background: #fff; padding: 15px 24px; display: flex; align-items: center; border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; z-index: 99; }
+        .toggle-btn { background: none; border: none; font-size: 20px; color: #333; cursor: pointer; margin-right: 20px; }
+        .page-title { font-size: 18px; font-weight: 600; }
+
+        /* 內容區域 (Content Padding) */
+        .content-area { padding: 24px; }
+
+        /* 頂部通知 (Alert Notification) */
+        .alert-box { background-color: #fffbeb; border-left: 4px solid #f59e0b; padding: 16px 20px; border-radius: 8px; margin-bottom: 24px; display: flex; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .alert-box i { color: #f59e0b; font-size: 20px; margin-right: 12px; }
+        .alert-text { font-size: 14px; color: #92400e; flex: 1; }
+        .alert-btn { background: #f59e0b; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: bold; cursor: pointer; }
+
+        /* 宣傳 Banner */
+        .promo-banner { background: linear-gradient(135deg, #743133 0%, #a34649 100%); color: #fff; padding: 30px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; box-shadow: 0 4px 15px rgba(116, 49, 51, 0.2); }
+        .promo-text h2 { font-size: 24px; margin-bottom: 8px; }
+        .promo-text p { font-size: 15px; opacity: 0.9; }
+        .promo-btn { background: #fff; color: #743133; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 14px; transition: 0.2s; }
+        .promo-btn:hover { background: #f0f0f0; }
+
+        /* 手機版適應 (Mobile Responsive) */
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-250px); }
+            .sidebar.show { transform: translateX(0); box-shadow: 4px 0 15px rgba(0,0,0,0.1); }
+            .main-content { margin-left: 0; width: 100%; }
+            .promo-banner { flex-direction: column; text-align: center; }
+            .promo-btn { margin-top: 16px; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 左邊隱藏式目錄 -->
+    <nav class="sidebar" id="sidebar">
+        <div class="logo-area">Serene Studio</div>
+        <ul class="menu-list">
+            <li class="active"><a href="#"><i class="fa-solid fa-house"></i> 我的帳戶首頁</a></li>
+            <li><a href="#"><i class="fa-solid fa-file-invoice-dollar"></i> 代購訂單紀錄</a></li>
+            <li><a href="#"><i class="fa-solid fa-box-open"></i> 韓國倉及物流追蹤</a></li>
+            <li><a href="#"><i class="fa-solid fa-plane-departure"></i> 申請集運及運費</a></li>
+            <li><a href="#"><i class="fa-solid fa-calculator"></i> 運費計算機</a></li>
+            <li><a href="#"><i class="fa-solid fa-fire"></i> 韓國網購情報</a></li>
+            <li><a href="https://wa.me/85200000000" target="_blank"><i class="fa-solid fa-headset"></i> 聯絡客服支援</a></li>
+            <li style="margin-top: 20px; border-top: 1px solid #eee;"><a href="index.html"><i class="fa-solid fa-arrow-right-from-bracket"></i> 登出帳戶</a></li>
+        </ul>
+    </nav>
+
+    <!-- 頁面主內容 -->
+    <main class="main-content" id="main-content">
+        <!-- 頂部欄 (Top Bar) -->
+        <header class="topbar">
+            <button class="toggle-btn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+            <div class="page-title">我的帳戶</div>
+        </header>
+
+        <div class="content-area">
+            
+            <!-- 1. 頂部通知 (Notifications) -->
+            <div class="alert-box">
+                <i class="fa-solid fa-bell"></i>
+                <div class="alert-text">
+                    <strong>重要通知：</strong> 你的包裹 (單號 #SS8821) 已抵達韓國倉，請選擇是否需要代拆專或申請集運回港！
+                </div>
+                <button class="alert-btn">立即處理</button>
+            </div>
+
+            <!-- 2. 宣傳 Banner (Promo Banner) -->
+            <div class="promo-banner">
+                <div class="promo-text">
+                    <h2>全港最透明！任何韓國商品代購費劃一 5,000 KRW</h2>
+                    <p>支援服飾、專輯、美妝小商戶批發。提供代拆專、0.5kg 微階梯運費，集運更抵！</p>
+                </div>
+                <a href="#" class="promo-btn">貼上連結 即時落單</a>
+            </div>
+
+            <!-- 首頁概覽數據 (Placeholder) -->
+            <div style="background: #fff; padding: 24px; border-radius: 12px; border: 1px solid #e5e7eb;">
+                <h3 style="margin-bottom: 16px; color: #111;">物流概覽</h3>
+                <p style="color: #666; font-size: 14px;">(這裡未來可以放置：待採購 0 件 | 韓國倉待處理 1 件 | 國際運輸中 0 件 | 觀塘可自取 0 件)</p>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- 開關左側目錄的 JavaScript -->
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('main-content');
+            
+            if (window.innerWidth <= 768) {
+                // 手機版邏輯：預設隱藏，按鈕滑出
+                sidebar.classList.toggle('show');
+            } else {
+                // 電腦版邏輯：預設顯示，按鈕收起
+                sidebar.classList.toggle('hidden');
+                mainContent.classList.toggle('expanded');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serene Studio - 韓國網購情報</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body { background-color: #f4f6f9; color: #333; display: flex; min-height: 100vh; overflow-x: hidden; }
+        
+        /* 側邊欄 (Sidebar) */
+        .sidebar { width: 250px; background-color: #ffffff; border-right: 1px solid #e5e7eb; position: fixed; height: 100%; z-index: 1000; transition: 0.3s; }
+        .logo-area { background: #743133; padding: 20px; text-align: center; display: flex; justify-content: center; align-items: center; min-height: 120px; }
+        .logo-area img { width: 90%; max-width: 180px; height: auto; }
+        .menu-list { list-style: none; padding: 10px 0; }
+        .menu-list li a { display: flex; align-items: center; padding: 15px 24px; color: #4b5563; text-decoration: none; font-size: 15px; transition: 0.2s; }
+        .menu-list li a i { width: 24px; font-size: 18px; margin-right: 10px; color: #9ca3af; }
+        .menu-list li a:hover, .menu-list li.active a { background-color: #fdf8f8; color: #743133; border-right: 4px solid #743133; font-weight: 600; }
+        .menu-list li.active a i { color: #743133; }
+
+        /* 主內容區 */
+        .main-content { flex: 1; margin-left: 250px; transition: 0.3s; width: calc(100% - 250px); padding-bottom: 50px;}
+        .topbar { background: #fff; padding: 15px 24px; display: flex; align-items: center; border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; z-index: 99; }
+        .page-title { font-size: 18px; font-weight: 600; margin-left: 15px;}
+        .content-area { padding: 24px; max-width: 1100px; margin: 0 auto; }
+
+        /* 區塊標題 */
+        .section-title { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 700; color: #111; margin-bottom: 16px; margin-top: 10px; }
+        .section-title i { color: #743133; }
+
+        /* =========================================
+           上半部：輪播情報區 (Carousel) 
+        ========================================= */
+        .carousel-wrapper { position: relative; margin-bottom: 40px; display: flex; align-items: center; }
+        
+        .carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: #fff; border: 1px solid #ddd; border-radius: 50%; width: 44px; height: 44px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer; z-index: 10; display: flex; justify-content: center; align-items: center; color: #743133; font-size: 18px; transition: 0.2s; }
+        .carousel-btn:hover { background: #fdf8f8; border-color: #743133; transform: translateY(-50%) scale(1.05); }
+        .left-btn { left: -22px; }
+        .right-btn { right: -22px; }
+
+        .deals-carousel { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; padding: 10px 4px 20px 4px; width: 100%; }
+        .deals-carousel::-webkit-scrollbar { display: none; }
+        
+        .deal-card { flex: 0 0 calc(33.333% - 13.33px); scroll-snap-align: start; background: #fff; border-radius: 12px; border: 1px solid #eee; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.04); transition: transform 0.2s; position: relative; }
+        .deal-card:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.08); }
+        
+        .deal-badge { position: absolute; top: 12px; right: 12px; background: #e11d48; color: #fff; font-size: 14px; font-weight: 800; padding: 6px 12px; border-radius: 6px; box-shadow: 0 2px 8px rgba(225, 29, 72, 0.4); z-index: 10; }
+        
+        /* 圖片/底色設定 */
+        .deal-image { height: 120px; background: #f9f9f9; display: flex; justify-content: center; align-items: center; font-size: 26px; font-weight: 900; color: #ccc; border-bottom: 1px solid #eee; position: relative; overflow: hidden; text-align: center; line-height: 1.1;}
+        .bg-tnf { background: linear-gradient(135deg, #111 0%, #333 100%); color: #fff; }
+        .bg-musinsa { background: #000; color: #fff; }
+        .bg-folder { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #fff; }
+        .bg-oy { background: linear-gradient(135deg, #84cc16 0%, #4d7c0f 100%); color: #fff; font-size: 22px; }
+        .bg-aladin { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: #fff; font-size: 22px; }
+        .bg-ktown { background: linear-gradient(135deg, #ec4899 0%, #be185d 100%); color: #fff; font-size: 22px;}
+        
+        .deal-content { padding: 20px; }
+        .deal-brand { font-size: 13px; color: #666; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+        .deal-title { font-size: 16px; font-weight: 700; color: #111; margin-bottom: 8px; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .deal-desc { font-size: 13px; color: #555; margin-bottom: 16px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 36px; }
+        .deal-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed #eee; padding-top: 16px; }
+        .deal-time { font-size: 12px; color: #e11d48; font-weight: 600; }
+        .btn-go { background: #743133; color: #fff; text-decoration: none; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; transition: 0.2s; white-space: nowrap; }
+        .btn-go:hover { background: #5a2527; }
+
+        /* =========================================
+           下半部：A-Z 網購指南區 (Directory) 
+        ========================================= */
+        .directory-container { background: #fff; border-radius: 12px; border: 1px solid #eee; padding: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
+        
+        .cat-tabs { display: flex; gap: 10px; margin-bottom: 24px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none; }
+        .cat-tabs::-webkit-scrollbar { display: none; }
+        .cat-tab { padding: 8px 16px; background: #f4f6f9; color: #555; border-radius: 20px; font-size: 14px; font-weight: 600; cursor: pointer; border: 1px solid transparent; white-space: nowrap; transition: 0.2s; }
+        .cat-tab.active { background: #fdf8f8; color: #743133; border-color: #743133; }
+        .cat-tab:hover:not(.active) { background: #eee; }
+
+        .brand-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+        .brand-item { display: flex; justify-content: space-between; align-items: center; padding: 16px; border: 1px solid #eee; border-radius: 8px; transition: 0.2s; }
+        .brand-item:hover { border-color: #743133; background: #fdf8f8; }
+        
+        .brand-info h4 { font-size: 15px; color: #111; margin-bottom: 4px; }
+        .brand-info p { font-size: 12px; color: #666; }
+        .brand-link { color: #743133; font-size: 13px; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 6px; }
+        .brand-link:hover { text-decoration: underline; }
+        
+        .empty-state { grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: #888; display: none; }
+
+        /* 手機版與平板適應 */
+        @media (max-width: 992px) {
+            .deal-card { flex: 0 0 calc(50% - 10px); }
+        }
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-250px); }
+            .main-content { margin-left: 0; width: 100%; }
+            .brand-list { grid-template-columns: 1fr; }
+            .deal-card { flex: 0 0 calc(100% - 10px); margin-right: 10px; }
+            .carousel-btn { display: none; }
+            .deals-carousel { gap: 0; padding-left: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 側邊欄 -->
+    <nav class="sidebar" id="sidebar">
+        <div class="logo-area">
+            <img src="Serenestudio_2.png" alt="Serene Studio Logo">
+        </div>
+        <ul class="menu-list">
+            <li><a href="dashboard.html"><i class="fa-solid fa-house"></i> 我的帳戶首頁</a></li>
+            <li><a href="orders.html"><i class="fa-solid fa-file-invoice-dollar"></i> 代購訂單紀錄</a></li>
+            <li><a href="tracking.html"><i class="fa-solid fa-box-open"></i> 韓國倉及物流追蹤</a></li>
+            <li><a href="consolidation.html"><i class="fa-solid fa-plane-departure"></i> 申請集運及運費</a></li>
+            <li><a href="calculator.html"><i class="fa-solid fa-calculator"></i> 運費計算機</a></li>
+            <li class="active"><a href="intel.html"><i class="fa-solid fa-fire"></i> 韓國網購情報</a></li>
+            <li style="margin-top: 20px; border-top: 1px solid #eee;"><a href="index.html"><i class="fa-solid fa-arrow-right-from-bracket"></i> 登出帳戶</a></li>
+        </ul>
+    </nav>
+
+    <!-- 主內容區 -->
+    <main class="main-content">
+        <header class="topbar">
+            <button class="toggle-btn" onclick="toggleSidebar()" style="background: none; border: none; font-size: 20px; cursor: pointer;"><i class="fa-solid fa-bars"></i></button>
+            <div class="page-title">韓國最新網購情報</div>
+        </header>
+
+        <div class="content-area">
+            
+            <!-- 上半部：店主精選折扣情報 (輪播設計 6 張卡) -->
+            <div class="section-title">
+                <i class="fa-solid fa-fire-flame-curved"></i> 期間限定！韓國最新折扣情報
+            </div>
+            
+            <div class="carousel-wrapper">
+                <button class="carousel-btn left-btn" onclick="scrollCarousel(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+                
+                <div class="deals-carousel" id="dealsCarousel">
+                    <!-- 情報 1: TNF -->
+                    <div class="deal-card">
+                        <div class="deal-badge">30% OFF</div>
+                        <div class="deal-image bg-tnf">THE NORTH FACE</div>
+                        <div class="deal-content">
+                            <div class="deal-brand">The North Face (KR)</div>
+                            <div class="deal-title">韓國站轉季大減價</div>
+                            <div class="deal-desc">精選羽絨、防風外套及背囊低至 7 折！韓國版獨家剪裁，極速斷碼中。</div>
+                            <div class="deal-footer">
+                                <span class="deal-time"><i class="fa-regular fa-clock"></i> 至 11 月 5 日</span>
+                                <a href="https://www.thenorthfacekorea.co.kr/" target="_blank" class="btn-go">前往掃貨</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 情報 2: Musinsa -->
+                    <div class="deal-card">
+                        <div class="deal-badge">10% OFF</div>
+                        <div class="deal-image bg-musinsa">MUSINSA</div>
+                        <div class="deal-content">
+                            <div class="deal-brand">Musinsa</div>
+                            <div class="deal-title">全網服飾類快閃優惠</div>
+                            <div class="deal-desc">韓國最大潮牌集合店，過百個韓國本土設計師品牌全線額外 9 折。</div>
+                            <div class="deal-footer">
+                                <span class="deal-time"><i class="fa-regular fa-clock"></i> 隨時完結</span>
+                                <a href="https://www.musinsa.com/" target="_blank" class="btn-go">前往掃貨</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 情報 3: Folder -->
+                    <div class="deal-card">
+                        <div class="deal-badge">20% OFF</div>
+                        <div class="deal-image bg-folder">FOLDER</div>
+                        <div class="deal-content">
+                            <div class="deal-brand">Folder Style</div>
+                            <div class="deal-title">Nike 新款折扣</div>
+                            <div class="deal-desc">指定新款波鞋 8 折。透過我們代購可提供「去鞋盒」服務大減國際運費！</div>
+                            <div class="deal-footer">
+                                <span class="deal-time"><i class="fa-regular fa-clock"></i> 至本週末</span>
+                                <a href="https://folderstyle.com/" target="_blank" class="btn-go">前往掃貨</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 情報 4: Olive Young -->
+                    <div class="deal-card">
+                        <div class="deal-badge">SALE</div>
+                        <div class="deal-image bg-oy">OLIVE YOUNG</div>
+                        <div class="deal-content">
+                            <div class="deal-brand">Olive Young</div>
+                            <div class="deal-title">人氣精華 1+1 企劃套裝</div>
+                            <div class="deal-desc">Torriden、Goodal 等大熱精華推出 1+1 超值組合，韓國門市及網店同步優惠。</div>
+                            <div class="deal-footer">
+                                <span class="deal-time"><i class="fa-regular fa-clock"></i> 售完即止</span>
+                                <a href="https://www.oliveyoung.co.kr/" target="_blank" class="btn-go">前往掃貨</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 情報 5: Aladin -->
+                    <div class="deal-card">
+                        <div class="deal-badge">特典</div>
+                        <div class="deal-image bg-aladin">ALADIN (阿拉丁)</div>
+                        <div class="deal-content">
+                            <div class="deal-brand">Aladin</div>
+                            <div class="deal-title">女團新專 獨家明信片特典</div>
+                            <div class="deal-desc">於 Aladin 預購最新韓國女團專輯，即送獨家官方明信片一張。</div>
+                            <div class="deal-footer">
+                                <span class="deal-time"><i class="fa-regular fa-clock"></i> 預售期間</span>
+                                <a href="https://www.aladin.co.kr/" target="_blank" class="btn-go">前往掃貨</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 情報 6: Ktown4u -->
+                    <div class="deal-card">
+                        <div class="deal-badge">免首重</div>
+                        <div class="deal-image bg-ktown">Ktown4u</div>
+                        <div class="deal-content">
+                            <div class="deal-brand">Ktown4u</div>
+                            <div class="deal-title">男團回歸 特典小卡預售</div>
+                            <div class="deal-desc">獨家特典小卡釋出！經本網代購可享免費「代拆專及只寄小卡」服務，免首重！</div>
+                            <div class="deal-footer">
+                                <span class="deal-time"><i class="fa-regular fa-clock"></i> 預售期間</span>
+                                <a href="https://kr.ktown4u.com/" target="_blank" class="btn-go">前往掃貨</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="carousel-btn right-btn" onclick="scrollCarousel(1)"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+
+            <!-- 下半部：A-Z 網站指南 -->
+            <div class="section-title">
+                <i class="fa-solid fa-list-check"></i> 韓國熱門網購指南 (A-Z 排列)
+            </div>
+
+            <div class="directory-container">
+                
+                <!-- 篩選 Tabs -->
+                <div class="cat-tabs" id="categoryTabs">
+                    <div class="cat-tab active" onclick="filterCategory('all')">全部分類</div>
+                    <div class="cat-tab" onclick="filterCategory('apparel')">👕 潮流服飾</div>
+                    <div class="cat-tab" onclick="filterCategory('shoes')">👟 鞋履手袋</div>
+                    <div class="cat-tab" onclick="filterCategory('beauty')">💄 美妝護膚</div>
+                    <div class="cat-tab" onclick="filterCategory('kpop')">💿 追星周邊</div>
+                </div>
+
+                <!-- 品牌清單 -->
+                <div class="brand-list" id="brandList">
+                    
+                    <div class="brand-item" data-category="shoes">
+                        <div class="brand-info"><h4>ABC-Mart (Korea)</h4><p>綜合運動鞋履連鎖店</p></div>
+                        <a href="https://abcmart.a-rt.com/" target="_blank" class="brand-link">前往網站 <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    </div>
+
+                    <div class="brand-item" data-category="kpop">
+                        <div class="brand-info"><h4>Aladin (阿拉丁)</h4><p>韓國實體專輯、雜誌網購</p></div>
+                        <a href="https://www.aladin.co.kr/" target="_blank" class="brand-link">前往網站 <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    </div>
+                    
+                    <div class="brand-item" data-category="shoes">
+                        <div class="brand-info"><h4>Folder Style</h4><p>韓國本土熱門潮鞋連鎖店</p></div>
+                        <a href="https://folderstyle.com/" target="_blank" class="brand-link">前往網站 <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    </div>
+
+                    <div class="brand-item" data-category="kpop">
+                        <div class="brand-info"><h4>Ktown4u</h4><p>K-pop 專輯、明星周邊專門店</p></div>
+                        <a href="https://kr.ktown4u.com/" target="_blank" class="brand-link">前往網站 <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    </div>
+
+                    <div class="brand-item" data-category="apparel">
+                        <div class="brand-info"><h4>Musinsa</h4><p>韓國最大本土潮牌集合店</p></div>
+                        <a href="https://www.musinsa.com/" target="_blank" class="brand-link">前往網站 <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    </div>
+
+                    <div class="brand-item" data-category="beauty">
+                        <div class="brand-info"><h4>Olive Young</h4><p>韓國 No.1 藥妝及護膚品店</p></div>
+                        <a href="https://www.oliveyoung.co.kr/" target="_blank" class="brand-link">前往網站 <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    </div>
+
+                    <div class="brand-item" data-category="beauty">
+                        <div class="brand-info"><h4>Parnell</h4><p>人氣積雪草舒緩護膚品牌</p></div>
+                        <a href="https://parnell.co.kr/" target="_blank" class="brand-link">前往網站 <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    </div>
+
+                    <div class="brand-item" data-category="apparel">
+                        <div class="brand-info"><h4>SPAO</h4><p>韓國平價國民服飾品牌</p></div>
+                        <a href="https://spao.com/" target="_blank" class="brand-link">前往網站 <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    </div>
+
+                    <div class="brand-item" data-category="apparel">
+                        <div class="brand-info"><h4>The North Face (KR)</h4><p>韓國獨家版型戶外服飾</p></div>
+                        <a href="https://www.thenorthfacekorea.co.kr/" target="_blank" class="brand-link">前往網站 <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    </div>
+
+                    <div class="brand-item" data-category="kpop">
+                        <div class="brand-info"><h4>Weverse Shop</h4><p>HYBE 等官方藝人周邊商城</p></div>
+                        <a href="https://weverseshop.io/" target="_blank" class="brand-link">前往網站 <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    </div>
+
+                    <!-- 空白狀態提示 -->
+                    <div class="empty-state" id="emptyState">
+                        <i class="fa-solid fa-box-open" style="font-size:32px; color:#ddd; margin-bottom:10px;"></i>
+                        <p>此分類暫時未有推薦網站。</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.style.transform = sidebar.style.transform === 'translateX(0px)' ? 'translateX(-250px)' : 'translateX(0px)';
+        }
+
+        // 輪播左右滑動邏輯 (Carousel)
+        function scrollCarousel(direction) {
+            const carousel = document.getElementById('dealsCarousel');
+            // 取得單張卡片的寬度 + 20px (gap 的距離)
+            const cardWidth = carousel.querySelector('.deal-card').offsetWidth + 20; 
+            // 讓容器捲動
+            carousel.scrollBy({
+                left: direction * cardWidth,
+                behavior: 'smooth'
+            });
+        }
+
+        // A-Z 網購指南分類篩選
+        function filterCategory(category) {
+            const tabs = document.querySelectorAll('.cat-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active'); // 點亮的按鈕變色
+
+            const items = document.querySelectorAll('.brand-item');
+            let visibleCount = 0;
+
+            items.forEach(item => {
+                const itemCat = item.getAttribute('data-category');
+                if (category === 'all' || itemCat === category) {
+                    item.style.display = 'flex'; // 顯示符合條件的
+                    visibleCount++;
+                } else {
+                    item.style.display = 'none'; // 隱藏不符合的
+                }
+            });
+
+            // 如果該分類沒有網站，顯示空箱子圖案
+            const emptyState = document.getElementById('emptyState');
+            if (visibleCount === 0) {
+                emptyState.style.display = 'block';
+            } else {
+                emptyState.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

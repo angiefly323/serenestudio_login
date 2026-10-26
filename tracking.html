@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serene Studio - 韓國倉及物流追蹤</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body { background-color: #f4f6f9; color: #333; display: flex; min-height: 100vh; overflow-x: hidden; }
+        
+        /* 側邊欄 (Sidebar) */
+        .sidebar { width: 250px; background-color: #ffffff; border-right: 1px solid #e5e7eb; position: fixed; height: 100%; z-index: 1000; transition: 0.3s; }
+        .logo-area { background: #743133; padding: 20px; text-align: center; display: flex; justify-content: center; align-items: center; min-height: 120px; }
+        .logo-area img { width: 90%; max-width: 180px; height: auto; }
+        .menu-list { list-style: none; padding: 10px 0; }
+        .menu-list li a { display: flex; align-items: center; padding: 15px 24px; color: #4b5563; text-decoration: none; font-size: 15px; transition: 0.2s; }
+        .menu-list li a i { width: 24px; font-size: 18px; margin-right: 10px; color: #9ca3af; }
+        .menu-list li a:hover, .menu-list li.active a { background-color: #fdf8f8; color: #743133; border-right: 4px solid #743133; font-weight: 600; }
+        .menu-list li.active a i { color: #743133; }
+
+        /* 主內容區 */
+        .main-content { flex: 1; margin-left: 250px; transition: 0.3s; width: calc(100% - 250px); padding-bottom: 80px; }
+        .topbar { background: #fff; padding: 15px 24px; display: flex; align-items: center; border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; z-index: 99; }
+        .page-title { font-size: 18px; font-weight: 600; margin-left: 15px;}
+        .content-area { padding: 24px; max-width: 1000px; margin: 0 auto; }
+
+        /* 注意事項提示框 */
+        .notice-box { background: #fdf8f8; border: 1px solid #eab8b9; border-left: 4px solid #743133; padding: 16px; border-radius: 6px; margin-bottom: 24px; font-size: 13.5px; color: #555; line-height: 1.6; }
+        .notice-box ul { margin-left: 20px; margin-top: 8px; }
+        .notice-box li { margin-bottom: 4px; }
+        .notice-box strong { color: #743133; }
+
+        /* 列表頂部與分頁/Filter */
+        .table-header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px; }
+        .header-left { display: flex; align-items: center; gap: 16px; }
+        .header-left h2 { font-size: 16px; color: #111; }
+        
+        /* 篩選器 (Filter) */
+        .status-filter { padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; outline: none; color: #333; background: #fff; cursor: pointer; }
+        .status-filter:focus { border-color: #743133; }
+
+        .pagination { display: flex; align-items: center; font-size: 13px; color: #666; }
+        .page-btn { background: #fff; border: 1px solid #ddd; padding: 4px 8px; border-radius: 4px; margin-left: 8px; cursor: pointer; color: #333; }
+        .page-btn:hover { background: #f0f0f0; }
+
+        /* 物流表格 */
+        .tracking-card { background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid #eee; overflow: hidden; }
+        .tracking-table { width: 100%; border-collapse: collapse; text-align: left; }
+        .tracking-table th { background: #fafafa; padding: 14px 16px; font-size: 13px; color: #666; border-bottom: 1px solid #eee; font-weight: 600; }
+        .tracking-table td { padding: 16px; font-size: 14px; border-bottom: 1px solid #eee; vertical-align: middle; color: #333; }
+        .tracking-table tr:last-child td { border-bottom: none; }
+        
+        .item-name-wrap { display: flex; align-items: center; gap: 10px; }
+        .photo-btn { color: #743133; cursor: pointer; font-size: 16px; padding: 4px; border-radius: 4px; transition: 0.2s; }
+        .photo-btn:hover { background: #fdf8f8; }
+
+        /* 狀態標籤 */
+        .status-badge { padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block; white-space: nowrap; }
+        .status-yellow { background: #fef3c7; color: #b45309; }  /* 待收件 */
+        .status-purple { background: #ede9fe; color: #6d28d9; }  /* 存倉中 */
+        .status-red { background: #fee2e2; color: #b91c1c; }     /* 回港途中 */
+        .status-orange { background: #ffedd5; color: #c2410c; }  /* 已寄出 */
+        .status-green { background: #d1fae5; color: #047857; }   /* 客人已取 */
+
+        /* 勾選方格 */
+        .item-check { width: 18px; height: 18px; cursor: pointer; accent-color: #743133; }
+        .item-check:disabled { cursor: not-allowed; opacity: 0.5; }
+
+        /* 底部操作列 */
+        .action-bar { position: fixed; bottom: 0; left: 250px; right: 0; background: #fff; border-top: 1px solid #ddd; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 -4px 10px rgba(0,0,0,0.05); transition: 0.3s; z-index: 90; transform: translateY(100%); }
+        .action-bar.show { transform: translateY(0); }
+        .action-info { font-size: 14px; font-weight: 600; color: #333; }
+        .btn-apply { background: #743133; color: #fff; border: none; padding: 10px 24px; border-radius: 8px; font-size: 15px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .btn-apply:hover { background: #5a2527; }
+
+        /* 彈出視窗 (Modal) */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 2000; display: none; justify-content: center; align-items: center; padding: 20px; }
+        .modal-box { background: #fff; width: 100%; max-width: 500px; border-radius: 12px; padding: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .modal-header h3 { font-size: 18px; color: #111; }
+        .close-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: #888; }
+        
+        .radio-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+        .radio-label { display: flex; align-items: center; padding: 12px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+        .radio-label:hover, .radio-label.active { background: #fdf8f8; border-color: #743133; }
+        .radio-label input { margin-right: 12px; accent-color: #743133; width: 16px; height: 16px; }
+        
+        /* 順豐選項細節區 */
+        .sf-details { display: none; background: #f9f9f9; padding: 16px; border-radius: 8px; margin-bottom: 16px; border: 1px solid #eee; }
+        .input-select, .address-input { width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 12px; font-size: 14px; outline: none; }
+        .input-select:focus, .address-input:focus { border-color: #743133; }
+        .sf-link { font-size: 13px; color: #2563eb; text-decoration: none; display: inline-block; margin-bottom: 12px; font-weight: 600; }
+        .sf-link:hover { text-decoration: underline; }
+
+        .modal-footer { display: flex; justify-content: flex-end; gap: 12px; }
+        .btn-cancel { background: #f0f0f0; color: #555; border: none; padding: 10px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        .btn-confirm { background: #743133; color: #fff; border: none; padding: 10px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+
+        /* 手機版適應 */
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-250px); }
+            .main-content { margin-left: 0; width: 100%; }
+            .action-bar { left: 0; }
+            .header-left { flex-direction: column; align-items: flex-start; gap: 8px; }
+            
+            .tracking-table thead { display: none; }
+            .tracking-table tbody tr { display: block; border-bottom: 8px solid #f4f6f9; padding: 12px; position: relative; }
+            .tracking-table td { display: block; padding: 6px 0; border: none; }
+            .td-checkbox { position: absolute; top: 16px; right: 16px; }
+            .td-item { font-weight: bold; margin-bottom: 4px; padding-right: 30px !important; }
+            .td-qty::before { content: "數量: "; color: #666; font-size: 13px; }
+            .td-status { margin-top: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 側邊欄 -->
+    <nav class="sidebar" id="sidebar">
+        <div class="logo-area">
+            <img src="Serenestudio_2.png" alt="Serene Studio Logo">
+        </div>
+        <ul class="menu-list">
+            <li><a href="dashboard.html"><i class="fa-solid fa-house"></i> 我的帳戶首頁</a></li>
+            <li><a href="orders.html"><i class="fa-solid fa-file-invoice-dollar"></i> 代購訂單紀錄</a></li>
+            <li class="active"><a href="tracking.html"><i class="fa-solid fa-box-open"></i> 韓國倉及物流追蹤</a></li>
+            <li><a href="#"><i class="fa-solid fa-plane-departure"></i> 申請集運及運費</a></li>
+            <li><a href="#"><i class="fa-solid fa-calculator"></i> 運費計算機</a></li>
+            <li><a href="#"><i class="fa-solid fa-fire"></i> 韓國網購情報</a></li>
+            <li style="margin-top: 20px; border-top: 1px solid #eee;"><a href="index.html"><i class="fa-solid fa-arrow-right-from-bracket"></i> 登出帳戶</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <header class="topbar">
+            <button class="toggle-btn" onclick="toggleSidebar()" style="background: none; border: none; font-size: 20px; cursor: pointer;"><i class="fa-solid fa-bars"></i></button>
+            <div class="page-title">韓國倉及物流追蹤</div>
+        </header>
+
+        <div class="content-area">
+            
+            <div class="notice-box">
+                <strong><i class="fa-solid fa-circle-exclamation"></i> 物流及存倉注意事項：</strong>
+                <ul>
+                    <li>系統只會保留 <strong>2個月內</strong> 的貨品狀態紀錄，敬請定期查看。</li>
+                    <li>韓國倉存倉期由 <strong>購買日起計 14天 內免費</strong>。逾期可能衍生額外倉租費用。</li>
+                    <li>如有特別要求（如：代拆專、去鞋盒），<strong>必須於落單付款前向客服申請確認</strong>，入倉後恕難以更改。</li>
+                </ul>
+            </div>
+
+            <!-- 列表頂部與篩選器 (Filter) -->
+            <div class="table-header-flex">
+                <div class="header-left">
+                    <h2>物流追蹤清單</h2>
+                    <select class="status-filter" id="statusFilter" onchange="filterStatus()">
+                        <option value="all">🔍 顯示所有狀態</option>
+                        <option value="待收件">待收件</option>
+                        <option value="存倉中">存倉中</option>
+                        <option value="回港途中">回港途中</option>
+                        <option value="已寄出">已寄出</option>
+                        <option value="客人已取">客人已取</option>
+                    </select>
+                </div>
+                <div class="pagination">
+                    <span>頁數: 1 / 3</span>
+                    <button class="page-btn"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button class="page-btn"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <div class="tracking-card">
+                <table class="tracking-table" id="trackingTable">
+                    <thead>
+                        <tr>
+                            <!-- 鎖定選取欄寬度，防止斷行 -->
+                            <th style="width: 70px; white-space: nowrap; text-align: center;">選取</th>
+                            <th>貨物名稱</th>
+                            <th style="width: 100px;">數量</th>
+                            <th style="width: 150px;">狀態</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- 存倉中 (可勾選) -->
+                        <tr class="row-item" data-status="存倉中">
+                            <td class="td-checkbox" style="text-align: center;"><input type="checkbox" class="item-check select-item" onchange="updateActionBar()"></td>
+                            <td class="td-item">
+                                <div class="item-name-wrap">
+                                    NCT 官方周邊手燈
+                                    <i class="fa-solid fa-camera photo-btn" title="查看入庫實拍" onclick="alert('實拍圖片將在此彈出')"></i>
+                                </div>
+                            </td>
+                            <td class="td-qty">1</td>
+                            <td class="td-status"><span class="status-badge status-purple">存倉中</span></td>
+                        </tr>
+
+                        <!-- 存倉中 (可勾選) -->
+                        <tr class="row-item" data-status="存倉中">
+                            <td class="td-checkbox" style="text-align: center;"><input type="checkbox" class="item-check select-item" onchange="updateActionBar()"></td>
+                            <td class="td-item">
+                                <div class="item-name-wrap">
+                                    Olive Young 痘痘貼
+                                    <i class="fa-solid fa-camera photo-btn" title="查看入庫實拍"></i>
+                                </div>
+                            </td>
+                            <td class="td-qty">2</td>
+                            <td class="td-status"><span class="status-badge status-purple">存倉中</span></td>
+                        </tr>
+
+                        <!-- 待收件 (不可勾選) -->
+                        <tr class="row-item" data-status="待收件">
+                            <td class="td-checkbox" style="text-align: center;"><input type="checkbox" class="item-check" disabled></td>
+                            <td class="td-item">
+                                <div class="item-name-wrap">ASOS 韓國限定版上衣</div>
+                            </td>
+                            <td class="td-qty">1</td>
+                            <td class="td-status"><span class="status-badge status-yellow">待收件</span></td>
+                        </tr>
+
+                        <!-- 回港途中 (不可勾選) -->
+                        <tr class="row-item" data-status="回港途中">
+                            <td class="td-checkbox" style="text-align: center;"><input type="checkbox" class="item-check" disabled></td>
+                            <td class="td-item">
+                                <div class="item-name-wrap">MLB 厚底運動鞋 (去鞋盒)</div>
+                            </td>
+                            <td class="td-qty">1</td>
+                            <td class="td-status"><span class="status-badge status-red">回港途中</span></td>
+                        </tr>
+
+                        <!-- 已寄出 (不可勾選) -->
+                        <tr class="row-item" data-status="已寄出">
+                            <td class="td-checkbox" style="text-align: center;"><input type="checkbox" class="item-check" disabled></td>
+                            <td class="td-item">
+                                <div class="item-name-wrap">Babor 精華安瓶組</div>
+                            </td>
+                            <td class="td-qty">3</td>
+                            <td class="td-status"><span class="status-badge status-orange">已寄出</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- 底部浮動操作列 -->
+    <div class="action-bar" id="actionBar">
+        <div class="action-info">
+            已選擇 <span id="selectedCount" style="color:#743133; font-size:18px;">0</span> 件貨品準備集運回港
+        </div>
+        <button class="btn-apply" onclick="openModal()">下一步：選擇收貨方式</button>
+    </div>
+
+    <!-- 申請收貨彈出視窗 (Modal) -->
+    <div class="modal-overlay" id="deliveryModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>申請收貨 / 集運</h3>
+                <button class="close-btn" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <p style="font-size: 13px; color: #666; margin-bottom: 20px;">提交申請後，客服將會核對最終重量並透過 WhatsApp 確認國際運費及本地運費安排。</p>
+
+            <div class="radio-group">
+                <!-- 順豐到付選項 -->
+                <label class="radio-label" id="label-sf">
+                    <input type="radio" name="delivery_method" value="sf" onclick="toggleDeliveryOptions()">
+                    <div>
+                        <strong>順豐到付 (運費到付)</strong><br>
+                        <span style="font-size: 12px; color: #888;">上門派送 / 順豐站 / 智能櫃</span>
+                    </div>
+                </label>
+
+                <!-- 順豐詳情設定區 (預設隱藏) -->
+                <div id="sfDetailsArea" class="sf-details">
+                    <label style="font-size: 13px; font-weight: 600; margin-bottom: 6px; display: block;">請選擇派送方式：</label>
+                    <select id="sfServiceType" class="input-select" onchange="updateSfHelper()">
+                        <option value="">-- 請選擇 --</option>
+                        <option value="door">上門派送</option>
+                        <option value="store">順豐站 / 營業點自取</option>
+                        <option value="locker">順豐智能櫃自取</option>
+                    </select>
+
+                    <div id="sfAddressBlock" style="display: none;">
+                        <!-- 動態出現的順豐查詢連結 -->
+                        <a id="sfHelperLink" href="#" target="_blank" class="sf-link"><i class="fa-solid fa-magnifying-glass"></i> 按此查詢順豐網點代碼</a>
+                        <input type="text" id="sfAddressInput" class="address-input" placeholder="請填寫詳細地址 或 網點代碼 (例: H852M011P)">
+                    </div>
+                </div>
+
+                <!-- 預約自取選項 -->
+                <label class="radio-label" id="label-pickup">
+                    <input type="radio" name="delivery_method" value="pickup" onclick="toggleDeliveryOptions()">
+                    <div>
+                        <strong>預約觀塘工作室自取</strong><br>
+                        <span style="font-size: 12px; color: #888;">確認國際運費後，將提供預約日曆</span>
+                    </div>
+                </label>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeModal()">取消</button>
+                <button class="btn-confirm" onclick="submitApplication()">確認提交申請</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 控制側邊欄開關
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.style.transform = sidebar.style.transform === 'translateX(0px)' ? 'translateX(-250px)' : 'translateX(0px)';
+        }
+
+        // --- 狀態篩選器 (Filter) 邏輯 ---
+        function filterStatus() {
+            const filterValue = document.getElementById('statusFilter').value;
+            const rows = document.querySelectorAll('.row-item');
+
+            rows.forEach(row => {
+                const rowStatus = row.getAttribute('data-status');
+                if (filterValue === 'all' || filterValue === rowStatus) {
+                    row.style.display = ''; // 顯示
+                } else {
+                    row.style.display = 'none'; // 隱藏
+                }
+            });
+            // 篩選後重置勾選狀態，避免出現錯誤
+            document.querySelectorAll('.select-item').forEach(box => box.checked = false);
+            updateActionBar();
+        }
+
+        // --- 勾選邏輯 ---
+        function updateActionBar() {
+            const checkboxes = document.querySelectorAll('.select-item');
+            const actionBar = document.getElementById('actionBar');
+            const countDisplay = document.getElementById('selectedCount');
+            let checkedCount = 0;
+            
+            checkboxes.forEach(box => {
+                if(box.checked && box.closest('.row-item').style.display !== 'none') {
+                    checkedCount++;
+                }
+            });
+
+            countDisplay.innerText = checkedCount;
+            if(checkedCount > 0) {
+                actionBar.classList.add('show');
+            } else {
+                actionBar.classList.remove('show');
+            }
+        }
+
+        // --- Modal 及順豐選項邏輯 ---
+        function openModal() { document.getElementById('deliveryModal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('deliveryModal').style.display = 'none'; }
+
+        function toggleDeliveryOptions() {
+            const method = document.querySelector('input[name="delivery_method"]:checked').value;
+            const sfArea = document.getElementById('sfDetailsArea');
+            
+            // UI 視覺反饋
+            document.getElementById('label-sf').style.borderColor = method === 'sf' ? '#743133' : '#ddd';
+            document.getElementById('label-pickup').style.borderColor = method === 'pickup' ? '#743133' : '#ddd';
+
+            if(method === 'sf') {
+                sfArea.style.display = 'block';
+            } else {
+                sfArea.style.display = 'none';
+            }
+        }
+
+        function updateSfHelper() {
+            const type = document.getElementById('sfServiceType').value;
+            const addressBlock = document.getElementById('sfAddressBlock');
+            const helperLink = document.getElementById('sfHelperLink');
+            const addressInput = document.getElementById('sfAddressInput');
+
+            if(type === '') {
+                addressBlock.style.display = 'none';
+                return;
+            }
+            
+            addressBlock.style.display = 'block';
+            
+            if(type === 'store') {
+                helperLink.style.display = 'inline-block';
+                helperLink.href = 'https://hk.sf-express.com/hk/tc/more/sf-store-address';
+                helperLink.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i> 按此查詢順豐站/營業點代碼';
+                addressInput.placeholder = '請輸入網點代碼 (例: 852M)';
+            } else if (type === 'locker') {
+                helperLink.style.display = 'inline-block';
+                helperLink.href = 'https://hk.sf-express.com/hk/tc/more/sf-locker';
+                helperLink.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i> 按此查詢順豐智能櫃代碼';
+                addressInput.placeholder = '請輸入智能櫃代碼 (例: H852M011P)';
+            } else {
+                helperLink.style.display = 'none';
+                addressInput.placeholder = '請填寫詳細送貨地址';
+            }
+        }
+
+        function submitApplication() {
+            alert('申請已提交！系統稍後會彈出 WhatsApp 連結向客服確認運費。');
+            closeModal();
+            document.querySelectorAll('.select-item').forEach(box => box.checked = false);
+            updateActionBar();
+        }
+    </script>
+</body>
+</html>

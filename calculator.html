@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serene Studio - 運費及代購計算機</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body { background-color: #f4f6f9; color: #333; display: flex; min-height: 100vh; overflow-x: hidden; }
+        
+        /* 側邊欄 (Sidebar) */
+        .sidebar { width: 250px; background-color: #ffffff; border-right: 1px solid #e5e7eb; position: fixed; height: 100%; z-index: 1000; transition: 0.3s; }
+        .logo-area { background: #743133; padding: 20px; text-align: center; display: flex; justify-content: center; align-items: center; min-height: 120px; }
+        .logo-area img { width: 90%; max-width: 180px; height: auto; }
+        .menu-list { list-style: none; padding: 10px 0; }
+        .menu-list li a { display: flex; align-items: center; padding: 15px 24px; color: #4b5563; text-decoration: none; font-size: 15px; transition: 0.2s; }
+        .menu-list li a i { width: 24px; font-size: 18px; margin-right: 10px; color: #9ca3af; }
+        .menu-list li a:hover, .menu-list li.active a { background-color: #fdf8f8; color: #743133; border-right: 4px solid #743133; font-weight: 600; }
+        .menu-list li.active a i { color: #743133; }
+
+        /* 主內容區 */
+        .main-content { flex: 1; margin-left: 250px; transition: 0.3s; width: calc(100% - 250px); padding-bottom: 50px;}
+        .topbar { background: #fff; padding: 15px 24px; display: flex; align-items: center; border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; z-index: 99; }
+        .page-title { font-size: 18px; font-weight: 600; margin-left: 15px;}
+        .content-area { padding: 24px; max-width: 1100px; margin: 0 auto; }
+
+        /* 版面網格佈局 (Grid) */
+        .calc-grid { display: grid; grid-template-columns: 3fr 2fr; gap: 24px; align-items: start; }
+
+        /* 計算機主體卡片 */
+        .card { background: #fff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid #eee; overflow: hidden; }
+        .card-header { background: #743133; color: #fff; padding: 16px 24px; font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 10px; }
+        .card-body { padding: 24px; }
+
+        /* 輸入群組 */
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; color: #444; }
+        .input-with-icon { position: relative; display: flex; align-items: center; }
+        .input-with-icon span { position: absolute; left: 16px; color: #666; font-weight: 600; }
+        .input-with-icon input { width: 100%; padding: 14px 14px 14px 45px; border: 2px solid #eee; border-radius: 8px; font-size: 16px; font-weight: bold; outline: none; transition: 0.2s; }
+        .input-with-icon input:focus { border-color: #743133; background: #fdf8f8; }
+        .input-hint { font-size: 12px; color: #888; margin-top: 6px; }
+
+        /* 加值服務選項 (Checkbox) */
+        .service-option { display: flex; align-items: center; gap: 12px; background: #f9f9f9; border: 1px solid #eee; padding: 12px 16px; border-radius: 8px; cursor: pointer; transition: 0.2s; margin-bottom: 20px; }
+        .service-option:hover { background: #fdf8f8; border-color: #743133; }
+        .service-option input[type="checkbox"] { width: 18px; height: 18px; accent-color: #743133; cursor: pointer; }
+        .service-text strong { display: block; font-size: 14px; color: #333; }
+        .service-text span { font-size: 12px; color: #d97706; font-weight: 600; }
+
+        /* 結果顯示區 */
+        .result-box { background: #fdf8f8; border: 1px solid #f0d5d6; padding: 20px; border-radius: 10px; margin-top: 24px; }
+        .result-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 14px; color: #555; }
+        .result-row:last-child { margin-bottom: 0; padding-top: 12px; border-top: 1px dashed #eab8b9; font-size: 18px; font-weight: bold; color: #111; }
+        .val-highlight { color: #743133; font-weight: bold; }
+        
+        .whatsapp-btn { display: flex; justify-content: center; align-items: center; gap: 10px; width: 100%; background: #25D366; color: #fff; border: none; padding: 16px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.2s; margin-top: 24px; text-decoration: none; }
+        .whatsapp-btn:hover { background: #1ebe56; }
+
+        /* 右側：重量參考與免責聲明 */
+        .ref-list { list-style: none; }
+        .ref-list li { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #eee; font-size: 14px; }
+        .ref-list li:last-child { border-bottom: none; }
+        .ref-icon { width: 24px; text-align: center; margin-right: 8px; color: #666; }
+        
+        .disclaimer-box { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 16px; border-radius: 6px; margin-top: 20px; font-size: 12px; color: #854d0e; line-height: 1.6; }
+
+        /* 手機版適應 */
+        @media (max-width: 900px) {
+            .sidebar { transform: translateX(-250px); }
+            .main-content { margin-left: 0; width: 100%; }
+            .calc-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 側邊欄 -->
+    <nav class="sidebar" id="sidebar">
+        <div class="logo-area">
+            <img src="Serenestudio_2.png" alt="Serene Studio Logo">
+        </div>
+        <ul class="menu-list">
+            <li><a href="dashboard.html"><i class="fa-solid fa-house"></i> 我的帳戶首頁</a></li>
+            <li><a href="orders.html"><i class="fa-solid fa-file-invoice-dollar"></i> 代購訂單紀錄</a></li>
+            <li><a href="tracking.html"><i class="fa-solid fa-box-open"></i> 韓國倉及物流追蹤</a></li>
+            <li><a href="consolidation.html"><i class="fa-solid fa-plane-departure"></i> 申請集運及運費</a></li>
+            <li class="active"><a href="calculator.html"><i class="fa-solid fa-calculator"></i> 運費計算機</a></li>
+            <li><a href="#"><i class="fa-solid fa-fire"></i> 韓國網購情報</a></li>
+            <li style="margin-top: 20px; border-top: 1px solid #eee;"><a href="index.html"><i class="fa-solid fa-arrow-right-from-bracket"></i> 登出帳戶</a></li>
+        </ul>
+    </nav>
+
+    <!-- 主內容區 -->
+    <main class="main-content">
+        <header class="topbar">
+            <button class="toggle-btn" onclick="toggleSidebar()" style="background: none; border: none; font-size: 20px; cursor: pointer;"><i class="fa-solid fa-bars"></i></button>
+            <div class="page-title">智能運費及代購計算機</div>
+        </header>
+
+        <div class="content-area">
+            
+            <div class="calc-grid">
+                
+                <!-- 左側：計算機主體 -->
+                <div class="card">
+                    <div class="card-header"><i class="fa-solid fa-calculator"></i> 到手總成本預估</div>
+                    <div class="card-body">
+                        
+                        <div class="input-group">
+                            <label>1. 商品原價 (韓圜 KRW)</label>
+                            <div class="input-with-icon">
+                                <span>₩</span>
+                                <input type="number" id="krwInput" placeholder="例如: 35000" oninput="calculateTotal()">
+                            </div>
+                            <div class="input-hint">系統將以每週最新匯率 (當前 165) 及劃一 5,000 KRW 代購費計算。</div>
+                        </div>
+
+                        <div class="input-group">
+                            <label>2. 預估重量 (公斤 kg)</label>
+                            <div class="input-with-icon">
+                                <span><i class="fa-solid fa-weight-hanging"></i></span>
+                                <input type="number" id="kgInput" placeholder="例如: 0.5" step="0.1" oninput="calculateTotal()">
+                            </div>
+                            <div class="input-hint">首重(0.5kg) HK$22，續重(每0.5kg) +HK$15。</div>
+                        </div>
+
+                        <label class="service-option" onclick="document.getElementById('serviceCheck').click()">
+                            <input type="checkbox" id="serviceCheck" onclick="event.stopPropagation(); calculateTotal()">
+                            <div class="service-text">
+                                <strong>申請去鞋盒 / 代拆專 (抽卡減重)</strong>
+                                <span>預計可為你減輕 0.2kg - 0.5kg 重量！</span>
+                            </div>
+                        </label>
+
+                        <!-- 結果顯示區 -->
+                        <div class="result-box">
+                            <div class="result-row">
+                                <span>商品折合 (匯率165)：</span>
+                                <span id="resItemPrice">HK$ 0.00</span>
+                            </div>
+                            <div class="result-row">
+                                <span>劃一代購費 (₩5,000)：</span>
+                                <span>HK$ 30.30</span>
+                            </div>
+                            <div class="result-row">
+                                <span>國際空運費預估：</span>
+                                <span id="resShipping" class="val-highlight">HK$ 0.00</span>
+                            </div>
+                            <div class="result-row">
+                                <span>到手總預估大約：</span>
+                                <span id="resTotal" style="color:#743133;">HK$ 30.30</span>
+                            </div>
+                        </div>
+
+                        <a href="#" id="whatsappLink" class="whatsapp-btn" target="_blank" onclick="generateWhatsAppLink()">
+                            <i class="fa-brands fa-whatsapp"></i> 發送預算至 WhatsApp 立即落單
+                        </a>
+                        <div style="text-align:center; font-size:12px; color:#888; margin-top:10px;">點擊後將為你自動填寫預估內容</div>
+
+                    </div>
+                </div>
+
+                <!-- 右側：參考資訊 -->
+                <div>
+                    <div class="card">
+                        <div class="card-header" style="background:#f9f9f9; color:#333; border-bottom:1px solid #eee;"><i class="fa-solid fa-scale-balanced"></i> 常見貨品重量參考</div>
+                        <div class="card-body" style="padding: 16px 24px;">
+                            <ul class="ref-list">
+                                <li><span><i class="fa-solid fa-shirt ref-icon"></i>夏裝上衣 / T-shirt</span> <strong>~0.2 kg</strong></li>
+                                <li><span><i class="fa-solid fa-compact-disc ref-icon"></i>K-pop 正常版專輯</span> <strong>~0.5 kg</strong></li>
+                                <li><span><i class="fa-solid fa-pump-soap ref-icon"></i>護膚品/化妝水 (200ml)</span> <strong>~0.3 kg</strong></li>
+                                <li><span><i class="fa-solid fa-shoe-prints ref-icon"></i>波鞋 (連外盒)</span> <strong>~1.2 kg</strong></li>
+                                <li><span><i class="fa-solid fa-shoe-prints ref-icon"></i>波鞋 (去鞋盒)</span> <strong style="color:#d97706;">~0.8 kg</strong></li>
+                                <li><span><i class="fa-solid fa-coat-empty ref-icon"></i>冬裝大褸 / 外套</span> <strong>~1.5 kg</strong></li>
+                            </ul>
+                            <div style="font-size: 12px; color: #888; margin-top: 15px; text-align: center;">*以上僅供參考，實際重量以韓國倉量度為準</div>
+                        </div>
+                    </div>
+
+                    <div class="disclaimer-box">
+                        <strong>⚠️ 體積重及最終收費聲明</strong><br><br>
+                        國際空運收費會以「實際重量」及「體積重 (長x闊x高/6000)」兩者取其大計算。<br><br>
+                        大型輕量物品（如：公仔、海報筒、大背囊等），有機會產生龐大體積重附加費。本計算機僅作參考用途，最終收費請以客服確認及韓國倉實際入庫重量為準。
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.style.transform = sidebar.style.transform === 'translateX(0px)' ? 'translateX(-250px)' : 'translateX(0px)';
+        }
+
+        // 常數設定
+        const EXCHANGE_RATE = 165;
+        const AGENT_FEE_KRW = 5000;
+        const AGENT_FEE_HKD = (AGENT_FEE_KRW / EXCHANGE_RATE).toFixed(2); // 30.30
+        const BASE_WEIGHT_PRICE = 22; // 首 0.5kg
+        const EXTRA_WEIGHT_PRICE = 15; // 續重每 0.5kg
+
+        function calculateTotal() {
+            let krw = parseFloat(document.getElementById('krwInput').value) || 0;
+            let weight = parseFloat(document.getElementById('kgInput').value) || 0;
+            let reduceWeightCheck = document.getElementById('serviceCheck').checked;
+            
+            // 處理減重邏輯
+            if(reduceWeightCheck && weight > 0) {
+                weight = Math.max(0.1, weight - 0.3); // 模擬減去 0.3kg，最少保持 0.1kg
+            }
+
+            // 計算商品價格
+            let hkdPrice = krw / EXCHANGE_RATE;
+
+            // 計算國際運費 (0.5kg 階梯制)
+            let shippingPrice = 0;
+            if (weight > 0) {
+                // 將重量以 0.5 為單位向上取整 (例如 0.2 -> 1, 0.6 -> 2, 1.2 -> 3)
+                let weightSteps = Math.ceil(weight / 0.5);
+                shippingPrice = BASE_WEIGHT_PRICE + ((weightSteps - 1) * EXTRA_WEIGHT_PRICE);
+            }
+
+            let total = hkdPrice + parseFloat(AGENT_FEE_HKD) + shippingPrice;
+
+            // 更新 UI 顯示
+            document.getElementById('resItemPrice').innerText = `HK$ ${hkdPrice.toFixed(2)}`;
+            document.getElementById('resShipping').innerText = `HK$ ${shippingPrice.toFixed(2)}`;
+            
+            if(krw > 0 || weight > 0) {
+                document.getElementById('resTotal').innerText = `HK$ ${total.toFixed(2)}`;
+            } else {
+                document.getElementById('resTotal').innerText = `HK$ ${parseFloat(AGENT_FEE_HKD).toFixed(2)}`;
+            }
+        }
+
+        // 生成 WhatsApp 連結
+        function generateWhatsAppLink() {
+            let krw = document.getElementById('krwInput').value;
+            let weight = document.getElementById('kgInput').value;
+            let hasService = document.getElementById('serviceCheck').checked ? "需要(去鞋盒/代拆專)" : "不需要";
+            let total = document.getElementById('resTotal').innerText;
+
+            if(!krw || krw == 0) {
+                alert("請先輸入商品原價 (KRW) 再發送！");
+                return;
+            }
+
+            let message = `你好，我想查詢韓國代購報價！👋\n\n`;
+            message += `商品原價：₩${krw}\n`;
+            message += `預估重量：${weight ? weight+'kg' : '未確定'}\n`;
+            message += `加值服務：${hasService}\n`;
+            message += `計算機顯示總預算為：*${total}*\n\n`;
+            message += `請問如何落單付款？`;
+
+            // 將文字編碼成 URL 格式
+            let encodedMessage = encodeURIComponent(message);
+            // 替換為你的 WhatsApp 號碼 (例如 85291234567)
+            let phone = "85200000000"; 
+            
+            document.getElementById('whatsappLink').href = `https://wa.me/${phone}?text=${encodedMessage}`;
+        }
+    </script>
+</body>
+</html>
