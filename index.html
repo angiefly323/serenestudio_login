@@ -115,35 +115,35 @@
     <div class="login-container">
         <!-- 頂部 Logo 與標題區 -->
         <div class="header">
-            <img src="Serenestudio.png" alt="Serene Studio Logo">
+            <img src="Serenestudio_2.png" alt="Serene Studio Logo">
             <h1>歡迎登入客戶專區</h1>
             <p>隨時追蹤你的韓國代購訂單與物流狀態</p>
         </div>
 
         <!-- 登入表單區 -->
-        <form onsubmit="event.preventDefault(); alert('這是版面示範，尚未連結後台資料庫！');">
+        <form id="loginForm" onsubmit="handleLogin(event)">
             <div class="form-group">
                 <label>登入電話號碼</label>
                 <div class="phone-input">
-                    <!-- 電話區碼下拉選單 (+852 / +886) -->
-                    <select class="prefix-select">
+                    <!-- 電話區碼下拉選單 -->
+                    <select id="phonePrefix" class="prefix-select">
                         <option value="+852">+852</option>
                         <option value="+886">+886</option>
                     </select>
-                    <input type="tel" placeholder="請輸入電話號碼" required>
+                    <input type="tel" id="phoneNumber" placeholder="請輸入電話號碼" required>
                 </div>
             </div>
 
             <div class="form-group">
                 <label>密碼</label>
-                <input type="password" class="input-field" placeholder="請輸入系統預設或專屬密碼" required>
+                <input type="password" id="password" class="input-field" placeholder="請輸入系統預設或專屬密碼" required>
             </div>
 
             <div class="forgot-pw">
                 <a href="#">忘記密碼？</a>
             </div>
 
-            <button type="submit" class="btn-login">登入</button>
+            <button type="submit" id="loginBtn" class="btn-login">登入</button>
         </form>
 
         <!-- 新手引導提示區 -->
@@ -154,5 +154,60 @@
         </div>
     </div>
 
+    <script>
+        // Google Apps Script Web App URL
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbyTpnxEfQ9B2ysDjq-H7C1N_1BqRcEZVL0nPBInlHoYKOFQVTP-QM13pLEq3d3opbdm/exec";
+
+        async function handleLogin(event) {
+            event.preventDefault();
+            
+            const prefix = document.getElementById('phonePrefix').value;
+            const number = document.getElementById('phoneNumber').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const loginBtn = document.getElementById('loginBtn');
+
+            // 組合完整電話格式 (例如: +852 91234567 或 +85291234567，視乎你在 Sheet 點入)
+            // 這裡我們組合為 "+852 91234567"（亦可因應你 Google Sheet 的寫法調整）
+            const fullPhone = `${prefix} ${number}`;
+
+            loginBtn.innerText = "驗證中...";
+            loginBtn.disabled = true;
+
+            try {
+                const response = await fetch(GAS_URL, {
+                    method: "POST",
+                    mode: "cors", // 跨域設定
+                    headers: {
+                        "Content-Type": "text/plain;charset=utf-8" // 避免 GAS 觸發複雜的 CORS 預檢
+                    },
+                    body: JSON.stringify({
+                        action: "login",
+                        phone: fullPhone,
+                        password: password
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.status === "success") {
+                    // 將會員資料暫存喺瀏覽器 LocalStorage，方便入到 dashboard 時讀取
+                    localStorage.setItem('serene_user', JSON.stringify(result.data));
+                    
+                    alert("登入成功！即將進入客戶專區。");
+                    window.location.href = "dashboard.html"; // 跳轉至帳戶首頁
+                } else {
+                    alert("登入失敗：" + result.message);
+                    loginBtn.innerText = "登入";
+                    loginBtn.disabled = false;
+                }
+
+            } catch (error) {
+                console.error("Error:", error);
+                alert("連接伺服器發生錯誤，請稍後再試！");
+                loginBtn.innerText = "登入";
+                loginBtn.disabled = false;
+            }
+        }
+    </script>
 </body>
 </html>
