@@ -31,7 +31,7 @@
         .card-body { padding: 24px; }
 
         /* =========================================
-           新版：圖表箭嘴流程 (Flowchart) 
+           圖表箭嘴流程 (Flowchart) 
         ========================================= */
         .flowchart { display: flex; flex-direction: column; gap: 15px; align-items: center; }
         
@@ -64,6 +64,7 @@
             width: 1%; 
             padding-right: 24px; 
         }
+        
         /* 摺疊式條款 (Accordion) */
         .accordion { border: 1px solid #eee; border-radius: 8px; margin-bottom: 12px; overflow: hidden; transition: 0.2s; }
         .accordion-header { padding: 16px 20px; background: #fafafa; font-weight: 600; color: #333; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
@@ -92,17 +93,231 @@
 </head>
 <body>
 
-    <!-- 側邊欄 -->
+    <!-- 側邊欄 (已更新為最新排序，並將 class="active" 放在正確頁面) -->
     <nav class="sidebar" id="sidebar">
         <div class="logo-area">
+            <!-- 透明底 Logo[cite: 3] -->
             <img src="Serenestudio_2.png" alt="Serene Studio Logo">
         </div>
         <ul class="menu-list">
             <li><a href="dashboard.html"><i class="fa-solid fa-house"></i> 我的帳戶首頁</a></li>
+            <li><a href="profile.html"><i class="fa-solid fa-id-card"></i> 會員帳戶資料</a></li>
+            <li class="active"><a href="guidelines.html"><i class="fa-solid fa-book-open"></i> 購物流程及須知</a></li>
             <li><a href="orders.html"><i class="fa-solid fa-file-invoice-dollar"></i> 代購訂單紀錄</a></li>
             <li><a href="tracking.html"><i class="fa-solid fa-box-open"></i> 韓國倉及物流追蹤</a></li>
             <li><a href="consolidation.html"><i class="fa-solid fa-plane-departure"></i> 申請集運及運費</a></li>
             <li><a href="calculator.html"><i class="fa-solid fa-calculator"></i> 運費計算機</a></li>
             <li><a href="intel.html"><i class="fa-solid fa-fire"></i> 韓國網購情報</a></li>
-            <li class="active"><a href="guidelines.html"><i class="fa-solid fa-book-open"></i> 購物流程及須知</a></li>
-            <li><a href="profile.html
+            <li style="margin-top: 20px; border-top: 1px solid #eee;"><a href="index.html"><i class="fa-solid fa-arrow-right-from-bracket"></i> 登出帳戶</a></li>
+        </ul>
+    </nav>
+
+    <!-- 主內容區 -->
+    <main class="main-content">
+        <header class="topbar">
+            <button class="toggle-btn" onclick="toggleSidebar()" style="background: none; border: none; font-size: 20px; cursor: pointer;"><i class="fa-solid fa-bars"></i></button>
+            <div class="page-title">購物流程及買家須知</div>
+        </header>
+
+        <div class="content-area">
+            
+            <!-- 區塊 1：圖表式購物流程 -->
+            <div class="card">
+                <div class="card-header"><i class="fa-solid fa-share-nodes"></i> 代購及集運流程</div>
+                <div class="card-body" style="background-color: #fdfdfd;">
+                    
+                    <div class="flowchart">
+                        
+                        <!-- 步驟 1 -->
+                        <div class="flow-step">
+                            <div class="step-num">STEP 1</div>
+                            <div class="flow-icon"><i class="fa-solid fa-comment-dollar"></i></div>
+                            <div class="flow-title">提交連結<br>首付商品費用</div>
+                            <div class="flow-desc">WhatsApp 聯絡客服提交商品網址。確認報價後，透過 FPS/PayMe 支付商品費用。</div>
+                            <div class="flow-highlight"><i class="fa-solid fa-key"></i> 首次落單即獲發專屬系統登入資料</div>
+                        </div>
+
+                        <!-- 箭嘴 -->
+                        <div class="flow-arrow">
+                            <i class="fa-solid fa-arrow-right desktop-arrow"></i>
+                            <i class="fa-solid fa-arrow-down mobile-arrow"></i>
+                        </div>
+
+                        <!-- 步驟 2 -->
+                        <div class="flow-step">
+                            <div class="step-num">STEP 2</div>
+                            <div class="flow-icon"><i class="fa-solid fa-box-open"></i></div>
+                            <div class="flow-title">韓國倉代收<br>處理加值服務</div>
+                            <div class="flow-desc">貨品抵達韓國工作室。如需代拆專、棄鞋盒等減重服務，請務必於第一步付款前提出。</div>
+                            <div class="flow-highlight" style="background:#f0fdf4; color:#166534;"><i class="fa-solid fa-camera"></i> 可於系統查看入庫實拍</div>
+                        </div>
+
+                        <!-- 箭嘴 -->
+                        <div class="flow-arrow">
+                            <i class="fa-solid fa-arrow-right desktop-arrow"></i>
+                            <i class="fa-solid fa-arrow-down mobile-arrow"></i>
+                        </div>
+
+                        <!-- 步驟 3 -->
+                        <div class="flow-step">
+                            <div class="step-num">STEP 3</div>
+                            <div class="flow-icon"><i class="fa-solid fa-plane-departure"></i></div>
+                            <div class="flow-title">申請集運<br>支付國際運費</div>
+                            <div class="flow-desc">於系統勾選想寄回香港的貨品，選擇收貨方式。客服核對重量後，請於24小時內完成次付運費。</div>
+                        </div>
+
+                        <!-- 箭嘴 -->
+                        <div class="flow-arrow">
+                            <i class="fa-solid fa-arrow-right desktop-arrow"></i>
+                            <i class="fa-solid fa-arrow-down mobile-arrow"></i>
+                        </div>
+
+                        <!-- 步驟 4 -->
+                        <div class="flow-step">
+                            <div class="step-num">STEP 4</div>
+                            <div class="flow-icon"><i class="fa-solid fa-box-check"></i></div>
+                            <div class="flow-title">貨品抵港<br>預約自取/順豐</div>
+                            <div class="flow-desc">空運需時 3-5 個工作天。抵港後，可預約時間到觀塘工作室自取，或等待順豐派送更新。</div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- 區塊 2：收費標準 -->
+            <div class="card">
+                <div class="card-header"><i class="fa-solid fa-coins"></i> 透明收費標準</div>
+                <div class="card-body" style="padding: 10px 24px 24px 24px;">
+                    <table class="fee-table">
+                        <thead>
+                            <tr>
+                                <th>收費項目</th>
+                                <th>計算方式及說明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>代購手續費</strong></td>
+                                <td>
+                                    <span class="price-tag">劃一 ₩5,000 / 每件</span><br>
+                                    無隱藏收費。折合港幣約 $30。同店舖同款多件（如批發）手續費另有折扣，請向客服查詢。
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>參考匯率</strong></td>
+                                <td>
+                                    <span class="price-tag">KRW / 165</span><br>
+                                    匯率會跟隨市場每週浮動調整，落單時以客服最終報價為準。
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>國際空運費</strong></td>
+                                <td>
+                                    <span class="price-tag">首 0.5kg HK$ 22 | 續重 0.5kg +HK$ 15</span><br>
+                                    採用微階梯收費，計法公平。注意：運費按「實際重量」與「體積重 (長x闊x高/6000)」兩者取其大計算。
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>香港本地運費</strong></td>
+                                <td>
+                                    觀塘工作室自取 <span class="price-tag">免費</span><br>
+                                    順豐到付則由派件員/智能櫃直接向客人收取。
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 區塊 3：條款及細則 -->
+            <div class="card">
+                <div class="card-header"><i class="fa-solid fa-scale-balanced"></i> 買家須知及條款</div>
+                <div class="card-body">
+                    
+                    <div class="accordion" onclick="toggleAccordion(this)">
+                        <div class="accordion-header">
+                            1. 退貨及換貨條款 <i class="fa-solid fa-chevron-down accordion-icon"></i>
+                        </div>
+                        <div class="accordion-body">
+                            代購服務屬「客製化委託」，一旦完成韓國網站下單，<strong>恕不接受任何理由（如色差、尺寸不合、改變心意）之退款或換貨</strong>。<br><br>
+                            如收到貨品後發現嚴重瑕疵或發錯款式，請於簽收後 24 小時內連同「完整開箱影片」聯絡客服，我們將盡力協助向韓國賣家交涉，但無法保證退換成功，產生之來回韓國運費需由買家承擔。
+                        </div>
+                    </div>
+
+                    <div class="accordion" onclick="toggleAccordion(this)">
+                        <div class="accordion-header">
+                            2. 韓國倉存倉及棄單處理 <i class="fa-solid fa-chevron-down accordion-icon"></i>
+                        </div>
+                        <div class="accordion-body">
+                            貨品到達韓國倉後，提供 <strong>14天免費存倉期</strong>（以首件到倉貨品起計）。逾期未申請集運者，將收取每件每日 HK$5 倉儲費。<br><br>
+                            如貨品存倉超過 2 個月（60天）且無法聯絡買家，將視為「棄單」處理。本公司有權自行處置該貨品以抵銷倉租及行政費，所收款項恕不退還。
+                        </div>
+                    </div>
+
+                    <div class="accordion" onclick="toggleAccordion(this)">
+                        <div class="accordion-header">
+                            3. 體積重及大型物品注意事項 <i class="fa-solid fa-chevron-down accordion-icon"></i>
+                        </div>
+                        <div class="accordion-body">
+                            航空物流皆有「體積重」規定。公式為：<strong>長(cm) × 闊(cm) × 高(cm) ÷ 6000</strong>。<br><br>
+                            如果購買公仔、背包、長靴、海報筒等「體積大但重量輕」之物品，空運費有極大機會以體積重計算，導致運費高昂。如有疑慮，請於落單前諮詢客服。強烈建議選擇「去鞋盒 / 減少包裝」服務。
+                        </div>
+                    </div>
+
+                    <div class="accordion" onclick="toggleAccordion(this)">
+                        <div class="accordion-header">
+                            4. 禁運物品清單 <i class="fa-solid fa-chevron-down accordion-icon"></i>
+                        </div>
+                        <div class="accordion-body">
+                            本服務嚴禁代購以下物品：易燃物品（如香水、壓縮氣體、指甲油）、含電池產品、生鮮食品、植物、藥物（含隱形眼鏡）、侵權贗品及所有航空違禁品。<br><br>
+                            如因隱瞞申報導致扣關或罰款，所有法律責任及損失由買家全數承擔。
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // 終極穩定版：目錄開關功能
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.querySelector('.main-content');
+            
+            if (window.innerWidth <= 768) {
+                // 手機版邏輯：控制左側滑出與收起
+                if (sidebar.style.transform === 'translateX(0px)' || sidebar.style.transform === 'translateX(0)') {
+                    sidebar.style.transform = 'translateX(-250px)';
+                    sidebar.style.boxShadow = 'none';
+                } else {
+                    sidebar.style.transform = 'translateX(0px)';
+                    sidebar.style.boxShadow = '4px 0 15px rgba(0,0,0,0.1)';
+                }
+            } else {
+                // 電腦版邏輯：隱藏目錄並將主內容向左擴展
+                if (sidebar.style.transform === 'translateX(-250px)') {
+                    sidebar.style.transform = 'translateX(0px)';
+                    mainContent.style.marginLeft = '250px';
+                    mainContent.style.width = 'calc(100% - 250px)';
+                } else {
+                    sidebar.style.transform = 'translateX(-250px)';
+                    mainContent.style.marginLeft = '0';
+                    mainContent.style.width = '100%';
+                }
+            }
+        }
+
+        // 控制摺疊式條款 (Accordion)
+        function toggleAccordion(element) {
+            const isOpen = element.classList.contains('open');
+            if (!isOpen) {
+                element.classList.add('open');
+            } else {
+                element.classList.remove('open');
+            }
+        }
+    </script>
+</body>
+</html>
