@@ -9,181 +9,251 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
         body { background-color: #f4f6f9; color: #333; display: flex; min-height: 100vh; overflow-x: hidden; }
         
-        /* 側邊欄 (Sidebar) */
         .sidebar { width: 250px; background-color: #ffffff; border-right: 1px solid #e5e7eb; position: fixed; height: 100%; z-index: 1000; transition: 0.3s; }
         .logo-area { background: #743133; padding: 20px; text-align: center; display: flex; justify-content: center; align-items: center; min-height: 120px; }
         .logo-area img { width: 90%; max-width: 180px; height: auto; }
-
         .menu-list { list-style: none; padding: 10px 0; }
         .menu-list li a { display: flex; align-items: center; padding: 15px 24px; color: #4b5563; text-decoration: none; font-size: 15px; transition: 0.2s; }
         .menu-list li a i { width: 24px; font-size: 18px; margin-right: 10px; color: #9ca3af; }
         .menu-list li a:hover, .menu-list li.active a { background-color: #fdf8f8; color: #743133; border-right: 4px solid #743133; font-weight: 600; }
         .menu-list li.active a i { color: #743133; }
 
-        /* 主內容區 */
-        .main-content { flex: 1; margin-left: 250px; transition: 0.3s; width: calc(100% - 250px); }
+        .main-content { flex: 1; margin-left: 250px; transition: 0.3s; width: calc(100% - 250px); padding-bottom: 50px;}
         .topbar { background: #fff; padding: 15px 24px; display: flex; align-items: center; border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; z-index: 99; }
         .page-title { font-size: 18px; font-weight: 600; margin-left: 15px;}
         .content-area { padding: 24px; max-width: 1000px; margin: 0 auto; }
 
-        /* 物流追蹤卡片 */
-        .track-card { background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin-bottom: 20px; border: 1px solid #eee; overflow: hidden; }
-        .track-header { background: #fdf8f8; padding: 16px 24px; border-bottom: 1px solid #f0d5d6; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
-        .track-id { font-size: 16px; font-weight: 700; color: #743133; }
+        .card { background: #fff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid #eee; margin-bottom: 24px; overflow: hidden; }
+        .card-header { background: #fdf8f8; color: #743133; padding: 16px 24px; font-size: 18px; font-weight: 700; border-bottom: 1px solid #f0d5d6; display: flex; justify-content: space-between; align-items: center; }
         
-        .badge { padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; }
-        .badge.warehouse { background: #e0f2fe; color: #0369a1; } /* 韓國倉代收 */
-        .badge.shipping { background: #fef3c7; color: #d97706; }  /* 空運中 */
-        .badge.arrived { background: #dcfce7; color: #15803d; }   /* 已抵港/可自取 */
+        .track-table { width: 100%; border-collapse: collapse; }
+        .track-table th { text-align: left; padding: 14px 16px; background: #fafafa; border-bottom: 2px solid #eee; font-size: 14px; color: #333; }
+        .track-table td { padding: 14px 16px; border-bottom: 1px solid #eee; font-size: 14px; color: #555; vertical-align: middle; }
+        
+        .badge { padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; }
+        .badge.seller-pending { background: #f3f4f6; color: #4b5563; }
+        .badge.seller-shipped { background: #e0f2fe; color: #0369a1; }
+        .badge.warehouse-arrived { background: #dcfce7; color: #15803d; position: relative; cursor: pointer; }
+        .badge.sent-hk { background: #f3e8ff; color: #7e22ce; }
 
-        .track-body { padding: 24px; }
-        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 20px; }
-        .info-item label { display: block; font-size: 12px; color: #666; margin-bottom: 4px; }
-        .info-item span { font-size: 15px; font-weight: 600; color: #111; }
-
-        /* 物流進度軸 (Timeline) */
-        .timeline { border-left: 2px solid #e5e7eb; margin-left: 10px; padding-left: 20px; margin-top: 20px; }
-        .timeline-item { position: relative; margin-bottom: 20px; }
-        .timeline-item:last-child { margin-bottom: 0; }
-        .timeline-dot { position: absolute; left: -27px; top: 0; width: 12px; height: 12px; border-radius: 50%; background: #d1d5db; border: 2px solid #fff; }
-        .timeline-item.completed .timeline-dot { background: #743133; }
-        .timeline-title { font-size: 14px; font-weight: 600; color: #111; }
-        .timeline-date { font-size: 12px; color: #888; margin-top: 2px; }
-
-        .no-data { text-align: center; padding: 40px; color: #888; font-size: 15px; background: #fff; border-radius: 12px; border: 1px solid #eee; }
-
-        @media (max-width: 768px) {
-            .sidebar { transform: translateX(-250px); }
-            .main-content { margin-left: 0; width: 100%; }
+        /* 停留天數 Tooltip */
+        .tooltip-icon { font-size: 13px; color: #166534; margin-left: 4px; }
+        .badge.warehouse-arrived:hover::after {
+            content: attr(data-days);
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #111827;
+            color: #fff;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            white-space: nowrap;
+            z-index: 10;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
+
+        /* 底部集運列 */
+        .consolidation-bar { background: #fff; border-top: 1px solid #eee; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; border-radius: 0 0 12px 12px; }
+        .delivery-select { padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; outline: none; }
+        .btn-submit-ship { background: #743133; color: #fff; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .btn-submit-ship:hover { background: #5a2527; }
+
+        .notice-box { background: #fffbeb; border: 1px solid #fde68a; border-left: 4px solid #f59e0b; padding: 16px; border-radius: 8px; font-size: 13.5px; color: #555; line-height: 1.6; }
+        .notice-box ul { margin-left: 20px; margin-top: 8px; }
+
+        .no-data { text-align: center; padding: 40px; color: #888; font-size: 14px; }
     </style>
 </head>
 <body>
 
-    <!-- 左邊側邊欄 -->
     <nav class="sidebar" id="sidebar">
-        <div class="logo-area">
-            <img src="Serenestudio_2.png" alt="Serene Studio Logo">
-        </div>
+        <div class="logo-area"><img src="Serenestudio_2.png" alt="Logo"></div>
         <ul class="menu-list">
             <li><a href="dashboard.html"><i class="fa-solid fa-house"></i> 我的帳戶首頁</a></li>
             <li><a href="profile.html"><i class="fa-solid fa-id-card"></i> 會員帳戶資料</a></li>
             <li><a href="guidelines.html"><i class="fa-solid fa-book-open"></i> 購物流程及須知</a></li>
             <li><a href="orders.html"><i class="fa-solid fa-file-invoice-dollar"></i> 代購訂單紀錄</a></li>
             <li class="active"><a href="tracking.html"><i class="fa-solid fa-box-open"></i> 韓國倉及物流追蹤</a></li>
-            <li><a href="consolidation.html"><i class="fa-solid fa-plane-departure"></i> 申請集運及運費</a></li>
+            <li><a href="consolidation.html"><i class="fa-solid fa-plane-departure"></i> 集運單及國際運費</a></li>
             <li><a href="calculator.html"><i class="fa-solid fa-calculator"></i> 運費計算機</a></li>
             <li><a href="intel.html"><i class="fa-solid fa-fire"></i> 韓國網購情報</a></li>
             <li style="margin-top: 20px; border-top: 1px solid #eee;"><a href="index.html"><i class="fa-solid fa-arrow-right-from-bracket"></i> 登出帳戶</a></li>
         </ul>
     </nav>
 
-    <!-- 主內容區 -->
     <main class="main-content">
         <header class="topbar">
-            <button class="toggle-btn" onclick="toggleSidebar()" style="background: none; border: none; font-size: 20px; cursor: pointer;"><i class="fa-solid fa-bars"></i></button>
+            <button onclick="toggleSidebar()" style="background:none; border:none; font-size:20px; cursor:pointer;"><i class="fa-solid fa-bars"></i></button>
             <div class="page-title">韓國倉及物流追蹤</div>
         </header>
 
-        <div class="content-area" id="trackingContainer">
-            <!-- 動態載入物流資料的位置 -->
-            <div class="no-data">正在載入物流追蹤資料...</div>
+        <div class="content-area">
+            
+            <div class="card">
+                <div class="card-header">
+                    <span><i class="fa-solid fa-boxes-packing"></i> 我的韓國倉貨品庫存</span>
+                </div>
+                
+                <div id="tableContainer">
+                    <div class="no-data">正在載入韓國倉貨品資料...</div>
+                </div>
+
+                <div class="consolidation-bar" id="consolidationBar" style="display: none;">
+                    <div>已選擇貨品申請集運</div>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <select id="deliveryMethodSelect" class="delivery-select">
+                            <option value="觀塘工作室自取 (免費)">觀塘工作室自取 (免費)</option>
+                            <option value="順豐到付 (運費由順豐收取)">順豐到付 (運費到付)</option>
+                        </select>
+                        <button class="btn-submit-ship" onclick="submitConsolidation()">申請寄回香港</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 底部注意事項 -->
+            <div class="notice-box">
+                <strong><i class="fa-solid fa-circle-info"></i> 韓國倉存放及集運須知：</strong>
+                <ul>
+                    <li>貨品抵達韓國倉後享 <strong>14 天免費存倉期</strong>（將鼠標移至「已到韓國倉」標籤即可查看已停留天數）。</li>
+                    <li>勾選已到倉貨品並選擇收貨方式後，點擊「申請寄回香港」，系統會即時發送通知予店主進行打包秤重。</li>
+                    <li>提交申請後，請前往 **「集運單及國際運費」** 頁面查看最終運費並上傳付款憑證。</li>
+                </ul>
+            </div>
+
         </div>
     </main>
 
     <script>
         const GAS_URL = "https://script.google.com/macros/s/AKfycbyTpnxEfQ9B2ysDjq-H7C1N_1BqRcEZVL0nPBInlHoYKOFQVTP-QM13pLEq3d3opbdm/exec";
+        let userPhone = "";
 
         window.addEventListener('DOMContentLoaded', () => {
             const userData = JSON.parse(localStorage.getItem('serene_user'));
-            
             if (!userData || !userData.phone) {
-                alert("尚未登入或登入已過期，請重新登入！");
+                alert("請先登入！");
                 window.location.href = "index.html";
                 return;
             }
-
-            fetchShipments(userData.phone);
+            userPhone = userData.phone;
+            fetchItems();
         });
 
-        async function fetchShipments(phone) {
-            const container = document.getElementById('trackingContainer');
+        async function fetchItems() {
+            const container = document.getElementById('tableContainer');
+            try {
+                const response = await fetch(GAS_URL, {
+                    method: "POST", mode: "cors",
+                    headers: { "Content-Type": "text/plain;charset=utf-8" },
+                    body: JSON.stringify({ action: "getShipments", phone: userPhone })
+                });
+                const result = await response.json();
+
+                if (result.status === "success" && result.data.length > 0) {
+                    let hasArrivedItem = false;
+                    let html = `
+                        <table class="track-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:40px;">選取</th>
+                                    <th>貨品名稱</th>
+                                    <th>數量</th>
+                                    <th>當前狀態</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    `;
+
+                    result.data.forEach(item => {
+                        let statusBadge = "";
+                        let checkboxHtml = "";
+
+                        // 計算停留天數
+                        let daysText = "已到倉 0 天";
+                        if (item.arrivedDate) {
+                            const arrived = new Date(item.arrivedDate);
+                            const today = new Date();
+                            const diffDays = Math.floor((today - arrived) / (1000 * 60 * 60 * 24));
+                            daysText = `已於韓國倉停留 ${diffDays >= 0 ? diffDays : 0} 天`;
+                        }
+
+                        if (item.status === "已到韓國倉") {
+                            hasArrivedItem = true;
+                            checkboxHtml = `<input type="checkbox" class="item-checkbox" value="${item.itemId}" data-name="${item.itemName}">`;
+                            statusBadge = `<span class="badge warehouse-arrived" data-days="${daysText}"><i class="fa-solid fa-warehouse"></i> 已到韓國倉 <i class="fa-solid fa-circle-info tooltip-icon"></i></span>`;
+                        } else if (item.status === "賣家已出貨") {
+                            checkboxHtml = `-`;
+                            statusBadge = `<span class="badge seller-shipped"><i class="fa-solid fa-truck-fast"></i> 賣家已出貨</span>`;
+                        } else if (item.status === "已安排寄回港") {
+                            checkboxHtml = `-`;
+                            statusBadge = `<span class="badge sent-hk"><i class="fa-solid fa-plane-departure"></i> 已安排寄回港</span>`;
+                        } else {
+                            checkboxHtml = `-`;
+                            statusBadge = `<span class="badge seller-pending"><i class="fa-solid fa-clock"></i> 待賣家出貨中</span>`;
+                        }
+
+                        html += `
+                            <tr>
+                                <td>${checkboxHtml}</td>
+                                <td><strong>${item.itemName}</strong></td>
+                                <td>${item.quantity}</td>
+                                <td>${statusBadge}</td>
+                            </tr>
+                        `;
+                    });
+
+                    html += `</tbody></table>`;
+                    container.innerHTML = html;
+                    if (hasArrivedItem) document.getElementById('consolidationBar').style.display = 'flex';
+                } else {
+                    container.innerHTML = `<div class="no-data">目前尚無任何韓國倉貨品記錄。</div>`;
+                }
+            } catch (error) {
+                container.innerHTML = `<div class="no-data" style="color:#743133;">載入失敗，請稍後再試。</div>`;
+            }
+        }
+
+        async function submitConsolidation() {
+            const checkboxes = document.querySelectorAll('.item-checkbox:checked');
+            if (checkboxes.length === 0) {
+                alert("請至少勾選一件已到韓國倉的貨品！");
+                return;
+            }
+
+            const selectedIds = [];
+            const selectedNames = [];
+            checkboxes.forEach(cb => {
+                selectedIds.push(cb.value);
+                selectedNames.push(cb.getAttribute('data-name'));
+            });
+
+            const deliveryMethod = document.getElementById('deliveryMethodSelect').value;
+
+            if (!confirm(`確認將以下 ${selectedIds.length} 件貨品申請寄回香港？\n收貨方式：${deliveryMethod}`)) return;
 
             try {
                 const response = await fetch(GAS_URL, {
-                    method: "POST",
-                    mode: "cors",
+                    method: "POST", mode: "cors",
                     headers: { "Content-Type": "text/plain;charset=utf-8" },
                     body: JSON.stringify({
-                        action: "getShipments",
-                        phone: phone
+                        action: "submitConsolidation",
+                        phone: userPhone,
+                        itemIds: selectedIds,
+                        itemNames: selectedNames.join(", "),
+                        deliveryMethod: deliveryMethod
                     })
                 });
 
                 const result = await response.json();
-
-                if (result.status === "success" && result.data.length > 0) {
-                    let html = "";
-                    result.data.forEach(item => {
-                        let badgeClass = "warehouse";
-                        if (item.logisticsStatus.includes("空運") || item.logisticsStatus.includes("發貨")) badgeClass = "shipping";
-                        if (item.logisticsStatus.includes("抵港") || item.logisticsStatus.includes("自取") || item.logisticsStatus.includes("已簽收")) badgeClass = "arrived";
-
-                        html += `
-                            <div class="track-card">
-                                <div class="track-header">
-                                    <div class="track-id">集運單號：${item.shipmentID}</div>
-                                    <div><span class="badge ${badgeClass}">${item.logisticsStatus}</span></div>
-                                </div>
-                                <div class="track-body">
-                                    <div class="info-grid">
-                                        <div class="info-item">
-                                            <label>包含貨品 / 訂單</label>
-                                            <span>${item.includedOrders}</span>
-                                        </div>
-                                        <div class="info-item">
-                                            <label>包裹總重量</label>
-                                            <span>${item.totalWeight}</span>
-                                        </div>
-                                        <div class="info-item">
-                                            <label>國際運費</label>
-                                            <span style="color: #743133;">${item.shippingFee}</span>
-                                        </div>
-                                        <div class="info-item">
-                                            <label>收貨方式</label>
-                                            <span>${item.deliveryMethod} ${item.trackingNum ? '(' + item.trackingNum + ')' : ''}</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="timeline">
-                                        <div class="timeline-item completed">
-                                            <div class="timeline-dot"></div>
-                                            <div class="timeline-title">韓國工作室已簽收代收</div>
-                                            <div class="timeline-date">貨品已順利抵達韓國倉</div>
-                                        </div>
-                                        <div class="timeline-item ${item.logisticsStatus.includes('空運') || item.logisticsStatus.includes('抵港') || item.logisticsStatus.includes('完成') ? 'completed' : ''}">
-                                            <div class="timeline-dot"></div>
-                                            <div class="timeline-title">國際空運中（韓國 ➔ 香港）</div>
-                                            <div class="timeline-date">預計 3-5 個工作天抵港</div>
-                                        </div>
-                                        <div class="timeline-item ${item.logisticsStatus.includes('抵港') || item.logisticsStatus.includes('完成') ? 'completed' : ''}">
-                                            <div class="timeline-dot"></div>
-                                            <div class="timeline-title">貨品已抵港 / 安排派送或自取</div>
-                                            <div class="timeline-date">${item.deliveryMethod}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                    });
-                    container.innerHTML = html;
+                if (result.status === "success") {
+                    alert("申請成功！已通知店主。即將為您跳轉至【集運單及國際運費】頁面。");
+                    window.location.href = "consolidation.html";
                 } else {
-                    container.innerHTML = `<div class="no-data">目前尚無任何韓國倉及物流追蹤紀錄。</div>`;
+                    alert("申請失敗：" + result.message);
                 }
-
-            } catch (error) {
-                console.error("Error:", error);
-                container.innerHTML = `<div class="no-data" style="color: #743133;">載入物流資料失敗，請稍後再試。</div>`;
+            } catch (e) {
+                alert("伺服器錯誤，請稍後再試！");
             }
         }
 
