@@ -110,6 +110,14 @@
             fetchOrders(userData.phone);
         });
 
+        // 階梯收費計算邏輯
+        function getFeePerItem(totalQty) {
+            if (totalQty >= 20) return 3500;
+            if (totalQty >= 10) return 4000;
+            if (totalQty >= 5)  return 4500;
+            return 5000;
+        }
+
         async function fetchOrders(phone) {
             const container = document.getElementById('ordersContainer');
 
@@ -138,7 +146,7 @@
                                 exchangeRate: rate,
                                 totalQty: 0,
                                 paymentStatus: item.paymentStatus || '待付款',
-                                date: item.date || '最近',
+                                date: item.orderDate || '最近',
                                 items: []
                             };
                         }
@@ -151,7 +159,7 @@
                             itemName: item.itemName,
                             quantity: qty,
                             krwPrice: item.krwPrice || '0',
-                            processStatus: item.processStatus || '進行中'
+                            processStatus: item.processStatus || '待確認'
                         });
                     });
 
@@ -171,11 +179,13 @@
                             `;
                         });
 
-                        // 獨立顯示代購服務費行 (5,000 KRW/件)
-                        const totalFeeKrw = order.totalQty * 5000;
+                        // 階梯計算單價與總服務費
+                        const feePerItem = getFeePerItem(order.totalQty);
+                        const totalFeeKrw = order.totalQty * feePerItem;
+
                         itemsTableRows += `
                             <tr class="fee-row">
-                                <td data-label="貨品名稱">代購服務費 (₩ 5,000 / 件)</td>
+                                <td data-label="貨品名稱">代購服務費 (₩ ${feePerItem.toLocaleString()} / 件)</td>
                                 <td data-label="數量">${order.totalQty}</td>
                                 <td data-label="韓圜價錢">₩ ${totalFeeKrw.toLocaleString()}</td>
                                 <td data-label="狀態">已包含</td>
