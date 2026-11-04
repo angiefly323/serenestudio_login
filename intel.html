@@ -9,7 +9,6 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
         body { background-color: #f4f6f9; color: #333; display: flex; min-height: 100vh; overflow-x: hidden; }
         
-        /* 側邊欄 (Sidebar) */
         .sidebar { width: 250px; background-color: #ffffff; border-right: 1px solid #e5e7eb; position: fixed; height: 100%; z-index: 1000; transition: 0.3s; }
         .logo-area { background: #743133; padding: 20px; text-align: center; display: flex; justify-content: center; align-items: center; min-height: 120px; }
         .logo-area img { width: 90%; max-width: 180px; height: auto; }
@@ -19,21 +18,15 @@
         .menu-list li a:hover, .menu-list li.active a { background-color: #fdf8f8; color: #743133; border-right: 4px solid #743133; font-weight: 600; }
         .menu-list li.active a i { color: #743133; }
 
-        /* 主內容區 */
         .main-content { flex: 1; margin-left: 250px; transition: 0.3s; width: calc(100% - 250px); padding-bottom: 50px;}
         .topbar { background: #fff; padding: 15px 24px; display: flex; align-items: center; border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; z-index: 99; }
         .page-title { font-size: 18px; font-weight: 600; margin-left: 15px;}
         .content-area { padding: 24px; max-width: 1100px; margin: 0 auto; }
 
-        /* 區塊標題 */
         .section-title { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 700; color: #111; margin-bottom: 16px; margin-top: 10px; }
         .section-title i { color: #743133; }
 
-        /* =========================================
-           上半部：輪播情報區 (Carousel) 
-        ========================================= */
         .carousel-wrapper { position: relative; margin-bottom: 40px; display: flex; align-items: center; }
-        
         .carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: #fff; border: 1px solid #ddd; border-radius: 50%; width: 44px; height: 44px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer; z-index: 10; display: flex; justify-content: center; align-items: center; color: #743133; font-size: 18px; transition: 0.2s; }
         .carousel-btn:hover { background: #fdf8f8; border-color: #743133; transform: translateY(-50%) scale(1.05); }
         .left-btn { left: -22px; }
@@ -44,10 +37,8 @@
         
         .deal-card { flex: 0 0 calc(33.333% - 13.33px); scroll-snap-align: start; background: #fff; border-radius: 12px; border: 1px solid #eee; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.04); transition: transform 0.2s; position: relative; }
         .deal-card:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.08); }
-        
         .deal-badge { position: absolute; top: 12px; right: 12px; background: #e11d48; color: #fff; font-size: 14px; font-weight: 800; padding: 6px 12px; border-radius: 6px; box-shadow: 0 2px 8px rgba(225, 29, 72, 0.4); z-index: 10; }
         
-        /* 圖片/底色設定 */
         .deal-image { height: 120px; background: #f9f9f9; display: flex; justify-content: center; align-items: center; font-size: 26px; font-weight: 900; color: #ccc; border-bottom: 1px solid #eee; position: relative; overflow: hidden; text-align: center; line-height: 1.1;}
         .bg-tnf { background: linear-gradient(135deg, #111 0%, #333 100%); color: #fff; }
         .bg-musinsa { background: #000; color: #fff; }
@@ -65,11 +56,7 @@
         .btn-go { background: #743133; color: #fff; text-decoration: none; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; transition: 0.2s; white-space: nowrap; }
         .btn-go:hover { background: #5a2527; }
 
-        /* =========================================
-           下半部：A-Z 網購指南區 (Directory) 
-        ========================================= */
         .directory-container { background: #fff; border-radius: 12px; border: 1px solid #eee; padding: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
-        
         .cat-tabs { display: flex; gap: 10px; margin-bottom: 24px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none; }
         .cat-tabs::-webkit-scrollbar { display: none; }
         .cat-tab { padding: 8px 16px; background: #f4f6f9; color: #555; border-radius: 20px; font-size: 14px; font-weight: 600; cursor: pointer; border: 1px solid transparent; white-space: nowrap; transition: 0.2s; }
@@ -84,13 +71,9 @@
         .brand-info p { font-size: 12px; color: #666; }
         .brand-link { color: #743133; font-size: 13px; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 6px; }
         .brand-link:hover { text-decoration: underline; }
-        
         .empty-state { grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: #888; display: none; }
 
-        /* 手機版與平板適應 */
-        @media (max-width: 992px) {
-            .deal-card { flex: 0 0 calc(50% - 10px); }
-        }
+        @media (max-width: 992px) { .deal-card { flex: 0 0 calc(50% - 10px); } }
         @media (max-width: 768px) {
             .sidebar { transform: translateX(-250px); }
             .main-content { margin-left: 0; width: 100%; }
@@ -103,23 +86,13 @@
 </head>
 <body>
 
-    <!-- 側邊欄 -->
     <nav class="sidebar" id="sidebar">
-        <div class="logo-area">
-            <img src="Serenestudio_2.png" alt="Serene Studio Logo">
-        </div>
-        <ul class="menu-list">
-            <li><a href="dashboard.html"><i class="fa-solid fa-house"></i> 我的帳戶首頁</a></li>
-            <li><a href="orders.html"><i class="fa-solid fa-file-invoice-dollar"></i> 代購訂單紀錄</a></li>
-            <li><a href="tracking.html"><i class="fa-solid fa-box-open"></i> 韓國倉及物流追蹤</a></li>
-            <li><a href="consolidation.html"><i class="fa-solid fa-plane-departure"></i> 集運單及國際運費</a></li>
-            <li><a href="calculator.html"><i class="fa-solid fa-calculator"></i> 運費計算機</a></li>
-            <li class="active"><a href="intel.html"><i class="fa-solid fa-fire"></i> 韓國網購情報</a></li>
-            <li style="margin-top: 20px; border-top: 1px solid #eee;"><a href="index.html"><i class="fa-solid fa-arrow-right-from-bracket"></i> 登出帳戶</a></li>
+        <div class="logo-area"><img src="Serenestudio_2.png" alt="Logo"></div>
+        <ul class="menu-list" id="menuList">
+            <!-- JS 動態渲染選單 -->
         </ul>
     </nav>
 
-    <!-- 主內容區 -->
     <main class="main-content">
         <header class="topbar">
             <button class="toggle-btn" onclick="toggleSidebar()" style="background: none; border: none; font-size: 20px; cursor: pointer;"><i class="fa-solid fa-bars"></i></button>
@@ -127,8 +100,6 @@
         </header>
 
         <div class="content-area">
-            
-            <!-- 上半部：店主精選折扣情報 (輪播設計) -->
             <div class="section-title">
                 <i class="fa-solid fa-fire-flame-curved"></i> 期間限定！韓國最新折扣情報
             </div>
@@ -137,7 +108,6 @@
                 <button class="carousel-btn left-btn" onclick="scrollCarousel(-1)"><i class="fa-solid fa-chevron-left"></i></button>
                 
                 <div class="deals-carousel" id="dealsCarousel">
-                    <!-- 情報 1: TNF -->
                     <div class="deal-card">
                         <div class="deal-badge">30% OFF</div>
                         <div class="deal-image bg-tnf">THE NORTH FACE</div>
@@ -152,7 +122,6 @@
                         </div>
                     </div>
 
-                    <!-- 情報 2: Musinsa -->
                     <div class="deal-card">
                         <div class="deal-badge">10% OFF</div>
                         <div class="deal-image bg-musinsa">MUSINSA</div>
@@ -167,7 +136,6 @@
                         </div>
                     </div>
 
-                    <!-- 情報 3: Folder -->
                     <div class="deal-card">
                         <div class="deal-badge">20% OFF</div>
                         <div class="deal-image bg-folder">FOLDER</div>
@@ -182,7 +150,6 @@
                         </div>
                     </div>
 
-                    <!-- 情報 4: Olive Young -->
                     <div class="deal-card">
                         <div class="deal-badge">SALE</div>
                         <div class="deal-image bg-oy">OLIVE YOUNG</div>
@@ -197,7 +164,6 @@
                         </div>
                     </div>
 
-                    <!-- 情報 5: Aladin -->
                     <div class="deal-card">
                         <div class="deal-badge">特典</div>
                         <div class="deal-image bg-aladin">ALADIN (阿拉丁)</div>
@@ -212,7 +178,6 @@
                         </div>
                     </div>
 
-                    <!-- 情報 6: Ktown4u -->
                     <div class="deal-card">
                         <div class="deal-badge">免首重</div>
                         <div class="deal-image bg-ktown">Ktown4u</div>
@@ -231,14 +196,11 @@
                 <button class="carousel-btn right-btn" onclick="scrollCarousel(1)"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
 
-            <!-- 下半部：A-Z 網站指南 (已補充所有最新網站) -->
             <div class="section-title">
                 <i class="fa-solid fa-list-check"></i> 韓國熱門網購指南 (A-Z 排列)
             </div>
 
             <div class="directory-container">
-                
-                <!-- 篩選 Tabs -->
                 <div class="cat-tabs" id="categoryTabs">
                     <div class="cat-tab active" onclick="filterCategory('all')">全部分類</div>
                     <div class="cat-tab" onclick="filterCategory('apparel')">👕 潮流服飾</div>
@@ -248,9 +210,7 @@
                     <div class="cat-tab" onclick="filterCategory('lifestyle')">🎁 文創雜貨</div>
                 </div>
 
-                <!-- 品牌清單 (按 A-Z 完全排序) -->
                 <div class="brand-list" id="brandList">
-                    
                     <div class="brand-item" data-category="apparel">
                         <div class="brand-info"><h4>A-bly</h4><p>韓國超人氣女裝及時尚購物 App</p></div>
                         <a href="https://mobile.a-bly.com/" target="_blank" class="brand-link">前往網站 <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
@@ -366,34 +326,56 @@
                         <a href="https://www.10x10.co.kr/" target="_blank" class="brand-link">前往網站 <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                     </div>
 
-                    <!-- 空白狀態提示 -->
                     <div class="empty-state" id="emptyState">
                         <i class="fa-solid fa-box-open" style="font-size:32px; color:#ddd; margin-bottom:10px;"></i>
                         <p>此分類暫時未有推薦網站。</p>
                     </div>
                 </div>
             </div>
-
         </div>
     </main>
 
     <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            renderSidebar();
+        });
+
+        function renderSidebar() {
+            const userData = JSON.parse(localStorage.getItem('serene_user'));
+            const menu = document.getElementById('menuList');
+
+            if (userData && userData.phone) {
+                menu.innerHTML = `
+                    <li><a href="dashboard.html"><i class="fa-solid fa-house"></i> 我的帳戶首頁</a></li>
+                    <li><a href="profile.html"><i class="fa-solid fa-id-card"></i> 會員帳戶資料</a></li>
+                    <li><a href="guidelines.html"><i class="fa-solid fa-book-open"></i> 購物流程及須知</a></li>
+                    <li><a href="orders.html"><i class="fa-solid fa-file-invoice-dollar"></i> 代購訂單紀錄</a></li>
+                    <li><a href="tracking.html"><i class="fa-solid fa-box-open"></i> 韓國倉及物流追蹤</a></li>
+                    <li><a href="consolidation.html"><i class="fa-solid fa-plane-departure"></i> 集運單及國際運費</a></li>
+                    <li><a href="calculator.html"><i class="fa-solid fa-calculator"></i> 運費計算機</a></li>
+                    <li class="active"><a href="intel.html"><i class="fa-solid fa-fire"></i> 韓國網購情報</a></li>
+                    <li style="margin-top: 20px; border-top: 1px solid #eee;"><a href="index.html" onclick="localStorage.removeItem('serene_user')"><i class="fa-solid fa-arrow-right-from-bracket"></i> 登出帳戶</a></li>
+                `;
+            } else {
+                menu.innerHTML = `
+                    <li><a href="calculator.html"><i class="fa-solid fa-calculator"></i> 運費計算機</a></li>
+                    <li class="active"><a href="intel.html"><i class="fa-solid fa-fire"></i> 韓國網購情報</a></li>
+                    <li style="margin-top: 20px; border-top: 1px solid #eee;"><a href="index.html" style="color:#743133; font-weight:bold;"><i class="fa-solid fa-right-to-bracket"></i> 會員登入 / 註冊</a></li>
+                `;
+            }
+        }
+
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             sidebar.style.transform = sidebar.style.transform === 'translateX(0px)' ? 'translateX(-250px)' : 'translateX(0px)';
         }
 
-        // 輪播左右滑動邏輯 (Carousel)
         function scrollCarousel(direction) {
             const carousel = document.getElementById('dealsCarousel');
             const cardWidth = carousel.querySelector('.deal-card').offsetWidth + 20; 
-            carousel.scrollBy({
-                left: direction * cardWidth,
-                behavior: 'smooth'
-            });
+            carousel.scrollBy({ left: direction * cardWidth, behavior: 'smooth' });
         }
 
-        // A-Z 網購指南分類篩選
         function filterCategory(category) {
             const tabs = document.querySelectorAll('.cat-tab');
             tabs.forEach(tab => tab.classList.remove('active'));
@@ -413,11 +395,7 @@
             });
 
             const emptyState = document.getElementById('emptyState');
-            if (visibleCount === 0) {
-                emptyState.style.display = 'block';
-            } else {
-                emptyState.style.display = 'none';
-            }
+            emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
         }
     </script>
 </body>
