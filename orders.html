@@ -47,6 +47,9 @@
         .details-table th { text-align: left; padding: 10px; font-size: 13px; color: #666; border-bottom: 2px solid #ddd; }
         .details-table td { padding: 12px 10px; font-size: 14px; color: #333; border-bottom: 1px solid #eee; vertical-align: middle; }
 
+        .item-link { font-size: 12px; color: #2563eb; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; margin-top: 4px; font-weight: 600; }
+        .item-link:hover { text-decoration: underline; }
+
         .fee-row { background: #fffdf9; font-weight: 600; color: #743133; }
 
         .order-footer { text-align: right; padding-top: 16px; font-size: 15px; font-weight: 600; border-top: 2px solid #ddd; color: #333; }
@@ -110,7 +113,6 @@
             fetchOrders(userData.phone);
         });
 
-        // 階梯收費計算邏輯
         function getFeePerItem(totalQty) {
             if (totalQty >= 20) return 3500;
             if (totalQty >= 10) return 4000;
@@ -157,9 +159,10 @@
 
                         groupedOrders[orderID].items.push({
                             itemName: item.itemName,
+                            itemUrl: item.itemUrl || '',
                             quantity: qty,
                             krwPrice: item.krwPrice || '0',
-                            processStatus: item.processStatus || '待確認'
+                            localShippingKRW: item.localShippingKRW || '0'
                         });
                     });
 
@@ -169,17 +172,23 @@
                         
                         let itemsTableRows = "";
                         order.items.forEach(subItem => {
+                            const linkHtml = subItem.itemUrl 
+                                ? `<br><a href="${subItem.itemUrl}" target="_blank" class="item-link"><i class="fa-solid fa-link"></i> 前往商品連結</a>` 
+                                : '';
+
                             itemsTableRows += `
                                 <tr>
-                                    <td data-label="貨品名稱">${subItem.itemName}</td>
+                                    <td data-label="貨品名稱">
+                                        <strong>${subItem.itemName}</strong>
+                                        ${linkHtml}
+                                    </td>
                                     <td data-label="數量">${subItem.quantity}</td>
                                     <td data-label="韓圜價錢">₩ ${Number(subItem.krwPrice).toLocaleString()}</td>
-                                    <td data-label="狀態" style="color:#743133; font-weight:600;">${subItem.processStatus}</td>
+                                    <td data-label="韓國國內運費">₩ ${Number(subItem.localShippingKRW).toLocaleString()}</td>
                                 </tr>
                             `;
                         });
 
-                        // 階梯計算單價與總服務費
                         const feePerItem = getFeePerItem(order.totalQty);
                         const totalFeeKrw = order.totalQty * feePerItem;
 
@@ -188,7 +197,7 @@
                                 <td data-label="貨品名稱">代購服務費 (₩ ${feePerItem.toLocaleString()} / 件)</td>
                                 <td data-label="數量">${order.totalQty}</td>
                                 <td data-label="韓圜價錢">₩ ${totalFeeKrw.toLocaleString()}</td>
-                                <td data-label="狀態">已包含</td>
+                                <td data-label="韓國國內運費">₩ 0</td>
                             </tr>
                         `;
 
@@ -213,7 +222,7 @@
                                                 <th>貨品名稱</th>
                                                 <th>數量</th>
                                                 <th>韓圜價錢</th>
-                                                <th>狀態</th>
+                                                <th>韓國國內運費</th>
                                             </tr>
                                         </thead>
                                         <tbody>
