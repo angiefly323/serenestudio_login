@@ -63,7 +63,7 @@
         }
 
         /* 📦 代購訂單卡片列表 */
-        .orders-container { display: flex; flex-direction: column; gap: 16px; }
+        .orders-container { display: flex; flex-direction: column; gap: 20px; }
 
         .order-card {
             background: #ffffff;
@@ -82,36 +82,75 @@
 
         .order-card-header {
             display: flex; justify-content: space-between; align-items: center;
-            padding-bottom: 14px; margin-bottom: 14px;
+            padding-bottom: 14px; margin-bottom: 16px;
             border-bottom: 1px dashed rgba(0, 0, 0, 0.08);
         }
 
-        .order-id { font-size: 15px; font-weight: 800; color: #743133; letter-spacing: -0.01em; }
-        .order-date { font-size: 12.5px; color: #888; font-weight: 500; }
+        .order-id { font-size: 16px; font-weight: 800; color: #743133; letter-spacing: -0.01em; }
+        .order-date { font-size: 13px; color: #888; font-weight: 500; }
 
-        .order-card-body {
-            display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 16px; align-items: center;
+        /* 商品列表區域 (同一個 OrderID 包含多件商品) */
+        .order-items-list {
+            display: flex; flex-direction: column; gap: 12px; margin-bottom: 18px;
         }
 
-        .item-title { font-size: 15px; font-weight: 700; color: #222; margin-bottom: 6px; line-height: 1.4; }
-        .item-link { font-size: 12.5px; color: #743133; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
+        .order-item-row {
+            display: flex; justify-content: space-between; align-items: center;
+            background: #faf7f7; padding: 12px 16px; border-radius: 12px;
+        }
+
+        .item-main-info { flex: 1; padding-right: 12px; }
+        .item-name { font-size: 14.5px; font-weight: 700; color: #222; margin-bottom: 4px; }
+        .item-link { font-size: 12px; color: #743133; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
         .item-link:hover { text-decoration: underline; }
 
-        .price-details { text-align: right; }
-        .price-krw { font-size: 12px; color: #888; }
-        .price-hkd { font-size: 18px; font-weight: 800; color: #111; margin-top: 2px; }
+        .item-price-info { text-align: right; }
+        .item-krw { font-size: 12px; color: #888; }
+        .item-hkd { font-size: 15px; font-weight: 700; color: #111; }
 
-        .status-badge-group { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+        /* 底部總計與狀態列 */
+        .order-card-footer {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-top: 14px; border-top: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .status-badge-group { display: flex; gap: 8px; align-items: center; }
         
         .badge {
             display: inline-block; padding: 5px 12px; border-radius: 20px;
             font-size: 12px; font-weight: 700; text-align: center;
         }
         
-        /* 狀態標籤顏色 */
         .badge-paid { background: #dcfce7; color: #15803d; }
         .badge-unpaid { background: #fee2e2; color: #b91c1c; }
         .badge-process { background: #fef3c7; color: #b45309; }
+
+        .order-total-price { text-align: right; }
+        .total-label { font-size: 12px; color: #888; margin-bottom: 2px; }
+        .total-amount { font-size: 20px; font-weight: 800; color: #743133; }
+
+        /* 📄 分頁按鈕區域 (Pagination) */
+        .pagination-container {
+            display: flex; justify-content: center; align-items: center;
+            gap: 12px; margin-top: 32px;
+        }
+
+        .page-btn {
+            background: #ffffff; border: 1px solid rgba(116, 49, 51, 0.2);
+            color: #743133; padding: 8px 16px; border-radius: 10px;
+            font-size: 13px; font-weight: 700; cursor: pointer; transition: 0.2s;
+            display: flex; align-items: center; gap: 6px;
+        }
+
+        .page-btn:hover:not(:disabled) {
+            background: #743133; color: #fff;
+        }
+
+        .page-btn:disabled {
+            opacity: 0.4; cursor: not-allowed; border-color: #ddd; color: #999;
+        }
+
+        .page-info { font-size: 13.5px; font-weight: 600; color: #666; }
 
         .empty-box {
             text-align: center; padding: 60px 20px; background: #fff; border-radius: 20px;
@@ -161,9 +200,10 @@
             .topbar-logo { height: 32px; }
             .mobile-lang-tag { display: block; }
             .content-area { padding: 20px; }
-            .order-card-body { grid-template-columns: 1fr; gap: 12px; }
-            .price-details { text-align: left; }
-            .status-badge-group { align-items: flex-start; flex-direction: row; }
+            .order-item-row { flex-direction: column; align-items: flex-start; gap: 8px; }
+            .item-price-info { text-align: left; }
+            .order-card-footer { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .order-total-price { text-align: left; }
             .mobile-bottom-nav { display: flex; }
         }
     </style>
@@ -234,6 +274,17 @@
                 </div>
             </div>
 
+            <!-- 📄 分頁按鈕 Controls -->
+            <div class="pagination-container" id="paginationControls" style="display: none;">
+                <button class="page-btn" id="prevPageBtn" onclick="changePage(-1)">
+                    <i class="fa-solid fa-chevron-left"></i> <span data-zh="上一頁" data-en="Prev">上一頁</span>
+                </button>
+                <span class="page-info" id="pageInfoText">第 1 / 1 頁</span>
+                <button class="page-btn" id="nextPageBtn" onclick="changePage(1)">
+                    <span data-zh="下一頁" data-en="Next">下一頁</span> <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+
         </div>
     </main>
 
@@ -295,6 +346,10 @@
     <script>
         const GAS_URL = "https://script.google.com/macros/s/AKfycbyTpnxEfQ9B2ysDjq-H7C1N_1BqRcEZVL0nPBInlHoYKOFQVTP-QM13pLEq3d3opbdm/exec";
 
+        let groupedOrdersList = []; // 儲存合併後的訂單列表
+        let currentPage = 1;
+        const ORDERS_PER_PAGE = 5;  // 每頁顯示 5 張訂單
+
         window.addEventListener('DOMContentLoaded', () => {
             const userData = JSON.parse(localStorage.getItem('serene_user'));
 
@@ -304,11 +359,9 @@
                 return;
             }
 
-            // 初始化語言設定
             const savedLang = localStorage.getItem('serene_lang') || 'zh';
             switchLanguage(savedLang);
 
-            // 讀取真實訂單紀錄
             fetchOrders(userData.phone);
         });
 
@@ -321,55 +374,24 @@
                     method: "POST",
                     mode: "cors",
                     headers: { "Content-Type": "text/plain;charset=utf-8" },
-                    body: JSON.stringify({
-                        action: "getOrders",
-                        phone: phone
-                    })
+                    body: JSON.stringify({ action: "getOrders", phone: phone })
                 });
 
                 const result = await response.json();
 
                 if (result.status === "success" && result.data && result.data.length > 0) {
-                    container.innerHTML = ""; // 清空 Loading
-
-                    result.data.forEach(order => {
-                        const isPaid = order.paymentStatus === "已付款";
-                        const payBadgeClass = isPaid ? "badge-paid" : "badge-unpaid";
-                        
-                        const itemLinkHtml = order.itemUrl ? 
-                            `<a href="${order.itemUrl}" target="_blank" class="item-link"><i class="fa-solid fa-link"></i> ${currentLang === 'en' ? 'View Item Link' : '查看商品原連結'}</a>` : '';
-
-                        const card = `
-                            <div class="order-card">
-                                <div class="order-card-header">
-                                    <div class="order-id"># ${order.orderID}</div>
-                                    <div class="order-date"><i class="fa-regular fa-calendar"></i> ${order.orderDate}</div>
-                                </div>
-                                <div class="order-card-body">
-                                    <div>
-                                        <div class="item-title">${order.itemName} (x${order.quantity})</div>
-                                        ${itemLinkHtml}
-                                    </div>
-                                    <div class="price-details">
-                                        <div class="price-krw">₩ ${Number(order.krwPrice).toLocaleString()} KRW</div>
-                                        <div class="price-hkd">HK$ ${order.totalHKD}</div>
-                                    </div>
-                                    <div class="status-badge-group">
-                                        <span class="badge ${payBadgeClass}">${order.paymentStatus}</span>
-                                        <span class="badge badge-process">${order.processStatus}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                        container.innerHTML += card;
-                    });
+                    // 核心算法：依據 OrderID 將相同訂單合併
+                    groupedOrdersList = groupOrdersByOrderID(result.data);
+                    currentPage = 1;
+                    renderOrdersPage();
                 } else {
                     container.innerHTML = `
                         <div class="empty-box">
                             <i class="fa-solid fa-box-open"></i>
-                            <p data-zh="尚無代購訂單紀錄" data-en="No proxy orders found">${currentLang === 'en' ? 'No proxy orders found' : '尚無代購訂單紀錄'}</p>
+                            <p>${currentLang === 'en' ? 'No proxy orders found' : '尚無代購訂單紀錄'}</p>
                         </div>
                     `;
+                    document.getElementById('paginationControls').style.display = "none";
                 }
             } catch (err) {
                 console.error(err);
@@ -379,7 +401,121 @@
                         <p>${currentLang === 'en' ? 'Failed to load order data' : '無法讀取訂單資料，請稍後再試'}</p>
                     </div>
                 `;
+                document.getElementById('paginationControls').style.display = "none";
             }
+        }
+
+        // 依據 OrderID 整合資料
+        function groupOrdersByOrderID(rawOrders) {
+            const groups = {};
+            
+            rawOrders.forEach(item => {
+                const id = item.orderID;
+                if (!groups[id]) {
+                    groups[id] = {
+                        orderID: id,
+                        orderDate: item.orderDate,
+                        paymentStatus: item.paymentStatus,
+                        processStatus: item.processStatus,
+                        items: [],
+                        totalKrw: 0,
+                        totalHkd: 0
+                    };
+                }
+                groups[id].items.push(item);
+                groups[id].totalKrw += parseFloat(item.krwPrice || 0) * parseInt(item.quantity || 1);
+                groups[id].totalHkd += parseFloat(item.totalHKD || 0);
+            });
+
+            // 轉化為陣列並按訂單時間/單號倒序排序（最新的在最上面）
+            return Object.values(groups).reverse();
+        }
+
+        // 渲染指定頁碼的訂單卡片
+        function renderOrdersPage() {
+            const container = document.getElementById('ordersContainer');
+            const currentLang = localStorage.getItem('serene_lang') || 'zh';
+
+            const totalPages = Math.ceil(groupedOrdersList.length / ORDERS_PER_PAGE) || 1;
+            const startIndex = (currentPage - 1) * ORDERS_PER_PAGE;
+            const endIndex = startIndex + ORDERS_PER_PAGE;
+            const currentOrders = groupedOrdersList.slice(startIndex, endIndex);
+
+            container.innerHTML = "";
+
+            currentOrders.forEach(order => {
+                const isPaid = order.paymentStatus === "已付款";
+                const payBadgeClass = isPaid ? "badge-paid" : "badge-unpaid";
+
+                // 生成商品列表 HTML
+                let itemsHtml = "";
+                order.items.forEach(item => {
+                    const linkHtml = item.itemUrl ? 
+                        `<a href="${item.itemUrl}" target="_blank" class="item-link"><i class="fa-solid fa-link"></i> ${currentLang === 'en' ? 'Link' : '原連結'}</a>` : '';
+
+                    itemsHtml += `
+                        <div class="order-item-row">
+                            <div class="item-main-info">
+                                <div class="item-name">${item.itemName} <span style="color:#743133;">(x${item.quantity})</span></div>
+                                ${linkHtml}
+                            </div>
+                            <div class="item-price-info">
+                                <div class="item-krw">₩ ${Number(item.krwPrice).toLocaleString()} KRW</div>
+                                <div class="item-hkd">HK$ ${item.totalHKD}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                const cardHtml = `
+                    <div class="order-card">
+                        <div class="order-card-header">
+                            <div class="order-id"># ${order.orderID}</div>
+                            <div class="order-date"><i class="fa-regular fa-calendar"></i> ${order.orderDate}</div>
+                        </div>
+                        
+                        <div class="order-items-list">
+                            ${itemsHtml}
+                        </div>
+
+                        <div class="order-card-footer">
+                            <div class="status-badge-group">
+                                <span class="badge ${payBadgeClass}">${order.paymentStatus}</span>
+                                <span class="badge badge-process">${order.processStatus}</span>
+                            </div>
+                            <div class="order-total-price">
+                                <div class="total-label">${currentLang === 'en' ? 'Total Amount' : '訂單總金額'}</div>
+                                <div class="total-amount">HK$ ${order.totalHkd.toFixed(2)}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += cardHtml;
+            });
+
+            // 更新分頁按鈕狀態
+            const controls = document.getElementById('paginationControls');
+            if (groupedOrdersList.length > ORDERS_PER_PAGE) {
+                controls.style.display = "flex";
+                document.getElementById('pageInfoText').innerText = currentLang === 'en' ? 
+                    `Page ${currentPage} of ${totalPages}` : `第 ${currentPage} / ${totalPages} 頁`;
+                
+                document.getElementById('prevPageBtn').disabled = (currentPage === 1);
+                document.getElementById('nextPageBtn').disabled = (currentPage === totalPages);
+            } else {
+                controls.style.display = "none";
+            }
+        }
+
+        // 分頁切換函式
+        function changePage(direction) {
+            const totalPages = Math.ceil(groupedOrdersList.length / ORDERS_PER_PAGE);
+            currentPage += direction;
+            if (currentPage < 1) currentPage = 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+            
+            renderOrdersPage();
+            window.scrollTo({ top: 0, behavior: 'smooth' }); // 切換頁面時平滑回到頂部
         }
 
         /* 雙語切換邏輯 */
@@ -394,6 +530,10 @@
             document.querySelectorAll('[data-zh]').forEach(el => {
                 el.innerText = lang === 'en' ? el.getAttribute('data-en') : el.getAttribute('data-zh');
             });
+
+            if (groupedOrdersList.length > 0) {
+                renderOrdersPage(); // 切換語言時重新渲染
+            }
         }
 
         function toggleMobileLang() {
