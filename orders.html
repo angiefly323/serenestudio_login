@@ -55,101 +55,149 @@
             cursor: pointer; display: none;
         }
 
-        .content-area { padding: 32px; max-width: 950px; margin: 0 auto; }
+        .content-area { padding: 32px; max-width: 980px; margin: 0 auto; }
 
         .page-header-title {
             font-size: 20px; font-weight: 700; color: #111; margin-bottom: 24px;
             display: flex; align-items: center; justify-content: space-between;
         }
 
-        /* 📦 代購訂單卡片列表 */
-        .orders-container { display: flex; flex-direction: column; gap: 20px; }
+        /* 📦 摺疊面板 Accordion 卡片設計 */
+        .orders-container { display: flex; flex-direction: column; gap: 16px; }
 
-        .order-card {
+        .accordion-card {
             background: #ffffff;
-            border-radius: 18px;
+            border-radius: 16px;
             border: 1px solid rgba(0, 0, 0, 0.05);
-            padding: 24px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.02);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+            overflow: hidden;
             transition: all 0.25s ease;
         }
 
-        .order-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(116, 49, 51, 0.06);
+        .accordion-card:hover {
+            box-shadow: 0 8px 24px rgba(116, 49, 51, 0.06);
             border-color: rgba(116, 49, 51, 0.15);
         }
 
-        .order-card-header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding-bottom: 14px; margin-bottom: 16px;
-            border-bottom: 1px dashed rgba(0, 0, 0, 0.08);
+        /* 摺疊面板標頭 (未展開時顯示) */
+        .accordion-header {
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            user-select: none;
+            background: #ffffff;
+            transition: background 0.2s;
         }
 
-        .order-id { font-size: 16px; font-weight: 800; color: #743133; letter-spacing: -0.01em; }
-        .order-date { font-size: 13px; color: #888; font-weight: 500; }
-
-        /* 商品列表區域 (同一個 OrderID 包含多件商品) */
-        .order-items-list {
-            display: flex; flex-direction: column; gap: 12px; margin-bottom: 18px;
+        .accordion-header:hover {
+            background: #faf7f7;
         }
 
-        .order-item-row {
-            display: flex; justify-content: space-between; align-items: center;
-            background: #faf7f7; padding: 12px 16px; border-radius: 12px;
-        }
+        .header-left { display: flex; flex-direction: column; gap: 4px; }
+        .order-id-title { font-size: 16px; font-weight: 800; color: #111; letter-spacing: -0.01em; }
+        .order-date-sub { font-size: 13px; color: #777; font-weight: 500; }
 
-        .item-main-info { flex: 1; padding-right: 12px; }
-        .item-name { font-size: 14.5px; font-weight: 700; color: #222; margin-bottom: 4px; }
-        .item-link { font-size: 12px; color: #743133; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
-        .item-link:hover { text-decoration: underline; }
+        .header-center { font-size: 15px; font-weight: 800; color: #743133; }
 
-        .item-price-info { text-align: right; }
-        .item-krw { font-size: 12px; color: #888; }
-        .item-hkd { font-size: 15px; font-weight: 700; color: #111; }
+        .header-right { display: flex; align-items: center; gap: 16px; }
 
-        /* 底部總計與狀態列 */
-        .order-card-footer {
-            display: flex; justify-content: space-between; align-items: center;
-            padding-top: 14px; border-top: 1px solid rgba(0,0,0,0.05);
-        }
-
-        .status-badge-group { display: flex; gap: 8px; align-items: center; }
-        
+        /* 狀態標籤樣式 (參考原本配色) */
         .badge {
-            display: inline-block; padding: 5px 12px; border-radius: 20px;
-            font-size: 12px; font-weight: 700; text-align: center;
+            display: inline-block; padding: 6px 14px; border-radius: 20px;
+            font-size: 12.5px; font-weight: 700; text-align: center;
         }
-        
-        .badge-paid { background: #dcfce7; color: #15803d; }
-        .badge-unpaid { background: #fee2e2; color: #b91c1c; }
-        .badge-process { background: #fef3c7; color: #b45309; }
+        .badge-success { background: #dcfce7; color: #15803d; }
+        .badge-warning { background: #fef3c7; color: #b45309; }
+        .badge-danger { background: #fee2e2; color: #b91c1c; }
 
-        .order-total-price { text-align: right; }
-        .total-label { font-size: 12px; color: #888; margin-bottom: 2px; }
-        .total-amount { font-size: 20px; font-weight: 800; color: #743133; }
+        .chevron-icon {
+            font-size: 16px; color: #888; transition: transform 0.3s ease;
+        }
 
-        /* 📄 分頁按鈕區域 (Pagination) */
+        .accordion-card.active .chevron-icon {
+            transform: rotate(180deg);
+        }
+
+        /* 摺疊面板展開內容 */
+        .accordion-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s cubic-bezier(0, 1, 0, 1);
+            background: #ffffff;
+            border-top: 1px solid transparent;
+        }
+
+        .accordion-card.active .accordion-body {
+            max-height: 1500px; /* 足夠大的數值 */
+            transition: max-height 0.4s ease-in-out;
+            border-top: 1px solid #eee;
+        }
+
+        .body-inner {
+            padding: 24px;
+        }
+
+        /* 舊版表格重現樣式 */
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .items-table th {
+            text-align: left;
+            padding: 10px 12px;
+            color: #666;
+            font-weight: 600;
+            border-bottom: 1px solid #eee;
+        }
+
+        .items-table td {
+            padding: 16px 12px;
+            border-bottom: 1px solid #f4f4f4;
+            color: #333;
+            vertical-align: middle;
+        }
+
+        .item-name-cell { font-weight: 700; color: #222; }
+        .item-link-btn {
+            font-size: 12.5px; color: #743133; text-decoration: none; font-weight: 600;
+            display: inline-flex; align-items: center; gap: 4px; margin-top: 4px;
+        }
+        .item-link-btn:hover { text-decoration: underline; }
+
+        /* 舊版底部總金額列 */
+        .table-summary-row {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 2px solid #eee;
+            text-align: right;
+            font-size: 15px;
+            color: #333;
+        }
+
+        .summary-total-price {
+            font-size: 20px;
+            font-weight: 800;
+            color: #743133;
+            margin-left: 6px;
+        }
+
+        /* 📄 分頁控制 */
         .pagination-container {
             display: flex; justify-content: center; align-items: center;
             gap: 12px; margin-top: 32px;
         }
-
         .page-btn {
             background: #ffffff; border: 1px solid rgba(116, 49, 51, 0.2);
             color: #743133; padding: 8px 16px; border-radius: 10px;
             font-size: 13px; font-weight: 700; cursor: pointer; transition: 0.2s;
             display: flex; align-items: center; gap: 6px;
         }
-
-        .page-btn:hover:not(:disabled) {
-            background: #743133; color: #fff;
-        }
-
-        .page-btn:disabled {
-            opacity: 0.4; cursor: not-allowed; border-color: #ddd; color: #999;
-        }
-
+        .page-btn:hover:not(:disabled) { background: #743133; color: #fff; }
+        .page-btn:disabled { opacity: 0.4; cursor: not-allowed; border-color: #ddd; color: #999; }
         .page-info { font-size: 13.5px; font-weight: 600; color: #666; }
 
         .empty-box {
@@ -172,7 +220,6 @@
             color: #888; text-decoration: none; font-size: 11px; font-weight: 600; gap: 4px;
             width: 20%; background: none; border: none; cursor: pointer; transition: 0.2s;
         }
-
         .nav-item i { font-size: 18px; }
         .nav-item.active, .nav-item:hover { color: #743133; }
 
@@ -200,10 +247,9 @@
             .topbar-logo { height: 32px; }
             .mobile-lang-tag { display: block; }
             .content-area { padding: 20px; }
-            .order-item-row { flex-direction: column; align-items: flex-start; gap: 8px; }
-            .item-price-info { text-align: left; }
-            .order-card-footer { flex-direction: column; align-items: flex-start; gap: 12px; }
-            .order-total-price { text-align: left; }
+            .accordion-header { padding: 16px; flex-wrap: wrap; gap: 10px; }
+            .header-center { order: 3; width: 100%; margin-top: 4px; }
+            .items-table { display: block; overflow-x: auto; }
             .mobile-bottom-nav { display: flex; }
         }
     </style>
@@ -266,7 +312,7 @@
                 </div>
             </div>
 
-            <!-- 訂單卡片列表容器 -->
+            <!-- 訂單摺疊卡片容器 -->
             <div class="orders-container" id="ordersContainer">
                 <div class="empty-box">
                     <i class="fa-solid fa-spinner fa-spin"></i>
@@ -346,9 +392,9 @@
     <script>
         const GAS_URL = "https://script.google.com/macros/s/AKfycbyTpnxEfQ9B2ysDjq-H7C1N_1BqRcEZVL0nPBInlHoYKOFQVTP-QM13pLEq3d3opbdm/exec";
 
-        let groupedOrdersList = []; // 儲存合併後的訂單列表
+        let groupedOrdersList = [];
         let currentPage = 1;
-        const ORDERS_PER_PAGE = 5;  // 每頁顯示 5 張訂單
+        const ORDERS_PER_PAGE = 5;
 
         window.addEventListener('DOMContentLoaded', () => {
             const userData = JSON.parse(localStorage.getItem('serene_user'));
@@ -380,7 +426,6 @@
                 const result = await response.json();
 
                 if (result.status === "success" && result.data && result.data.length > 0) {
-                    // 核心算法：依據 OrderID 將相同訂單合併
                     groupedOrdersList = groupOrdersByOrderID(result.data);
                     currentPage = 1;
                     renderOrdersPage();
@@ -417,21 +462,19 @@
                         orderDate: item.orderDate,
                         paymentStatus: item.paymentStatus,
                         processStatus: item.processStatus,
+                        exchangeRate: item.exchangeRate || 165,
                         items: [],
-                        totalKrw: 0,
                         totalHkd: 0
                     };
                 }
                 groups[id].items.push(item);
-                groups[id].totalKrw += parseFloat(item.krwPrice || 0) * parseInt(item.quantity || 1);
                 groups[id].totalHkd += parseFloat(item.totalHKD || 0);
             });
 
-            // 轉化為陣列並按訂單時間/單號倒序排序（最新的在最上面）
             return Object.values(groups).reverse();
         }
 
-        // 渲染指定頁碼的訂單卡片
+        // 渲染手風琴卡片
         function renderOrdersPage() {
             const container = document.getElementById('ordersContainer');
             const currentLang = localStorage.getItem('serene_lang') || 'zh';
@@ -443,57 +486,78 @@
 
             container.innerHTML = "";
 
-            currentOrders.forEach(order => {
-                const isPaid = order.paymentStatus === "已付款";
-                const payBadgeClass = isPaid ? "badge-paid" : "badge-unpaid";
+            currentOrders.forEach((order, index) => {
+                // 自動決定 Status 標籤樣式 (參考舊版)
+                let badgeClass = "badge-warning";
+                if (order.processStatus.includes("確認") || order.paymentStatus === "已付款") badgeClass = "badge-success";
+                if (order.processStatus.includes("待付") || order.paymentStatus === "未付款") badgeClass = "badge-warning";
 
-                // 生成商品列表 HTML
-                let itemsHtml = "";
+                // 舊版表格列生成的邏輯
+                let tableRowsHtml = "";
                 order.items.forEach(item => {
-                    const linkHtml = item.itemUrl ? 
-                        `<a href="${item.itemUrl}" target="_blank" class="item-link"><i class="fa-solid fa-link"></i> ${currentLang === 'en' ? 'Link' : '原連結'}</a>` : '';
+                    const linkBtnHtml = item.itemUrl ? 
+                        `<br><a href="${item.itemUrl}" target="_blank" class="item-link-btn"><i class="fa-solid fa-link"></i> ${currentLang === 'en' ? 'Link' : '前往商品連結'}</a>` : '';
 
-                    itemsHtml += `
-                        <div class="order-item-row">
-                            <div class="item-main-info">
-                                <div class="item-name">${item.itemName} <span style="color:#743133;">(x${item.quantity})</span></div>
-                                ${linkHtml}
-                            </div>
-                            <div class="item-price-info">
-                                <div class="item-krw">₩ ${Number(item.krwPrice).toLocaleString()} KRW</div>
-                                <div class="item-hkd">HK$ ${item.totalHKD}</div>
-                            </div>
-                        </div>
+                    tableRowsHtml += `
+                        <tr>
+                            <td class="item-name-cell">${item.itemName}${linkBtnHtml}</td>
+                            <td>${item.quantity}</td>
+                            <td>₩ ${Number(item.krwPrice).toLocaleString()}</td>
+                            <td>₩ ${Number(item.proxyFee || 5000).toLocaleString()}</td>
+                            <td>₩ ${Number(item.localShippingKRW || 0).toLocaleString()}</td>
+                        </tr>
                     `;
                 });
 
-                const cardHtml = `
-                    <div class="order-card">
-                        <div class="order-card-header">
-                            <div class="order-id"># ${order.orderID}</div>
-                            <div class="order-date"><i class="fa-regular fa-calendar"></i> ${order.orderDate}</div>
-                        </div>
-                        
-                        <div class="order-items-list">
-                            ${itemsHtml}
+                const accordionHtml = `
+                    <div class="accordion-card" id="card-${index}">
+                        <!-- Header 預覽列 (未展開前) -->
+                        <div class="accordion-header" onclick="toggleAccordion(${index})">
+                            <div class="header-left">
+                                <div class="order-id-title">${currentLang === 'en' ? 'Order' : '單號'} #${order.orderID}</div>
+                                <div class="order-date-sub">${currentLang === 'en' ? 'Date:' : '購買日期:'} ${order.orderDate}</div>
+                            </div>
+
+                            <div class="header-center">
+                                ${currentLang === 'en' ? 'Total:' : '總金額:'} HK$ ${order.totalHkd.toFixed(2)}
+                            </div>
+
+                            <div class="header-right">
+                                <span class="badge ${badgeClass}">${order.processStatus || order.paymentStatus}</span>
+                                <i class="fa-solid fa-chevron-down chevron-icon"></i>
+                            </div>
                         </div>
 
-                        <div class="order-card-footer">
-                            <div class="status-badge-group">
-                                <span class="badge ${payBadgeClass}">${order.paymentStatus}</span>
-                                <span class="badge badge-process">${order.processStatus}</span>
-                            </div>
-                            <div class="order-total-price">
-                                <div class="total-label">${currentLang === 'en' ? 'Total Amount' : '訂單總金額'}</div>
-                                <div class="total-amount">HK$ ${order.totalHkd.toFixed(2)}</div>
+                        <!-- Body 展開細節 (舊版經典設計) -->
+                        <div class="accordion-body">
+                            <div class="body-inner">
+                                <table class="items-table">
+                                    <thead>
+                                        <tr>
+                                            <th>${currentLang === 'en' ? 'Item Name' : '貨品名稱'}</th>
+                                            <th>${currentLang === 'en' ? 'Qty' : '數量'}</th>
+                                            <th>${currentLang === 'en' ? 'KRW Price' : '韓國價錢'}</th>
+                                            <th>${currentLang === 'en' ? 'Proxy Fee' : '代購費'}</th>
+                                            <th>${currentLang === 'en' ? 'KR Shipping' : '韓國國內運費'}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${tableRowsHtml}
+                                    </tbody>
+                                </table>
+
+                                <div class="table-summary-row">
+                                    <span>${currentLang === 'en' ? `Total Amount (Rate ${order.exchangeRate}):` : `訂單總數 (匯率 ${order.exchangeRate}計算):`}</span>
+                                    <span class="summary-total-price">HK$ ${order.totalHkd.toFixed(2)}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 `;
-                container.innerHTML += cardHtml;
+                container.innerHTML += accordionHtml;
             });
 
-            // 更新分頁按鈕狀態
+            // 更新分頁 Controls
             const controls = document.getElementById('paginationControls');
             if (groupedOrdersList.length > ORDERS_PER_PAGE) {
                 controls.style.display = "flex";
@@ -507,7 +571,12 @@
             }
         }
 
-        // 分頁切換函式
+        // 開啟 / 收起手風琴
+        function toggleAccordion(index) {
+            const card = document.getElementById(`card-${index}`);
+            card.classList.toggle('active');
+        }
+
         function changePage(direction) {
             const totalPages = Math.ceil(groupedOrdersList.length / ORDERS_PER_PAGE);
             currentPage += direction;
@@ -515,7 +584,7 @@
             if (currentPage > totalPages) currentPage = totalPages;
             
             renderOrdersPage();
-            window.scrollTo({ top: 0, behavior: 'smooth' }); // 切換頁面時平滑回到頂部
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         /* 雙語切換邏輯 */
@@ -532,7 +601,7 @@
             });
 
             if (groupedOrdersList.length > 0) {
-                renderOrdersPage(); // 切換語言時重新渲染
+                renderOrdersPage();
             }
         }
 
