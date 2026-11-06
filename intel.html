@@ -10,9 +10,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         body { background-color: #faf7f7; color: #333; display: flex; min-height: 100vh; overflow-x: hidden; }
         
-        /* =========================================
-           電腦版側邊欄 (Desktop Sidebar)
-        ========================================= */
+        /* 電腦版側邊欄 */
         .sidebar { width: 250px; background-color: #ffffff; border-right: 1px solid rgba(0,0,0,0.05); position: fixed; height: 100%; z-index: 1000; transition: 0.3s ease; display: flex; flex-direction: column; }
         .logo-area { background: linear-gradient(135deg, #743133 0%, #522223 100%); padding: 24px; text-align: center; display: flex; justify-content: center; align-items: center; min-height: 100px; }
         .logo-area img { width: 85%; max-width: 160px; height: auto; filter: brightness(0) invert(1); }
@@ -37,7 +35,6 @@
         /* 主內容區 */
         .main-content { flex: 1; margin-left: 250px; transition: 0.3s; width: calc(100% - 250px); padding-bottom: 80px; }
         
-        /* 🍷 TOPBAR */
         .topbar { 
             background: linear-gradient(135deg, #743133 0%, #522223 100%); 
             padding: 16px 24px; 
@@ -56,14 +53,10 @@
         }
 
         .content-area { padding: 32px; max-width: 1100px; margin: 0 auto; }
-
-        /* 區塊標題 */
         .section-title { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 800; color: #111; margin-bottom: 18px; margin-top: 10px; }
         .section-title i { color: #743133; }
 
-        /* =========================================
-           上半部：輪播情報區 (Carousel) 
-        ========================================= */
+        /* 上半部：輪播區 */
         .carousel-wrapper { position: relative; margin-bottom: 40px; display: flex; align-items: center; }
         
         .carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: #fff; border: 1px solid #ddd; border-radius: 50%; width: 44px; height: 44px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer; z-index: 10; display: flex; justify-content: center; align-items: center; color: #743133; font-size: 18px; transition: 0.2s; }
@@ -97,9 +90,7 @@
         .btn-go { background: #743133; color: #fff; text-decoration: none; padding: 8px 16px; border-radius: 10px; font-size: 13px; font-weight: 700; transition: 0.2s; white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; }
         .btn-go:hover { background: #5a2527; }
 
-        /* =========================================
-           下半部：A-Z 網購指南區 (Directory) 
-        ========================================= */
+        /* 下半部：Directory A-Z 指南 */
         .directory-container { background: #fff; border-radius: 20px; border: 1px solid rgba(0,0,0,0.05); padding: 28px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
         
         .cat-tabs { display: flex; gap: 10px; margin-bottom: 24px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: none; }
@@ -119,7 +110,7 @@
         
         .empty-state { grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: #888; display: none; }
 
-        /* 📱 手機版 Bottom Navigation Bar */
+        /* 手機版 Bottom Nav */
         .mobile-bottom-nav {
             display: none; position: fixed; bottom: 0; left: 0; right: 0;
             height: 65px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px);
@@ -137,7 +128,6 @@
         .nav-item i { font-size: 18px; }
         .nav-item.active, .nav-item:hover { color: #743133; }
 
-        /* Pop-up List 選單 */
         .popup-overlay {
             display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 1001; opacity: 0; transition: opacity 0.25s ease;
@@ -223,7 +213,7 @@
 
         <div class="content-area">
             
-            <!-- 上半部：店主精選折扣情報 (輪播設計 6 張卡) -->
+            <!-- 上半部：輪播 -->
             <div class="section-title">
                 <i class="fa-solid fa-fire-flame-curved"></i>
                 <span data-zh="期間限定！韓國最新折扣情報" data-en="Limited Time Deals & Promotions">期間限定！韓國最新折扣情報</span>
@@ -233,7 +223,6 @@
                 <button class="carousel-btn left-btn" onclick="scrollCarousel(-1)"><i class="fa-solid fa-chevron-left"></i></button>
                 
                 <div class="deals-carousel" id="dealsCarousel">
-                    <!-- 情報 1: TNF -->
                     <div class="deal-card">
                         <div class="deal-badge">30% OFF</div>
                         <div class="deal-image bg-tnf">THE NORTH FACE</div>
@@ -248,7 +237,6 @@
                         </div>
                     </div>
 
-                    <!-- 情報 2: Musinsa -->
                     <div class="deal-card">
                         <div class="deal-badge">10% OFF</div>
                         <div class="deal-image bg-musinsa">MUSINSA</div>
@@ -263,7 +251,6 @@
                         </div>
                     </div>
 
-                    <!-- 情報 3: Folder -->
                     <div class="deal-card">
                         <div class="deal-badge">20% OFF</div>
                         <div class="deal-image bg-folder">FOLDER</div>
@@ -278,7 +265,6 @@
                         </div>
                     </div>
 
-                    <!-- 情報 4: Olive Young -->
                     <div class="deal-card">
                         <div class="deal-badge">SALE</div>
                         <div class="deal-image bg-oy">OLIVE YOUNG</div>
@@ -293,7 +279,6 @@
                         </div>
                     </div>
 
-                    <!-- 情報 5: Aladin -->
                     <div class="deal-card">
                         <div class="deal-badge">特典</div>
                         <div class="deal-image bg-aladin">ALADIN (阿拉丁)</div>
@@ -308,7 +293,6 @@
                         </div>
                     </div>
 
-                    <!-- 情報 6: Ktown4u -->
                     <div class="deal-card">
                         <div class="deal-badge">免首重</div>
                         <div class="deal-image bg-ktown">Ktown4u</div>
@@ -327,15 +311,13 @@
                 <button class="carousel-btn right-btn" onclick="scrollCarousel(1)"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
 
-            <!-- 下半部：A-Z 網站指南 (已新增🐶寵物用品分類) -->
+            <!-- 下半部：A-Z 指南 (新增寵物用品) -->
             <div class="section-title">
                 <i class="fa-solid fa-list-check"></i>
                 <span data-zh="韓國熱門網購指南 (A-Z 排列)" data-en="Korea Shopping Directory (A-Z)">韓國熱門網購指南 (A-Z 排列)</span>
             </div>
 
             <div class="directory-container">
-                
-                <!-- 篩選 Tabs (新增🐶寵物用品) -->
                 <div class="cat-tabs" id="categoryTabs">
                     <div class="cat-tab active" onclick="filterCategory('all')" data-zh="全部分類" data-en="All Categories">全部分類</div>
                     <div class="cat-tab" onclick="filterCategory('apparel')" data-zh="👕 潮流服飾" data-en="👕 Fashion">👕 潮流服飾</div>
@@ -345,9 +327,7 @@
                     <div class="cat-tab" onclick="filterCategory('pet')" data-zh="🐶 寵物用品" data-en="🐶 Pet Supplies">🐶 寵物用品</div>
                 </div>
 
-                <!-- 品牌清單 -->
                 <div class="brand-list" id="brandList">
-                    
                     <div class="brand-item" data-category="shoes">
                         <div class="brand-info"><h4>ABC-Mart (Korea)</h4><p data-zh="綜合運動鞋履連鎖店" data-en="Multi-brand sneakers & footwear">綜合運動鞋履連鎖店</p></div>
                         <a href="https://abcmart.a-rt.com/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
@@ -358,13 +338,13 @@
                         <a href="https://www.aladin.co.kr/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                     </div>
 
-                    <!-- 🐾 新增寵物用品 1: BITE ME -->
+                    <!-- 🐶 寵物用品 1 -->
                     <div class="brand-item" data-category="pet">
                         <div class="brand-info"><h4>BITE ME (바이트미)</h4><p data-zh="韓國超人氣萌寵玩具、零食與日常用品" data-en="Cute pet toys, treats & accessories">韓國超人氣萌寵玩具、零食與日常用品</p></div>
                         <a href="https://biteme.co.kr/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                     </div>
 
-                    <!-- 🐾 新增寵物用品 2: Bridge.Dog -->
+                    <!-- 🐶 寵物用品 2 -->
                     <div class="brand-item" data-category="pet">
                         <div class="brand-info"><h4>Bridge.Dog (브릿지독)</h4><p data-zh="極簡美學韓系寵物陶瓷慢食碗與餐具" data-en="Minimalist pet ceramic bowls & tableware">極簡美學韓系寵物陶瓷慢食碗與餐具</p></div>
                         <a href="https://bridgedog.co.kr/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
@@ -375,13 +355,13 @@
                         <a href="https://folderstyle.com/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                     </div>
 
-                    <!-- 🐾 新增寵物用品 3: HarrySpet -->
+                    <!-- 🐶 寵物用品 3 -->
                     <div class="brand-item" data-category="pet">
                         <div class="brand-info"><h4>HarrySpet (해리스펫)</h4><p data-zh="韓國頂級寵物推車車墊、護枕及配件專賣" data-en="Premium pet stroller cushions & accessories">韓國頂級寵物推車車墊、護枕及配件專賣</p></div>
                         <a href="https://harryspet.com/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                     </div>
 
-                    <!-- 🐾 新增寵物用品 4: It's Dog -->
+                    <!-- 🐶 寵物用品 4 -->
                     <div class="brand-item" data-category="pet">
                         <div class="brand-info"><h4>It's Dog (잇츠독)</h4><p data-zh="韓系精緻狗狗時尚服飾、保暖衣與外出配件" data-en="Stylish pet apparel & cozy wear">韓系精緻狗狗時尚服飾、保暖衣與外出配件</p></div>
                         <a href="https://itsdog.com/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
@@ -402,7 +382,7 @@
                         <a href="https://www.oliveyoung.co.kr/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                     </div>
 
-                    <!-- 🐾 新增寵物用品 5: OWWW Studio -->
+                    <!-- 🐶 寵物用品 5 -->
                     <div class="brand-item" data-category="pet">
                         <div class="brand-info"><h4>OWWW Studio (아우스튜디오)</h4><p data-zh="韓系質感手作狗狗童裝風衣服與質感選品" data-en="Korean boutique handmade pet clothing">韓系質感手作狗狗童裝風衣服與質感選品</p></div>
                         <a href="https://owww.kr/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
@@ -414,7 +394,7 @@
                     </div>
 
                     <div class="brand-item" data-category="apparel">
-                        <div class="brand-info"><h4>SPAO</h4><p data-zh="韓國平價國民服飾品牌" data-en="Korean trendy casual wear">韓國平價國民服飾品牌</p></div>
+                        <div class="brand-info"><h4>SPAO</h4><p data-zh="韓國平價國民服飾品牌" data-en="Korean trendy casual wear">韓國平價國民服饰品牌</p></div>
                         <a href="https://spao.com/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                     </div>
 
@@ -428,7 +408,6 @@
                         <a href="https://weverseshop.io/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                     </div>
 
-                    <!-- 空白狀態提示 -->
                     <div class="empty-state" id="emptyState">
                         <i class="fa-solid fa-box-open" style="font-size:32px; color:#ddd; margin-bottom:10px;"></i>
                         <p data-zh="此分類暫時未有推薦網站。" data-en="No sites available in this category yet.">此分類暫時未有推薦網站。</p>
@@ -439,7 +418,7 @@
         </div>
     </main>
 
-    <!-- 📱 手機專屬 Bottom Navigation Bar -->
+    <!-- 手機版 Bottom Nav -->
     <nav class="mobile-bottom-nav">
         <a href="dashboard.html" class="nav-item">
             <i class="fa-solid fa-house"></i>
@@ -467,29 +446,14 @@
         </a>
     </nav>
 
-    <!-- 💬 Pop-up List -->
+    <!-- Pop-up List -->
     <div class="popup-overlay" id="popupOverlay" onclick="closeOrderPopup()">
         <div class="popup-menu" onclick="event.stopPropagation();">
             <div class="popup-header" data-zh="請選擇訂單管理項目" data-en="Select Order Category">請選擇訂單管理項目</div>
             <ul class="popup-list">
-                <li>
-                    <a href="orders.html">
-                        <i class="fa-solid fa-file-invoice-dollar"></i>
-                        <span data-zh="代購訂單紀錄" data-en="Proxy Orders History">代購訂單紀錄</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="tracking.html">
-                        <i class="fa-solid fa-box-open"></i>
-                        <span data-zh="韓國物流追蹤" data-en="KR Warehouse Inventory">韓國物流追蹤</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="consolidation.html">
-                        <i class="fa-solid fa-plane-departure"></i>
-                        <span data-zh="集運單及國際運費" data-en="Consolidation Requests">集運單及國際運費</span>
-                    </a>
-                </li>
+                <li><a href="orders.html"><i class="fa-solid fa-file-invoice-dollar"></i> <span data-zh="代購訂單紀錄" data-en="Proxy Orders History">代購訂單紀錄</span></a></li>
+                <li><a href="tracking.html"><i class="fa-solid fa-box-open"></i> <span data-zh="韓國物流追蹤" data-en="KR Warehouse Inventory">韓國物流追蹤</span></a></li>
+                <li><a href="consolidation.html"><i class="fa-solid fa-plane-departure"></i> <span data-zh="集運單及國際運費" data-en="Consolidation Requests">集運單及國際運費</span></a></li>
             </ul>
         </div>
     </div>
@@ -500,17 +464,12 @@
             switchLanguage(savedLang);
         });
 
-        // 輪播左右滑動邏輯 (Carousel)
         function scrollCarousel(direction) {
             const carousel = document.getElementById('dealsCarousel');
             const cardWidth = carousel.querySelector('.deal-card').offsetWidth + 20; 
-            carousel.scrollBy({
-                left: direction * cardWidth,
-                behavior: 'smooth'
-            });
+            carousel.scrollBy({ left: direction * cardWidth, behavior: 'smooth' });
         }
 
-        // A-Z 網購指南分類篩選 (包含寵物用品)
         function filterCategory(category) {
             const tabs = document.querySelectorAll('.cat-tab');
             tabs.forEach(tab => tab.classList.remove('active'));
@@ -530,14 +489,9 @@
             });
 
             const emptyState = document.getElementById('emptyState');
-            if (visibleCount === 0) {
-                emptyState.style.display = 'block';
-            } else {
-                emptyState.style.display = 'none';
-            }
+            emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
         }
 
-        /* 雙語切換邏輯 */
         function switchLanguage(lang) {
             localStorage.setItem('serene_lang', lang);
             document.documentElement.lang = lang === 'en' ? 'en' : 'zh-HK';
