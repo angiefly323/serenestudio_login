@@ -3,209 +3,443 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Serene Studio - 會員帳戶資料</title>
+    <title>Serene Studio - 會員帳戶資料 / Profile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-        body { background-color: #f4f6f9; color: #333; display: flex; min-height: 100vh; overflow-x: hidden; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: #faf7f7; color: #333; display: flex; min-height: 100vh; overflow-x: hidden; }
         
-        /* 側邊欄 (Sidebar) - 已加入所有 8 個選單 */
-        .sidebar { width: 250px; background-color: #ffffff; border-right: 1px solid #e5e7eb; position: fixed; height: 100%; z-index: 1000; transition: 0.3s; }
-        .logo-area { background: #743133; padding: 20px; text-align: center; display: flex; justify-content: center; align-items: center; min-height: 120px; }
-        .logo-area img { width: 90%; max-width: 180px; height: auto; }
-        .menu-list { list-style: none; padding: 10px 0; }
-        .menu-list li a { display: flex; align-items: center; padding: 12px 24px; color: #4b5563; text-decoration: none; font-size: 15px; transition: 0.2s; }
-        .menu-list li a i { width: 24px; font-size: 16px; margin-right: 10px; color: #9ca3af; }
-        .menu-list li a:hover, .menu-list li.active a { background-color: #fdf8f8; color: #743133; border-right: 4px solid #743133; font-weight: 600; }
+        /* =========================================
+           電腦版側邊欄 (Desktop Sidebar)
+        ========================================= */
+        .sidebar { width: 250px; background-color: #ffffff; border-right: 1px solid rgba(0,0,0,0.05); position: fixed; height: 100%; z-index: 1000; transition: 0.3s ease; display: flex; flex-direction: column; }
+        .logo-area { background: linear-gradient(135deg, #743133 0%, #522223 100%); padding: 24px; text-align: center; display: flex; justify-content: center; align-items: center; min-height: 100px; }
+        .logo-area img { width: 85%; max-width: 160px; height: auto; filter: brightness(0) invert(1); }
+
+        .menu-wrapper { flex: 1; overflow-y: auto; padding: 16px 10px; }
+        .menu-section-title { font-size: 11px; font-weight: 700; color: #a0a0a0; text-transform: uppercase; letter-spacing: 0.8px; padding: 14px 16px 6px 16px; }
+
+        .menu-list { list-style: none; margin-bottom: 8px; }
+        .menu-list li { margin-bottom: 2px; }
+        .menu-list li a { display: flex; align-items: center; padding: 11px 16px; color: #444; text-decoration: none; font-size: 14px; border-radius: 10px; font-weight: 500; transition: all 0.2s ease; }
+        .menu-list li a i { width: 22px; font-size: 16px; margin-right: 10px; color: #a0a0a0; }
+        .menu-list li a:hover { background-color: #f8f3f3; color: #743133; }
+        .menu-list li a:hover i { color: #743133; }
+        .menu-list li.active a { background-color: #fdf2f2; color: #743133; font-weight: 700; }
         .menu-list li.active a i { color: #743133; }
 
+        .sidebar-footer { padding: 16px; border-top: 1px solid rgba(0,0,0,0.05); background: #fff; }
+        .lang-switch-desktop { display: flex; background: #faf7f7; padding: 3px; border-radius: 10px; border: 1px solid rgba(116,49,51,0.1); margin-bottom: 10px; }
+        .lang-btn-dt { flex: 1; border: none; background: none; padding: 6px; font-size: 12px; font-weight: 600; color: #777; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+        .lang-btn-dt.active { background: #ffffff; color: #743133; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+
         /* 主內容區 */
-        .main-content { flex: 1; margin-left: 250px; transition: 0.3s; width: calc(100% - 250px); padding-bottom: 50px;}
-        .topbar { background: #fff; padding: 15px 24px; display: flex; align-items: center; border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; z-index: 99; }
-        .page-title { font-size: 18px; font-weight: 600; margin-left: 15px;}
-        .content-area { padding: 24px; max-width: 900px; margin: 0 auto; }
-
-        /* 卡片設計 */
-        .card { background: #fff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid #eee; margin-bottom: 30px; overflow: hidden; }
-        .card-header { background: #fdf8f8; color: #743133; padding: 16px 24px; font-size: 16px; font-weight: 700; border-bottom: 1px solid #f0d5d6; display: flex; align-items: center; gap: 10px; }
-        .card-body { padding: 24px; }
-
-        /* 會員數據區 (Stats) */
-        .stats-container { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
-        .tier-badge { background: linear-gradient(135deg, #743133 0%, #a34649 100%); color: #fff; width: 100px; height: 100px; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 4px 12px rgba(116,49,51,0.2); flex-shrink: 0; }
-        .tier-badge i { font-size: 28px; margin-bottom: 6px; color: #fde68a; }
-        .tier-badge span { font-size: 13px; font-weight: 700; letter-spacing: 1px; }
-
-        .stats-info { flex: 1; min-width: 250px; }
-        .stats-title { font-size: 20px; font-weight: 700; color: #111; margin-bottom: 8px; }
-        .stats-desc { font-size: 14px; color: #666; margin-bottom: 16px; }
-        .highlight-num { color: #743133; font-weight: bold; font-size: 18px; }
+        .main-content { flex: 1; margin-left: 250px; transition: 0.3s; width: calc(100% - 250px); padding-bottom: 60px; }
         
-        /* 進度條 */
-        .progress-bar-bg { background: #eee; height: 8px; border-radius: 10px; width: 100%; overflow: hidden; margin-bottom: 8px; }
-        .progress-bar-fill { background: #743133; height: 100%; border-radius: 10px; width: 80%; /* 模擬 8/10 次 */ transition: 1s; }
-        .progress-text { font-size: 12px; color: #888; text-align: right; }
+        /* 🍷 TOPBAR */
+        .topbar { 
+            background: linear-gradient(135deg, #743133 0%, #522223 100%); 
+            padding: 16px 24px; 
+            display: flex; align-items: center; justify-content: center; 
+            position: sticky; top: 0; z-index: 99; 
+            box-shadow: 0 4px 15px rgba(116, 49, 51, 0.15);
+        }
+        .topbar-logo { height: 38px; width: auto; filter: brightness(0) invert(1); }
 
-        /* 表單設計 */
-        .form-group { margin-bottom: 20px; max-width: 500px; }
-        .form-group label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; color: #444; }
-        
-        /* 一般輸入框 */
-        .input-field { width: 100%; padding: 12px 16px; font-size: 14px; border: 1px solid #ddd; border-radius: 8px; outline: none; transition: 0.2s; }
-        .input-field:focus { border-color: #743133; background: #fdf8f8; }
+        .mobile-lang-tag {
+            position: absolute; right: 16px;
+            background: rgba(255,255,255,0.15); backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.25); color: #fff;
+            font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px;
+            cursor: pointer; display: none;
+        }
 
-        /* 唯讀/禁止變更的輸入框 */
-        .input-disabled-wrap { position: relative; display: flex; align-items: center; }
-        .input-disabled-wrap i { position: absolute; right: 16px; color: #aaa; font-size: 14px; }
-        .input-disabled { width: 100%; padding: 12px 40px 12px 16px; font-size: 14px; font-weight: 600; color: #666; background: #f4f6f9; border: 1px solid #e5e7eb; border-radius: 8px; cursor: not-allowed; outline: none; }
+        .content-area { padding: 32px; max-width: 800px; margin: 0 auto; }
 
-        .btn-submit { background: #743133; color: #fff; border: none; padding: 12px 24px; font-size: 15px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: 0.2s; margin-top: 10px; }
-        .btn-submit:hover { background: #5a2527; box-shadow: 0 4px 10px rgba(116,49,51,0.2); }
+        /* Profile 表單卡片樣式 */
+        .profile-card {
+            background: #ffffff;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 32px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.03);
+            margin-bottom: 24px;
+        }
 
-        /* 分隔線 */
-        .divider { height: 1px; background: #eee; margin: 30px 0; }
+        .card-title-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 17px;
+            font-weight: 700;
+            color: #743133;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px dashed rgba(116, 49, 51, 0.15);
+        }
 
-        /* 手機版適應 */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 13px 16px;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            font-size: 14px;
+            outline: none;
+            background: #fafafa;
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus {
+            border-color: #743133;
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(116, 49, 51, 0.08);
+        }
+
+        .form-input[readonly] {
+            background: #f0f0f0;
+            color: #777;
+            cursor: not-allowed;
+        }
+
+        .input-hint {
+            font-size: 12px;
+            color: #888;
+            margin-top: 2px;
+        }
+
+        .btn-save {
+            background: #743133;
+            color: #fff;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 12px rgba(116, 49, 51, 0.2);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-save:hover {
+            background: #5c2628;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(116, 49, 51, 0.3);
+        }
+
+        /* 📱 手機版 Bottom Navigation Bar */
+        .mobile-bottom-nav {
+            display: none; position: fixed; bottom: 0; left: 0; right: 0;
+            height: 65px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(0, 0, 0, 0.08); z-index: 1000;
+            justify-content: space-around; align-items: center;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            color: #888; text-decoration: none; font-size: 11px; font-weight: 600; gap: 4px;
+            width: 20%; background: none; border: none; cursor: pointer; transition: 0.2s;
+        }
+
+        .nav-item i { font-size: 18px; }
+        .nav-item.active, .nav-item:hover { color: #743133; }
+
+        /* Pop-up List 選單 */
+        .popup-overlay {
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 1001; opacity: 0; transition: opacity 0.25s ease;
+        }
+        .popup-overlay.show { display: block; opacity: 1; }
+        .popup-menu {
+            position: fixed; bottom: -250px; left: 16px; right: 16px;
+            background: #ffffff; border-radius: 20px; padding: 20px 16px;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.15); z-index: 1002; transition: bottom 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .popup-overlay.show .popup-menu { bottom: 80px; }
+        .popup-header { font-size: 14px; font-weight: 700; color: #743133; text-align: center; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px dashed #eee; }
+        .popup-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+        .popup-list a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #faf7f7; border-radius: 12px; color: #333; text-decoration: none; font-size: 14px; font-weight: 600; transition: 0.2s; }
+        .popup-list a i { color: #743133; font-size: 16px; width: 20px; }
+
         @media (max-width: 768px) {
-            .sidebar { transform: translateX(-250px); }
-            .main-content { margin-left: 0; width: 100%; }
-            .stats-container { flex-direction: column; text-align: center; }
-            .progress-text { text-align: center; }
-            .form-group { max-width: 100%; }
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; width: 100%; padding-bottom: 80px; }
+            .topbar { padding: 14px 20px; }
+            .topbar-logo { height: 32px; }
+            .mobile-lang-tag { display: block; }
+            .content-area { padding: 20px; }
+            .mobile-bottom-nav { display: flex; }
         }
     </style>
 </head>
 <body>
 
-    <!-- 側邊欄 (包含所有 8 頁) -->
-    <nav class="sidebar" id="sidebar">
+    <!-- 電腦版側邊選單 -->
+    <nav class="sidebar">
         <div class="logo-area">
-            <img src="Serenestudio_2.png" alt="Serene Studio Logo">
+            <img src="Serenestudio.png" alt="Serene Studio Logo">
         </div>
-        <ul class="menu-list">
-            <li class="active"><a href="dashboard.html"><i class="fa-solid fa-house"></i> 我的帳戶首頁</a></li>
-            <li><a href="profile.html"><i class="fa-solid fa-id-card"></i> 會員帳戶資料</a></li>
-            <li><a href="guidelines.html"><i class="fa-solid fa-book-open"></i> 購物流程及須知</a></li>
-            <li><a href="orders.html"><i class="fa-solid fa-file-invoice-dollar"></i> 代購訂單紀錄</a></li>
-            <li><a href="tracking.html"><i class="fa-solid fa-box-open"></i> 韓國倉及物流追蹤</a></li>
-            <li><a href="consolidation.html"><i class="fa-solid fa-plane-departure"></i> 申請集運及運費</a></li>
-            <li><a href="calculator.html"><i class="fa-solid fa-calculator"></i> 運費計算機</a></li>
-            <li><a href="intel.html"><i class="fa-solid fa-fire"></i> 韓國網購情報</a></li>
-            <li style="margin-top: 20px; border-top: 1px solid #eee;"><a href="index.html"><i class="fa-solid fa-arrow-right-from-bracket"></i> 登出帳戶</a></li>
-        </ul>
+
+        <div class="menu-wrapper">
+            <div class="menu-section-title" data-zh="帳戶總覽" data-en="Overview">帳戶總覽</div>
+            <ul class="menu-list">
+                <li><a href="dashboard.html"><i class="fa-solid fa-house"></i> <span data-zh="我的帳戶首頁" data-en="Home Dashboard">我的帳戶首頁</span></a></li>
+                <li class="active"><a href="profile.html"><i class="fa-solid fa-id-card"></i> <span data-zh="會員帳戶資料" data-en="Profile Settings">會員帳戶資料</span></a></li>
+            </ul>
+
+            <div class="menu-section-title" data-zh="訂單及物流" data-en="Orders & Shipping">訂單及物流</div>
+            <ul class="menu-list">
+                <li><a href="orders.html"><i class="fa-solid fa-file-invoice-dollar"></i> <span data-zh="代購訂單紀錄" data-en="Proxy Orders">代購訂單紀錄</span></a></li>
+                <li><a href="tracking.html"><i class="fa-solid fa-box-open"></i> <span data-zh="韓國倉及物流追蹤" data-en="Warehouse Tracking">韓國倉及物流追蹤</span></a></li>
+                <li><a href="consolidation.html"><i class="fa-solid fa-plane-departure"></i> <span data-zh="集運單及國際運費" data-en="Consolidations">集運單及國際運費</span></a></li>
+            </ul>
+
+            <div class="menu-section-title" data-zh="服務與情報" data-en="Services & Info">服務與情報</div>
+            <ul class="menu-list">
+                <li><a href="calculator.html"><i class="fa-solid fa-calculator"></i> <span data-zh="運費計算機" data-en="Shipping Calculator">運費計算機</span></a></li>
+                <li><a href="intel.html"><i class="fa-solid fa-fire"></i> <span data-zh="韓國網購情報" data-en="Korea Shopping Intel">韓國網購情報</span></a></li>
+                <li><a href="guidelines.html"><i class="fa-solid fa-book-open"></i> <span data-zh="購物流程及須知" data-en="Guidelines">購物流程及須知</span></a></li>
+            </ul>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="lang-switch-desktop">
+                <button onclick="switchLanguage('zh')" id="btnZhDt" class="lang-btn-dt active">繁體中文</button>
+                <button onclick="switchLanguage('en')" id="btnEnDt" class="lang-btn-dt">English</button>
+            </div>
+            <a href="index.html" onclick="logout()" style="display:flex; align-items:center; gap:8px; color:#e11d48; text-decoration:none; font-size:13px; font-weight:600; padding:6px 8px;">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                <span data-zh="登出帳戶" data-en="Logout">登出帳戶</span>
+            </a>
+        </div>
     </nav>
 
     <!-- 主內容區 -->
     <main class="main-content">
         <header class="topbar">
-            <button class="toggle-btn" onclick="toggleSidebar()" style="background: none; border: none; font-size: 20px; cursor: pointer;"><i class="fa-solid fa-bars"></i></button>
-            <div class="page-title">會員帳戶資料</div>
+            <img src="Serenestudio.png" alt="Serene Studio Logo" class="topbar-logo">
+            <div class="mobile-lang-tag" onclick="toggleMobileLang()" id="mobileLangBtn">EN</div>
         </header>
 
         <div class="content-area">
-            
-            <!-- 區塊 1：會員購物紀錄 (未來優惠鋪墊) -->
-            <div class="card">
-                <div class="card-header"><i class="fa-solid fa-crown"></i> 會員等級及購物紀錄</div>
-                <div class="card-body">
-                    <div class="stats-container">
-                        
-                        <div class="tier-badge">
-                            <i class="fa-solid fa-gem"></i>
-                            <span>基本會員</span>
-                        </div>
-                        
-                        <div class="stats-info">
-                            <div class="stats-title">你好！歡迎回到 Serene Studio</div>
-                            <div class="stats-desc">
-                                你目前已累積代購及集運次數為：<span class="highlight-num">8 次</span>
-                            </div>
-                            
-                            <!-- 激勵進度條 -->
-                            <div class="progress-bar-bg">
-                                <div class="progress-bar-fill"></div>
-                            </div>
-                            <div class="progress-text">只差 <strong>2</strong> 次即可解鎖未來的「專屬會員優惠」及隱藏驚喜！</div>
+
+            <form id="profileForm" onsubmit="handleSaveProfile(event)">
+                
+                <!-- 區塊 1: 會員基本帳號設定 -->
+                <div class="profile-card">
+                    <div class="card-title-bar">
+                        <i class="fa-solid fa-user-gear"></i>
+                        <span data-zh="會員基本資料" data-en="Basic Account Info">會員基本資料</span>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-phone"></i> <span data-zh="電話號碼 (登入帳號)" data-en="Phone Number (Account ID)">電話號碼 (登入帳號)</span></label>
+                            <input type="text" id="phoneInput" class="form-input" readonly>
+                            <div class="input-hint" data-zh="* 登入電話不可自行變更" data-en="* Login phone cannot be modified directly">* 登入電話不可自行變更</div>
                         </div>
 
+                        <!-- ✨ 新增：用戶名稱 DisplayName -->
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-signature"></i> <span data-zh="用戶名稱 (暱稱)" data-en="Display Name / Nickname">用戶名稱 (暱稱)</span></label>
+                            <input type="text" id="displayNameInput" class="form-input" placeholder="例如：Jennie / Alex" data-zh-placeholder="例如：Jennie / Alex" data-en-placeholder="e.g. Jennie / Alex">
+                            <div class="input-hint" data-zh="設定後系統將以您的暱稱顯示稱呼" data-en="This name will be displayed across your account">設定後系統將以您的暱稱顯示稱呼</div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- 區塊 2：個人資料及密碼更改 -->
-            <div class="card">
-                <div class="card-header"><i class="fa-solid fa-user-shield"></i> 帳戶及安全設定</div>
-                <div class="card-body">
-                    
-                    <form onsubmit="event.preventDefault(); alert('資料尚未修改！請於連接後台數據庫後再試。');">
-                        
-                        <!-- 不可變更的電話號碼 -->
+                <!-- 區塊 2: ✨ 新增「預設收件人資料」 -->
+                <div class="profile-card">
+                    <div class="card-title-bar">
+                        <i class="fa-solid fa-truck-ramp-box"></i>
+                        <span data-zh="預設收件人資料 (香港本地送貨)" data-en="Default Recipient Info (HK Shipping)">預設收件人資料 (香港本地送貨)</span>
+                    </div>
+
+                    <div class="form-grid">
                         <div class="form-group">
-                            <label>登記電話號碼 / 登入帳號 (無法變更)</label>
-                            <div class="input-disabled-wrap">
-                                <input type="text" class="input-disabled" value="+852 9123 4567" disabled>
-                                <i class="fa-solid fa-lock" title="基於保安理由，電話號碼無法自行更改"></i>
-                            </div>
-                            <p style="font-size: 12px; color: #888; margin-top: 6px;">如需更改登記電話號碼，請 WhatsApp 聯絡客服協助處理。</p>
-                        </div>
-
-                        <div class="divider"></div>
-
-                        <h3 style="font-size: 16px; color: #111; margin-bottom: 16px;">變更帳戶密碼</h3>
-
-                        <div class="form-group">
-                            <label>目前密碼 (或系統預設密碼)</label>
-                            <input type="password" class="input-field" placeholder="請輸入當前密碼" required>
+                            <label><i class="fa-solid fa-user"></i> <span data-zh="收件人姓名" data-en="Recipient Name">收件人姓名</span></label>
+                            <input type="text" id="recipientNameInput" class="form-input" placeholder="例如：陳大文 / Fung Lok Yin" data-zh-placeholder="例如：陳大文 / Fung Lok Yin" data-en-placeholder="e.g. Fung Lok Yin">
                         </div>
 
                         <div class="form-group">
-                            <label>新密碼</label>
-                            <input type="password" class="input-field" id="newPassword" placeholder="最少 6 個字元" required>
+                            <label><i class="fa-solid fa-mobile-retro"></i> <span data-zh="收件人聯絡電話" data-en="Recipient Phone">收件人聯絡電話</span></label>
+                            <input type="tel" id="recipientPhoneInput" class="form-input" placeholder="例如：+852 91234567" data-zh-placeholder="例如：+852 91234567" data-en-placeholder="e.g. +852 91234567">
                         </div>
 
-                        <div class="form-group">
-                            <label>確認新密碼</label>
-                            <input type="password" class="input-field" id="confirmPassword" placeholder="請再次輸入新密碼" required>
+                        <div class="form-group full-width">
+                            <label><i class="fa-solid fa-location-dot"></i> <span data-zh="預設收件地址 / 順豐站/智能櫃編號" data-en="Default Address / SF Express Station Code">預設收件地址 / 順豐站/智能櫃編號</span></label>
+                            <input type="text" id="recipientAddressInput" class="form-input" placeholder="例如：順豐站 852FCL 或 香港九龍觀塘..." data-zh-placeholder="例如：順豐站 852FCL 或 香港九龍觀塘..." data-en-placeholder="e.g. SF Locker 852FCL or Full Address">
+                            <div class="input-hint" data-zh="申請合併寄港時可快速載入此預設資料" data-en="Easily autofill when submitting HK delivery requests">申請合併寄港時可快速載入此預設資料</div>
                         </div>
-
-                        <button type="submit" class="btn-submit" onclick="validatePassword(event)">儲存密碼設定</button>
-
-                    </form>
-
+                    </div>
                 </div>
-            </div>
+
+                <div style="text-align: right; margin-top: 10px;">
+                    <button type="submit" class="btn-save" id="btnSave">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        <span data-zh="儲存帳戶設定" data-en="Save Account Profile">儲存帳戶設定</span>
+                    </button>
+                </div>
+
+            </form>
 
         </div>
     </main>
 
+    <!-- 📱 手機專屬 Bottom Navigation Bar -->
+    <nav class="mobile-bottom-nav">
+        <a href="dashboard.html" class="nav-item">
+            <i class="fa-solid fa-house"></i>
+            <span data-zh="首頁" data-en="Home">首頁</span>
+        </a>
+
+        <button type="button" class="nav-item" onclick="toggleOrderPopup()">
+            <i class="fa-solid fa-boxes-stacked"></i>
+            <span data-zh="管理訂單" data-en="Orders">管理訂單</span>
+        </button>
+
+        <a href="calculator.html" class="nav-item">
+            <i class="fa-solid fa-calculator"></i>
+            <span data-zh="運費試算" data-en="Calc">運費試算</span>
+        </a>
+
+        <a href="intel.html" class="nav-item">
+            <i class="fa-solid fa-fire"></i>
+            <span data-zh="網購情報" data-en="Intel">網購情報</span>
+        </a>
+
+        <a href="profile.html" class="nav-item active">
+            <i class="fa-solid fa-user"></i>
+            <span data-zh="我的帳戶" data-en="Account">我的帳戶</span>
+        </a>
+    </nav>
+
+    <!-- 💬 Pop-up List -->
+    <div class="popup-overlay" id="popupOverlay" onclick="closeOrderPopup()">
+        <div class="popup-menu" onclick="event.stopPropagation();">
+            <div class="popup-header" data-zh="請選擇訂單管理項目" data-en="Select Order Category">請選擇訂單管理項目</div>
+            <ul class="popup-list">
+                <li>
+                    <a href="orders.html">
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                        <span data-zh="代購訂單紀錄" data-en="Proxy Orders History">代購訂單紀錄</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="tracking.html">
+                        <i class="fa-solid fa-box-open"></i>
+                        <span data-zh="韓國物流追蹤" data-en="KR Warehouse Inventory">韓國物流追蹤</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="consolidation.html">
+                        <i class="fa-solid fa-plane-departure"></i>
+                        <span data-zh="集運訂單" data-en="Consolidation Requests">集運訂單</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
     <script>
-        // 控制側邊欄
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.style.transform = sidebar.style.transform === 'translateX(0px)' ? 'translateX(-250px)' : 'translateX(0px)';
+        window.addEventListener('DOMContentLoaded', () => {
+            const userData = JSON.parse(localStorage.getItem('serene_user'));
+
+            if (!userData || !userData.phone) {
+                alert("您尚未登入，請先登入帳戶！");
+                window.location.href = "index.html";
+                return;
+            }
+
+            // 載入預設資料
+            document.getElementById('phoneInput').value = userData.phone;
+            document.getElementById('displayNameInput').value = userData.displayName || '';
+            document.getElementById('recipientNameInput').value = userData.recipientName || '';
+            document.getElementById('recipientPhoneInput').value = userData.recipientPhone || '';
+            document.getElementById('recipientAddressInput').value = userData.recipientAddress || '';
+
+            // 初始化語言設定
+            const savedLang = localStorage.getItem('serene_lang') || 'zh';
+            switchLanguage(savedLang);
+        });
+
+        // 本地暫存與提交設定
+        function handleSaveProfile(event) {
+            event.preventDefault();
+
+            const userData = JSON.parse(localStorage.getItem('serene_user')) || {};
+            
+            // 更新本地資料
+            userData.displayName = document.getElementById('displayNameInput').value.trim();
+            userData.recipientName = document.getElementById('recipientNameInput').value.trim();
+            userData.recipientPhone = document.getElementById('recipientPhoneInput').value.trim();
+            userData.recipientAddress = document.getElementById('recipientAddressInput').value.trim();
+
+            localStorage.setItem('serene_user', JSON.stringify(userData));
+
+            const currentLang = localStorage.getItem('serene_lang') || 'zh';
+            const msg = currentLang === 'en' ? "Profile settings updated successfully!" : "帳戶與預設收件資料已成功更新！";
+            alert(msg);
         }
 
-        // 簡單的密碼驗證邏輯
-        function validatePassword(event) {
-            const newPw = document.getElementById('newPassword').value;
-            const confirmPw = document.getElementById('confirmPassword').value;
-            
-            // 確保兩個密碼框都有輸入才進行檢查
-            if (newPw !== '' && confirmPw !== '') {
-                if (newPw !== confirmPw) {
-                    event.preventDefault(); // 阻止表單送出
-                    alert('❌ 錯誤：兩次輸入的新密碼不一致，請重新輸入！');
-                } else if (newPw.length < 6) {
-                    event.preventDefault();
-                    alert('❌ 錯誤：新密碼最少需要 6 個字元！');
-                } else {
-                    event.preventDefault();
-                    alert('✅ 密碼已成功更新！下次請使用新密碼登入。');
-                    // 這裡未來會加入連結 Google Sheets / 後台的 JavaScript 邏輯
-                    document.getElementById('newPassword').value = '';
-                    document.getElementById('confirmPassword').value = '';
-                }
-            }
+        /* 雙語切換邏輯 */
+        function switchLanguage(lang) {
+            localStorage.setItem('serene_lang', lang);
+            document.documentElement.lang = lang === 'en' ? 'en' : 'zh-HK';
+
+            document.getElementById('btnZhDt').classList.toggle('active', lang === 'zh');
+            document.getElementById('btnEnDt').classList.toggle('active', lang === 'en');
+            document.getElementById('mobileLangBtn').innerText = lang === 'en' ? '繁中' : 'EN';
+
+            document.querySelectorAll('[data-zh]').forEach(el => {
+                el.innerText = lang === 'en' ? el.getAttribute('data-en') : el.getAttribute('data-zh');
+            });
+
+            document.querySelectorAll('[data-zh-placeholder]').forEach(el => {
+                el.placeholder = lang === 'en' ? el.getAttribute('data-en-placeholder') : el.getAttribute('data-zh-placeholder');
+            });
+        }
+
+        function toggleMobileLang() {
+            const currentLang = localStorage.getItem('serene_lang') || 'zh';
+            switchLanguage(currentLang === 'zh' ? 'en' : 'zh');
+        }
+
+        function toggleOrderPopup() { document.getElementById('popupOverlay').classList.toggle('show'); }
+        function closeOrderPopup() { document.getElementById('popupOverlay').classList.remove('show'); }
+
+        function logout() {
+            localStorage.removeItem('serene_user');
+            window.location.href = 'index.html';
         }
     </script>
 </body>
