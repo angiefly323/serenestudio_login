@@ -3,126 +3,204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Serene Studio - 我的帳戶</title>
+    <title>Serene Studio - 會員帳戶首頁</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-        body { background-color: #f4f6f9; color: #333; display: flex; min-height: 100vh; overflow-x: hidden; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: #faf7f7; color: #333; display: flex; min-height: 100vh; overflow-x: hidden; }
         
         /* 側邊欄 (Sidebar) */
-        .sidebar { width: 250px; background-color: #ffffff; border-right: 1px solid #e5e7eb; transition: 0.3s; position: fixed; height: 100%; z-index: 1000; }
-        .sidebar.hidden { transform: translateX(-250px); }
-        .logo-area { padding: 20px; text-align: center; border-bottom: 1px solid #e5e7eb; background: #743133; color: white; font-weight: bold; font-size: 18px; letter-spacing: 1px;}
-        .menu-list { list-style: none; padding: 10px 0; }
-        .menu-list li a { display: flex; align-items: center; padding: 15px 24px; color: #4b5563; text-decoration: none; font-size: 15px; transition: 0.2s; }
-        .menu-list li a i { width: 24px; font-size: 18px; margin-right: 10px; color: #9ca3af; }
-        .menu-list li a:hover, .menu-list li.active a { background-color: #fdf8f8; color: #743133; border-right: 4px solid #743133; font-weight: 600; }
+        .sidebar { width: 250px; background-color: #ffffff; border-right: 1px solid rgba(0,0,0,0.05); position: fixed; height: 100%; z-index: 1000; transition: 0.3s ease; }
+        .logo-area { background: #743133; padding: 24px; text-align: center; display: flex; justify-content: center; align-items: center; min-height: 110px; }
+        .logo-area img { width: 85%; max-width: 160px; height: auto; }
+
+        .menu-list { list-style: none; padding: 16px 10px; }
+        .menu-list li { margin-bottom: 4px; }
+        .menu-list li a { display: flex; align-items: center; padding: 14px 20px; color: #555; text-decoration: none; font-size: 14.5px; border-radius: 10px; font-weight: 500; transition: all 0.2s ease; }
+        .menu-list li a i { width: 22px; font-size: 17px; margin-right: 12px; color: #a0a0a0; transition: 0.2s; }
+        .menu-list li a:hover { background-color: #f8f3f3; color: #743133; }
+        .menu-list li a:hover i { color: #743133; }
+        .menu-list li.active a { background-color: #fdf2f2; color: #743133; font-weight: 700; }
         .menu-list li.active a i { color: #743133; }
 
-        /* 主內容區 (Main Content) */
-        .main-content { flex: 1; margin-left: 250px; transition: 0.3s; width: calc(100% - 250px); }
-        .main-content.expanded { margin-left: 0; width: 100%; }
+        /* 主內容區 */
+        .main-content { flex: 1; margin-left: 250px; transition: 0.3s; width: calc(100% - 250px); padding-bottom: 60px; }
+        .topbar { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 99; }
+        .page-title { font-size: 19px; font-weight: 700; color: #111; letter-spacing: -0.02em; }
+        .user-phone-tag { font-size: 13px; color: #743133; background: #fdf2f2; padding: 6px 14px; border-radius: 20px; font-weight: 600; border: 1px solid rgba(116, 49, 51, 0.15); }
 
-        /* 頂部導航 (Top Bar) */
-        .topbar { background: #fff; padding: 15px 24px; display: flex; align-items: center; border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; z-index: 99; }
-        .toggle-btn { background: none; border: none; font-size: 20px; color: #333; cursor: pointer; margin-right: 20px; }
-        .page-title { font-size: 18px; font-weight: 600; }
+        .content-area { padding: 32px; max-width: 1050px; margin: 0 auto; }
 
-        /* 內容區域 (Content Padding) */
-        .content-area { padding: 24px; }
+        /* 歡迎 Banner */
+        .welcome-card { background: linear-gradient(135deg, #743133 0%, #522223 100%); color: #fff; border-radius: 20px; padding: 32px; margin-bottom: 32px; box-shadow: 0 12px 30px rgba(116, 49, 51, 0.15); position: relative; overflow: hidden; }
+        .welcome-card::after { content: ""; position: absolute; right: -20px; bottom: -40px; width: 180px; height: 180px; background: rgba(255,255,255,0.05); border-radius: 50%; pointer-events: none; }
+        .welcome-card h2 { font-size: 22px; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+        .welcome-card p { font-size: 14px; opacity: 0.85; line-height: 1.6; max-width: 600px; }
 
-        /* 頂部通知 (Alert Notification) */
-        .alert-box { background-color: #fffbeb; border-left: 4px solid #f59e0b; padding: 16px 20px; border-radius: 8px; margin-bottom: 24px; display: flex; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
-        .alert-box i { color: #f59e0b; font-size: 20px; margin-right: 12px; }
-        .alert-text { font-size: 14px; color: #92400e; flex: 1; }
-        .alert-btn { background: #f59e0b; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: bold; cursor: pointer; }
+        /* 數據概覽 Grid (3欄) */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 36px; }
+        .stat-card { background: #ffffff; border-radius: 16px; border: 1px solid rgba(0, 0, 0, 0.05); padding: 24px; box-shadow: 0 8px 20px rgba(0,0,0,0.02); transition: all 0.25s ease; display: flex; justify-content: space-between; align-items: center; }
+        .stat-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(116, 49, 51, 0.08); border-color: rgba(116, 49, 51, 0.15); }
+        .stat-title { font-size: 13px; font-weight: 600; color: #888; margin-bottom: 6px; }
+        .stat-value { font-size: 28px; font-weight: 800; color: #111; letter-spacing: -0.02em; }
+        .stat-icon { width: 52px; height: 52px; border-radius: 14px; background: #fdf2f2; color: #743133; display: flex; justify-content: center; align-items: center; font-size: 22px; }
 
-        /* 宣傳 Banner */
-        .promo-banner { background: linear-gradient(135deg, #743133 0%, #a34649 100%); color: #fff; padding: 30px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; box-shadow: 0 4px 15px rgba(116, 49, 51, 0.2); }
-        .promo-text h2 { font-size: 24px; margin-bottom: 8px; }
-        .promo-text p { font-size: 15px; opacity: 0.9; }
-        .promo-btn { background: #fff; color: #743133; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 14px; transition: 0.2s; }
-        .promo-btn:hover { background: #f0f0f0; }
+        /* 快速入口 Grid (4欄) */
+        .section-header { font-size: 17px; font-weight: 700; color: #111; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+        .section-header i { color: #743133; }
+        
+        .quick-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; }
+        .quick-item { background: #ffffff; border-radius: 14px; border: 1px solid rgba(0,0,0,0.05); padding: 20px; text-decoration: none; color: #333; display: flex; flex-direction: column; gap: 10px; transition: all 0.25s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
+        .quick-item:hover { background: #ffffff; transform: translateY(-3px); border-color: #743133; box-shadow: 0 8px 20px rgba(116, 49, 51, 0.08); }
+        .quick-item-icon { font-size: 20px; color: #743133; }
+        .quick-item-title { font-size: 15px; font-weight: 700; color: #111; }
+        .quick-item-desc { font-size: 12.5px; color: #777; line-height: 1.4; }
 
-        /* 手機版適應 (Mobile Responsive) */
         @media (max-width: 768px) {
             .sidebar { transform: translateX(-250px); }
-            .sidebar.show { transform: translateX(0); box-shadow: 4px 0 15px rgba(0,0,0,0.1); }
             .main-content { margin-left: 0; width: 100%; }
-            .promo-banner { flex-direction: column; text-align: center; }
-            .promo-btn { margin-top: 16px; width: 100%; }
+            .content-area { padding: 20px; }
+            .topbar { padding: 15px 20px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- 左邊隱藏式目錄 -->
+    <!-- 側邊選單 -->
     <nav class="sidebar" id="sidebar">
-        <div class="logo-area">Serene Studio</div>
+        <div class="logo-area"><img src="Serenestudio_2.png" alt="Serene Studio Logo"></div>
         <ul class="menu-list">
             <li class="active"><a href="dashboard.html"><i class="fa-solid fa-house"></i> 我的帳戶首頁</a></li>
             <li><a href="profile.html"><i class="fa-solid fa-id-card"></i> 會員帳戶資料</a></li>
             <li><a href="guidelines.html"><i class="fa-solid fa-book-open"></i> 購物流程及須知</a></li>
             <li><a href="orders.html"><i class="fa-solid fa-file-invoice-dollar"></i> 代購訂單紀錄</a></li>
             <li><a href="tracking.html"><i class="fa-solid fa-box-open"></i> 韓國倉及物流追蹤</a></li>
-            <li><a href="consolidation.html"><i class="fa-solid fa-plane-departure"></i> 申請集運及運費</a></li>
+            <li><a href="consolidation.html"><i class="fa-solid fa-plane-departure"></i> 集運單及國際運費</a></li>
             <li><a href="calculator.html"><i class="fa-solid fa-calculator"></i> 運費計算機</a></li>
             <li><a href="intel.html"><i class="fa-solid fa-fire"></i> 韓國網購情報</a></li>
-            <li style="margin-top: 20px; border-top: 1px solid #eee;"><a href="index.html"><i class="fa-solid fa-arrow-right-from-bracket"></i> 登出帳戶</a></li>
+            <li style="margin-top: 24px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 12px;"><a href="index.html" onclick="logout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> 登出帳戶</a></li>
         </ul>
     </nav>
 
-    <!-- 頁面主內容 -->
-    <main class="main-content" id="main-content">
-        <!-- 頂部欄 (Top Bar) -->
+    <!-- 主內容區 -->
+    <main class="main-content">
         <header class="topbar">
-            <button class="toggle-btn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
-            <div class="page-title">我的帳戶</div>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <button onclick="toggleSidebar()" style="background:none; border:none; font-size:20px; cursor:pointer; color:#555;"><i class="fa-solid fa-bars"></i></button>
+                <div class="page-title">帳戶總覽 (Dashboard)</div>
+            </div>
+            <div class="user-phone-tag" id="userPhoneDisplay">讀取中...</div>
         </header>
 
         <div class="content-area">
             
-            <!-- 1. 頂部通知 (Notifications) -->
-            <div class="alert-box">
-                <i class="fa-solid fa-bell"></i>
-                <div class="alert-text">
-                    <strong>重要通知：</strong> 你的包裹 (單號 #SS8821) 已抵達韓國倉，請選擇是否需要代拆專或申請集運回港！
-                </div>
-                <button class="alert-btn">立即處理</button>
+            <!-- 歡迎卡片 -->
+            <div class="welcome-card">
+                <h2><i class="fa-solid fa-sparkles"></i> 歡迎回來，<span id="welcomePhone">尊貴會員</span>！</h2>
+                <p>感謝選擇 Serene Studio！您可以在此隨時查看最新的韓國代購訂單進度、韓國倉到貨狀況、申請合併寄回香港，或是使用我們的計算機試算費用。</p>
             </div>
 
-            <!-- 2. 宣傳 Banner (Promo Banner) -->
-            <div class="promo-banner">
-                <div class="promo-text">
-                    <h2>全港最透明！任何韓國商品代購費劃一 5,000 KRW</h2>
-                    <p>支援服飾、專輯、美妝小商戶批發。提供代拆專、0.5kg 微階梯運費，集運更抵！</p>
+            <!-- 數據概覽區 -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div>
+                        <div class="stat-title">已下單代購項目</div>
+                        <div class="stat-value" id="orderCount">--</div>
+                    </div>
+                    <div class="stat-icon"><i class="fa-solid fa-file-invoice"></i></div>
                 </div>
-                <a href="#" class="promo-btn">貼上連結 即時落單</a>
+
+                <div class="stat-card">
+                    <div>
+                        <div class="stat-title">韓國倉待處理貨品</div>
+                        <div class="stat-value" id="warehouseCount">--</div>
+                    </div>
+                    <div class="stat-icon"><i class="fa-solid fa-boxes-packing"></i></div>
+                </div>
+
+                <div class="stat-card">
+                    <div>
+                        <div class="stat-title">已提交集運單數</div>
+                        <div class="stat-value" id="consolidationCount">--</div>
+                    </div>
+                    <div class="stat-icon"><i class="fa-solid fa-plane-arrival"></i></div>
+                </div>
             </div>
 
-            <!-- 首頁概覽數據 (Placeholder) -->
-            <div style="background: #fff; padding: 24px; border-radius: 12px; border: 1px solid #e5e7eb;">
-                <h3 style="margin-bottom: 16px; color: #111;">物流概覽</h3>
-                <p style="color: #666; font-size: 14px;">(這裡未來可以放置：待採購 0 件 | 韓國倉待處理 1 件 | 國際運輸中 0 件 | 觀塘可自取 0 件)</p>
+            <!-- 快速導航功能 Hub -->
+            <div class="section-header">
+                <i class="fa-solid fa-bolt"></i> 常用快捷功能
+            </div>
+
+            <div class="quick-grid">
+                <a href="orders.html" class="quick-item">
+                    <div class="quick-item-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+                    <div class="quick-item-title">代購訂單紀錄</div>
+                    <div class="quick-item-desc">查看每一筆代購訂單詳情、商品連結與付款狀態。</div>
+                </a>
+
+                <a href="tracking.html" class="quick-item">
+                    <div class="quick-item-icon"><i class="fa-solid fa-box-open"></i></div>
+                    <div class="quick-item-title">韓國倉物流追蹤</div>
+                    <div class="quick-item-desc">查看已抵達韓國倉的貨品，並自由勾選申請合併寄回港。</div>
+                </a>
+
+                <a href="consolidation.html" class="quick-item">
+                    <div class="quick-item-icon"><i class="fa-solid fa-plane-departure"></i></div>
+                    <div class="quick-item-title">集運單及國際運費</div>
+                    <div class="quick-item-desc">查詢已申請的集運包裹重量、順豐單號及國際運費。</div>
+                </a>
+
+                <a href="calculator.html" class="quick-item">
+                    <div class="quick-item-icon"><i class="fa-solid fa-calculator"></i></div>
+                    <div class="quick-item-title">運費計算機</div>
+                    <div class="quick-item-desc">輸入韓圜售價、數量與預估重量，極速試算全單總金額。</div>
+                </a>
+
+                <a href="intel.html" class="quick-item">
+                    <div class="quick-item-icon"><i class="fa-solid fa-fire"></i></div>
+                    <div class="quick-item-title">韓國網購情報</div>
+                    <div class="quick-item-desc">精選 K-Pop 追星周邊、唱片通路及潮流服飾熱門網站推薦。</div>
+                </a>
+
+                <a href="guidelines.html" class="quick-item">
+                    <div class="quick-item-icon"><i class="fa-solid fa-book-open"></i></div>
+                    <div class="quick-item-title">購物流程及須知</div>
+                    <div class="quick-item-desc">第一次使用？點擊了解韓國代購與集運操作流程細節。</div>
+                </a>
             </div>
 
         </div>
     </main>
 
-    <!-- 開關左側目錄的 JavaScript -->
     <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const userData = JSON.parse(localStorage.getItem('serene_user'));
+
+            if (!userData || !userData.phone) {
+                alert("您尚未登入，請先登入帳戶！");
+                window.location.href = "index.html";
+                return;
+            }
+
+            document.getElementById('userPhoneDisplay').innerText = userData.phone;
+            document.getElementById('welcomePhone').innerText = userData.phone;
+            
+            // 模擬預設載入（後續可呼叫 API 自動讀取真實數量）
+            document.getElementById('orderCount').innerText = userData.orderCount || "0";
+            document.getElementById('warehouseCount').innerText = "0";
+            document.getElementById('consolidationCount').innerText = "0";
+        });
+
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
-            const mainContent = document.getElementById('main-content');
-            
-            if (window.innerWidth <= 768) {
-                // 手機版邏輯：預設隱藏，按鈕滑出
-                sidebar.classList.toggle('show');
-            } else {
-                // 電腦版邏輯：預設顯示，按鈕收起
-                sidebar.classList.toggle('hidden');
-                mainContent.classList.toggle('expanded');
-            }
+            sidebar.style.transform = sidebar.style.transform === 'translateX(0px)' ? 'translateX(-250px)' : 'translateX(0px)';
+        }
+
+        function logout() {
+            localStorage.removeItem('serene_user');
+            window.location.href = 'index.html';
         }
     </script>
 </body>
