@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Serene Studio - 會員帳戶首頁</title>
+    <title>Serene Studio - 會員帳戶首頁 / Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
     <style>
@@ -30,7 +30,42 @@
         .main-content { flex: 1; margin-left: 250px; transition: 0.3s; width: calc(100% - 250px); padding-bottom: 60px; }
         .topbar { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 99; }
         .page-title { font-size: 19px; font-weight: 700; color: #111; letter-spacing: -0.02em; }
+        
+        .topbar-right { display: flex; align-items: center; gap: 12px; }
         .user-phone-tag { font-size: 13px; color: #743133; background: #fdf2f2; padding: 6px 14px; border-radius: 20px; font-weight: 600; border: 1px solid rgba(116, 49, 51, 0.15); }
+
+        /* 🌐 語言切換按鈕 */
+        .lang-switch {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            background: #ffffff;
+            padding: 4px 8px;
+            border-radius: 20px;
+            border: 1px solid rgba(116, 49, 51, 0.15);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            color: #888;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .lang-btn.active {
+            color: #743133;
+            background: #fdf2f2;
+            font-weight: 700;
+        }
+
+        .lang-divider { color: #eee; font-size: 10px; }
 
         .content-area { padding: 32px; max-width: 1050px; margin: 0 auto; }
 
@@ -88,19 +123,97 @@
             font-weight: 600;
             gap: 4px;
             width: 20%;
+            background: none;
+            border: none;
+            cursor: pointer;
             transition: 0.2s;
         }
 
         .nav-item i { font-size: 18px; }
         .nav-item.active, .nav-item:hover { color: #743133; }
 
+        /* Pop-up List 選單樣式 */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(4px);
+            z-index: 1001;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        .popup-overlay.show {
+            display: block;
+            opacity: 1;
+        }
+
+        .popup-menu {
+            position: fixed;
+            bottom: -250px;
+            left: 16px;
+            right: 16px;
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 20px 16px;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.15);
+            z-index: 1002;
+            transition: bottom 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .popup-overlay.show .popup-menu {
+            bottom: 80px;
+        }
+
+        .popup-header {
+            font-size: 14px;
+            font-weight: 700;
+            color: #743133;
+            text-align: center;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed #eee;
+        }
+
+        .popup-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .popup-list a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: #faf7f7;
+            border-radius: 12px;
+            color: #333;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .popup-list a i {
+            color: #743133;
+            font-size: 16px;
+            width: 20px;
+        }
+
+        .popup-list a:hover {
+            background: #fdf2f2;
+        }
+
         /* 手機版 RWD 適應 */
         @media (max-width: 768px) {
-            .sidebar { display: none; } /* 隱藏側邊欄 */
-            .main-content { margin-left: 0; width: 100%; padding-bottom: 80px; } /* 為底部導航留位置 */
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; width: 100%; padding-bottom: 80px; }
             .topbar { padding: 15px 20px; }
             .content-area { padding: 20px; }
-            .mobile-bottom-nav { display: flex; } /* 顯示底部導航列 */
+            .mobile-bottom-nav { display: flex; }
         }
     </style>
 </head>
@@ -110,37 +223,46 @@
     <nav class="sidebar">
         <div class="logo-area"><img src="Serenestudio_2.png" alt="Serene Studio Logo"></div>
         <ul class="menu-list">
-            <li class="active"><a href="dashboard.html"><i class="fa-solid fa-house"></i> 我的帳戶首頁</a></li>
-            <li><a href="profile.html"><i class="fa-solid fa-id-card"></i> 會員帳戶資料</a></li>
-            <li><a href="guidelines.html"><i class="fa-solid fa-book-open"></i> 購物流程及須知</a></li>
-            <li><a href="orders.html"><i class="fa-solid fa-file-invoice-dollar"></i> 代購訂單紀錄</a></li>
-            <li><a href="tracking.html"><i class="fa-solid fa-box-open"></i> 韓國倉及物流追蹤</a></li>
-            <li><a href="consolidation.html"><i class="fa-solid fa-plane-departure"></i> 集運單及國際運費</a></li>
-            <li><a href="calculator.html"><i class="fa-solid fa-calculator"></i> 運費計算機</a></li>
-            <li><a href="intel.html"><i class="fa-solid fa-fire"></i> 韓國網購情報</a></li>
-            <li style="margin-top: 24px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 12px;"><a href="index.html" onclick="logout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> 登出帳戶</a></li>
+            <li class="active"><a href="dashboard.html"><i class="fa-solid fa-house"></i> <span data-zh="我的帳戶首頁" data-en="Home Dashboard">我的帳戶首頁</span></a></li>
+            <li><a href="profile.html"><i class="fa-solid fa-id-card"></i> <span data-zh="會員帳戶資料" data-en="Profile Settings">會員帳戶資料</span></a></li>
+            <li><a href="guidelines.html"><i class="fa-solid fa-book-open"></i> <span data-zh="購物流程及須知" data-en="Guidelines">購物流程及須知</span></a></li>
+            <li><a href="orders.html"><i class="fa-solid fa-file-invoice-dollar"></i> <span data-zh="代購訂單紀錄" data-en="Proxy Orders">代購訂單紀錄</span></a></li>
+            <li><a href="tracking.html"><i class="fa-solid fa-box-open"></i> <span data-zh="韓國倉及物流追蹤" data-en="Warehouse Tracking">韓國倉及物流追蹤</span></a></li>
+            <li><a href="consolidation.html"><i class="fa-solid fa-plane-departure"></i> <span data-zh="集運單及國際運費" data-en="Consolidations">集運單及國際運費</span></a></li>
+            <li><a href="calculator.html"><i class="fa-solid fa-calculator"></i> <span data-zh="運費計算機" data-en="Shipping Calculator">運費計算機</span></a></li>
+            <li><a href="intel.html"><i class="fa-solid fa-fire"></i> <span data-zh="韓國網購情報" data-en="Korea Shopping Intel">韓國網購情報</span></a></li>
+            <li style="margin-top: 24px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 12px;"><a href="index.html" onclick="logout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> <span data-zh="登出帳戶" data-en="Logout">登出帳戶</span></a></li>
         </ul>
     </nav>
 
     <!-- 主內容區 -->
     <main class="main-content">
         <header class="topbar">
-            <div class="page-title">帳戶總覽</div>
-            <div class="user-phone-tag" id="userPhoneDisplay">讀取中...</div>
+            <div class="page-title" data-zh="帳戶總覽" data-en="Dashboard Overview">帳戶總覽</div>
+            
+            <div class="topbar-right">
+                <!-- 雙語切換切換鈕 -->
+                <div class="lang-switch">
+                    <button onclick="switchLanguage('zh')" id="btnZh" class="lang-btn active">繁中</button>
+                    <span class="lang-divider">|</span>
+                    <button onclick="switchLanguage('en')" id="btnEn" class="lang-btn">EN</button>
+                </div>
+                <div class="user-phone-tag" id="userPhoneDisplay">讀取中...</div>
+            </div>
         </header>
 
         <div class="content-area">
-            <!-- 歡迎卡片 -->
+            <!-- 歡迎 Banner -->
             <div class="welcome-card">
-                <h2><i class="fa-solid fa-sparkles"></i> 歡迎回來，<span id="welcomePhone">尊貴會員</span>！</h2>
-                <p>感謝選擇 Serene Studio！您可以在此隨時查看最新的韓國代購訂單進度、韓國倉到貨狀況、申請合併寄回香港，或是使用我們的計算機試算費用。</p>
+                <h2><i class="fa-solid fa-sparkles"></i> <span data-zh="歡迎回來，" data-en="Welcome back, ">歡迎回來，</span><span id="welcomePhone">尊貴會員</span>！</h2>
+                <p data-zh="感謝選擇 Serene Studio！您可以在此隨時查看最新的韓國代購訂單進度、韓國倉到貨狀況、申請合併寄回香港，或是使用我們的計算機試算費用。" data-en="Thank you for choosing Serene Studio! Manage your Korean proxy orders, track warehouse inventory, submit shipping consolidation, or calculate costs all in one place.">感謝選擇 Serene Studio！您可以在此隨時查看最新的韓國代購訂單進度、韓國倉到貨狀況、申請合併寄回香港，或是使用我們的計算機試算費用。</p>
             </div>
 
             <!-- 數據概覽區 -->
             <div class="stats-grid">
                 <div class="stat-card">
                     <div>
-                        <div class="stat-title">已下單代購項目</div>
+                        <div class="stat-title" data-zh="已下單代購項目" data-en="Proxy Orders Placed">已下單代購項目</div>
                         <div class="stat-value" id="orderCount">--</div>
                     </div>
                     <div class="stat-icon"><i class="fa-solid fa-file-invoice"></i></div>
@@ -148,7 +270,7 @@
 
                 <div class="stat-card">
                     <div>
-                        <div class="stat-title">韓國倉待處理貨品</div>
+                        <div class="stat-title" data-zh="韓國倉待處理貨品" data-en="Items in KR Warehouse">韓國倉待處理貨品</div>
                         <div class="stat-value" id="warehouseCount">--</div>
                     </div>
                     <div class="stat-icon"><i class="fa-solid fa-boxes-packing"></i></div>
@@ -156,7 +278,7 @@
 
                 <div class="stat-card">
                     <div>
-                        <div class="stat-title">已提交集運單數</div>
+                        <div class="stat-title" data-zh="已提交集運單數" data-en="Consolidation Requests">已提交集運單數</div>
                         <div class="stat-value" id="consolidationCount">--</div>
                     </div>
                     <div class="stat-icon"><i class="fa-solid fa-plane-arrival"></i></div>
@@ -165,73 +287,109 @@
 
             <!-- 快速導航功能 Hub -->
             <div class="section-header">
-                <i class="fa-solid fa-bolt"></i> 常用快捷功能
+                <i class="fa-solid fa-bolt"></i> <span data-zh="常用快捷功能" data-en="Quick Shortcuts">常用快捷功能</span>
             </div>
 
             <div class="quick-grid">
                 <a href="orders.html" class="quick-item">
                     <div class="quick-item-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
-                    <div class="quick-item-title">代購訂單紀錄</div>
-                    <div class="quick-item-desc">查看每一筆代購訂單詳情、商品連結與付款狀態。</div>
+                    <div class="quick-item-title" data-zh="代購訂單紀錄" data-en="Proxy Orders History">代購訂單紀錄</div>
+                    <div class="quick-item-desc" data-zh="查看每一筆代購訂單詳情、商品連結與付款狀態。" data-en="View details, item links, and payment status for your proxy orders.">查看每一筆代購訂單詳情、商品連結與付款狀態。</div>
                 </a>
 
                 <a href="tracking.html" class="quick-item">
                     <div class="quick-item-icon"><i class="fa-solid fa-box-open"></i></div>
-                    <div class="quick-item-title">韓國倉物流追蹤</div>
-                    <div class="quick-item-desc">查看已抵達韓國倉的貨品，並自由勾選申請合併寄回港。</div>
+                    <div class="quick-item-title" data-zh="韓國倉物流追蹤" data-en="KR Warehouse Tracking">韓國倉物流追蹤</div>
+                    <div class="quick-item-desc" data-zh="查看已抵達韓國倉的貨品，並自由勾選申請合併寄回港。" data-en="Check items arrived at KR warehouse and select items for HK delivery.">查看已抵達韓國倉的貨品，並自由勾選申請合併寄回港。</div>
                 </a>
 
                 <a href="consolidation.html" class="quick-item">
                     <div class="quick-item-icon"><i class="fa-solid fa-plane-departure"></i></div>
-                    <div class="quick-item-title">集運單及國際運費</div>
-                    <div class="quick-item-desc">查詢已申請的集運包裹重量、順豐單號及國際運費。</div>
+                    <div class="quick-item-title" data-zh="集運單及國際運費" data-en="Consolidations & Fees">集運單及國際運費</div>
+                    <div class="quick-item-desc" data-zh="查詢已申請的集運包裹重量、順豐單號及國際運費。" data-en="Check parcel weights, SF tracking numbers, and shipping costs.">查詢已申請的集運包裹重量、順豐單號及國際運費。</div>
                 </a>
 
                 <a href="calculator.html" class="quick-item">
                     <div class="quick-item-icon"><i class="fa-solid fa-calculator"></i></div>
-                    <div class="quick-item-title">運費計算機</div>
-                    <div class="quick-item-desc">輸入韓圜售價、數量與預估重量，極速試算全單總金額。</div>
+                    <div class="quick-item-title" data-zh="運費計算機" data-en="Shipping Calculator">運費計算機</div>
+                    <div class="quick-item-desc" data-zh="輸入韓圜售價、數量與預估重量，極速試算全單總金額。" data-en="Estimate total price instantly by entering KRW price, quantity, and weight.">輸入韓圜售價、數量與預估重量，極速試算全單總金額。</div>
                 </a>
 
                 <a href="intel.html" class="quick-item">
                     <div class="quick-item-icon"><i class="fa-solid fa-fire"></i></div>
-                    <div class="quick-item-title">韓國網購情報</div>
-                    <div class="quick-item-desc">精選 K-Pop 追星周邊、唱片通路及潮流服飾熱門網站推薦。</div>
+                    <div class="quick-item-title" data-zh="韓國網購情報" data-en="Korea Shopping Intel">韓國網購情報</div>
+                    <div class="quick-item-desc" data-zh="精選 K-Pop 追星周邊、唱片通路及潮流服飾熱門網站推薦。" data-en="Discover recommended Korean stores for K-Pop merch, albums, and fashion.">精選 K-Pop 追星周邊、唱片通路及潮流服飾熱門網站推薦。</div>
                 </a>
 
                 <a href="guidelines.html" class="quick-item">
                     <div class="quick-item-icon"><i class="fa-solid fa-book-open"></i></div>
-                    <div class="quick-item-title">購物流程及須知</div>
-                    <div class="quick-item-desc">第一次使用？點擊了解韓國代購與集運操作流程細節。</div>
+                    <div class="quick-item-title" data-zh="購物流程及須知" data-en="Shopping Guidelines">購物流程及須知</div>
+                    <div class="quick-item-desc" data-zh="第一次使用？點擊了解韓國代購與集運操作流程細節。" data-en="First time here? Learn how our proxy purchasing & forwarding service works.">第一次使用？點擊了解韓國代購與集運操作流程細節。</div>
                 </a>
             </div>
 
         </div>
     </main>
 
-    <!-- 📱 手機專屬底部導航列 -->
+    <!-- 📱 手機專屬 Bottom Navigation Bar (1~5) -->
     <nav class="mobile-bottom-nav">
+        <!-- 1. 首頁 -->
         <a href="dashboard.html" class="nav-item active">
             <i class="fa-solid fa-house"></i>
-            <span>首頁</span>
+            <span data-zh="首頁" data-en="Home">首頁</span>
         </a>
-        <a href="orders.html" class="nav-item">
-            <i class="fa-solid fa-box-archive"></i>
-            <span>訂單/倉況</span>
-        </a>
-        <a href="consolidation.html" class="nav-item">
-            <i class="fa-solid fa-plane-departure"></i>
-            <span>申請集運</span>
-        </a>
+
+        <!-- 2. 管理訂單 (Pop-up Trigger) -->
+        <button type="button" class="nav-item" onclick="toggleOrderPopup()">
+            <i class="fa-solid fa-boxes-stacked"></i>
+            <span data-zh="管理訂單" data-en="Orders">管理訂單</span>
+        </button>
+
+        <!-- 3. 運費計算機 -->
         <a href="calculator.html" class="nav-item">
-            <i class="fa-solid fa-grid-2"></i>
-            <span>情報/工具</span>
+            <i class="fa-solid fa-calculator"></i>
+            <span data-zh="運費試算" data-en="Calc">運費試算</span>
         </a>
+
+        <!-- 4. 網購情報 -->
+        <a href="intel.html" class="nav-item">
+            <i class="fa-solid fa-fire"></i>
+            <span data-zh="網購情報" data-en="Intel">網購情報</span>
+        </a>
+
+        <!-- 5. 我的帳戶 -->
         <a href="profile.html" class="nav-item">
             <i class="fa-solid fa-user"></i>
-            <span>我的帳戶</span>
+            <span data-zh="我的帳戶" data-en="Account">我的帳戶</span>
         </a>
     </nav>
+
+    <!-- 💬 點擊「管理訂單」時出現的 Pop-up List -->
+    <div class="popup-overlay" id="popupOverlay" onclick="closeOrderPopup()">
+        <div class="popup-menu" onclick="event.stopPropagation();">
+            <div class="popup-header" data-zh="請選擇訂單管理項目" data-en="Select Order Category">請選擇訂單管理項目</div>
+            <ul class="popup-list">
+                <li>
+                    <a href="orders.html">
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                        <span data-zh="代購訂單紀錄" data-en="Proxy Orders History">代購訂單紀錄</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="tracking.html">
+                        <i class="fa-solid fa-box-open"></i>
+                        <span data-zh="韓國物流追蹤" data-en="KR Warehouse Inventory">韓國物流追蹤</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="consolidation.html">
+                        <i class="fa-solid fa-plane-departure"></i>
+                        <span data-zh="集運訂單" data-en="Consolidation Requests">集運訂單</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
 
     <script>
         window.addEventListener('DOMContentLoaded', () => {
@@ -249,7 +407,35 @@
             document.getElementById('orderCount').innerText = userData.orderCount || "0";
             document.getElementById('warehouseCount').innerText = "0";
             document.getElementById('consolidationCount').innerText = "0";
+
+            // 初始化用戶語言設定
+            const savedLang = localStorage.getItem('serene_lang') || 'zh';
+            switchLanguage(savedLang);
         });
+
+        /* 雙語切換邏輯 */
+        function switchLanguage(lang) {
+            localStorage.setItem('serene_lang', lang);
+            document.documentElement.lang = lang === 'en' ? 'en' : 'zh-HK';
+
+            document.getElementById('btnZh').classList.toggle('active', lang === 'zh');
+            document.getElementById('btnEn').classList.toggle('active', lang === 'en');
+
+            document.querySelectorAll('[data-zh]').forEach(el => {
+                el.innerText = lang === 'en' ? el.getAttribute('data-en') : el.getAttribute('data-zh');
+            });
+        }
+
+        /* 控制 Pop-up 彈出與關閉 */
+        function toggleOrderPopup() {
+            const popup = document.getElementById('popupOverlay');
+            popup.classList.toggle('show');
+        }
+
+        function closeOrderPopup() {
+            const popup = document.getElementById('popupOverlay');
+            popup.classList.remove('show');
+        }
 
         function logout() {
             localStorage.removeItem('serene_user');
