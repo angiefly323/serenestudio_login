@@ -3,316 +3,595 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Serene Studio - 集運單及國際運費</title>
+    <title>Serene Studio - 集運單及國際運費 / Consolidations</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-        body { background-color: #f4f6f9; color: #333; display: flex; min-height: 100vh; overflow-x: hidden; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: #faf7f7; color: #333; display: flex; min-height: 100vh; overflow-x: hidden; }
         
-        /* 側邊欄 (Sidebar) */
-        .sidebar { width: 250px; background-color: #ffffff; border-right: 1px solid #e5e7eb; position: fixed; height: 100%; z-index: 1000; transition: 0.3s; }
-        .logo-area { background: #743133; padding: 20px; text-align: center; display: flex; justify-content: center; align-items: center; min-height: 120px; }
-        .logo-area img { width: 90%; max-width: 180px; height: auto; }
-        .menu-list { list-style: none; padding: 10px 0; }
-        .menu-list li a { display: flex; align-items: center; padding: 15px 24px; color: #4b5563; text-decoration: none; font-size: 15px; transition: 0.2s; }
-        .menu-list li a i { width: 24px; font-size: 18px; margin-right: 10px; color: #9ca3af; }
-        .menu-list li a:hover, .menu-list li.active a { background-color: #fdf8f8; color: #743133; border-right: 4px solid #743133; font-weight: 600; }
+        /* =========================================
+           電腦版側邊欄 (Desktop Sidebar)
+        ========================================= */
+        .sidebar { width: 250px; background-color: #ffffff; border-right: 1px solid rgba(0,0,0,0.05); position: fixed; height: 100%; z-index: 1000; transition: 0.3s ease; display: flex; flex-direction: column; }
+        .logo-area { background: linear-gradient(135deg, #743133 0%, #522223 100%); padding: 24px; text-align: center; display: flex; justify-content: center; align-items: center; min-height: 100px; }
+        .logo-area img { width: 85%; max-width: 160px; height: auto; filter: brightness(0) invert(1); }
+
+        .menu-wrapper { flex: 1; overflow-y: auto; padding: 16px 10px; }
+        .menu-section-title { font-size: 11px; font-weight: 700; color: #a0a0a0; text-transform: uppercase; letter-spacing: 0.8px; padding: 14px 16px 6px 16px; }
+
+        .menu-list { list-style: none; margin-bottom: 8px; }
+        .menu-list li { margin-bottom: 2px; }
+        .menu-list li a { display: flex; align-items: center; padding: 11px 16px; color: #444; text-decoration: none; font-size: 14px; border-radius: 10px; font-weight: 500; transition: all 0.2s ease; }
+        .menu-list li a i { width: 22px; font-size: 16px; margin-right: 10px; color: #a0a0a0; }
+        .menu-list li a:hover { background-color: #f8f3f3; color: #743133; }
+        .menu-list li a:hover i { color: #743133; }
+        .menu-list li.active a { background-color: #fdf2f2; color: #743133; font-weight: 700; }
         .menu-list li.active a i { color: #743133; }
 
+        .sidebar-footer { padding: 16px; border-top: 1px solid rgba(0,0,0,0.05); background: #fff; }
+        .lang-switch-desktop { display: flex; background: #faf7f7; padding: 3px; border-radius: 10px; border: 1px solid rgba(116,49,51,0.1); margin-bottom: 10px; }
+        .lang-btn-dt { flex: 1; border: none; background: none; padding: 6px; font-size: 12px; font-weight: 600; color: #777; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+        .lang-btn-dt.active { background: #ffffff; color: #743133; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+
         /* 主內容區 */
-        .main-content { flex: 1; margin-left: 250px; transition: 0.3s; width: calc(100% - 250px); padding-bottom: 50px;}
-        .topbar { background: #fff; padding: 15px 24px; display: flex; align-items: center; border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; z-index: 99; }
-        .page-title { font-size: 18px; font-weight: 600; margin-left: 15px;}
-        .content-area { padding: 24px; max-width: 1000px; margin: 0 auto; }
-
-        /* 卡片與展開 */
-        .ship-card { background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin-bottom: 16px; overflow: hidden; border: 1px solid #eee; }
-        .ship-summary { padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: background 0.2s; }
-        .ship-summary:hover { background: #fafafa; }
+        .main-content { flex: 1; margin-left: 250px; transition: 0.3s; width: calc(100% - 250px); padding-bottom: 80px; }
         
-        .ship-info { display: flex; flex: 1; justify-content: space-between; align-items: center; padding-right: 20px; flex-wrap: wrap; gap: 10px; }
-        .ship-id { font-size: 16px; font-weight: 700; color: #111; }
-        .ship-meta { font-size: 13px; color: #666; margin-top: 4px; }
-        .ship-price { font-size: 18px; font-weight: 700; color: #743133; }
+        /* 🍷 TOPBAR */
+        .topbar { 
+            background: linear-gradient(135deg, #743133 0%, #522223 100%); 
+            padding: 16px 24px; 
+            display: flex; align-items: center; justify-content: center; 
+            position: sticky; top: 0; z-index: 99; 
+            box-shadow: 0 4px 15px rgba(116, 49, 51, 0.15);
+        }
+        .topbar-logo { height: 38px; width: auto; filter: brightness(0) invert(1); }
+
+        .mobile-lang-tag {
+            position: absolute; right: 16px;
+            background: rgba(255,255,255,0.15); backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.25); color: #fff;
+            font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px;
+            cursor: pointer; display: none;
+        }
+
+        .content-area { padding: 32px; max-width: 980px; margin: 0 auto; }
+
+        .page-header-title {
+            font-size: 20px; font-weight: 700; color: #111; margin-bottom: 24px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+
+        /* 💡 舊版「國際集運注意事項」提示卡片 (完全復刻原版黃色卡片樣式) */
+        .notice-card-amber {
+            background: #fffdf0;
+            border: 1px solid #fef08a;
+            border-left: 5px solid #eab308;
+            border-radius: 16px;
+            padding: 20px 24px;
+            margin-bottom: 28px;
+            box-shadow: 0 4px 15px rgba(234, 179, 8, 0.05);
+        }
+
+        .notice-title-amber {
+            font-size: 15px; font-weight: 700; color: #854d0e; margin-bottom: 12px;
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        .notice-list-amber {
+            list-style: none; font-size: 13.5px; color: #613b10; line-height: 1.8; padding-left: 4px;
+        }
+
+        .notice-list-amber li {
+            position: relative; padding-left: 18px;
+        }
+
+        .notice-list-amber li::before {
+            content: "•"; position: absolute; left: 0; color: #eab308; font-size: 16px;
+        }
+
+        /* 📦 摺疊面板 Accordion 卡片列表 */
+        .consolidations-container { display: flex; flex-direction: column; gap: 16px; }
+
+        .accordion-card {
+            background: #ffffff;
+            border-radius: 16px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+            overflow: hidden;
+            transition: all 0.25s ease;
+        }
+
+        .accordion-card:hover {
+            box-shadow: 0 8px 24px rgba(116, 49, 51, 0.06);
+            border-color: rgba(116, 49, 51, 0.15);
+        }
+
+        /* 摺疊面板 Header (對應舊版未展開前顯示欄位) */
+        .accordion-header {
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            user-select: none;
+            background: #ffffff;
+            transition: background 0.2s;
+        }
+
+        .accordion-header:hover { background: #faf7f7; }
+
+        .header-left { display: flex; flex-direction: column; gap: 4px; }
+        .shp-id-title { font-size: 16px; font-weight: 800; color: #111; letter-spacing: -0.01em; }
+        .shp-sub-info { font-size: 13px; color: #777; font-weight: 500; }
+
+        .header-right { display: flex; align-items: center; gap: 14px; }
+
+        .shp-price { font-size: 18px; font-weight: 800; color: #111; }
+
+        /* 狀態標籤 Pill Badges (完全對應舊版配色) */
+        .badge {
+            display: inline-block; padding: 6px 14px; border-radius: 20px;
+            font-size: 12.5px; font-weight: 700; text-align: center; white-space: nowrap;
+        }
         
-        .badge { padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block; white-space: nowrap; }
-        .badge.pending { background: #fff3cd; color: #856404; border: 1px solid #ffeeba; } 
-        .badge.pending-pay { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; } 
-        .badge.completed { background: #dcfce3; color: #166534; } 
-        
-        .toggle-icon { font-size: 18px; color: #aaa; transition: transform 0.3s; }
-        .ship-card.open .toggle-icon { transform: rotate(180deg); }
+        /* 待支付 (柔粉紅) */
+        .badge-unpaid { background: #fee2e2; color: #b91c1c; }
+        /* 正在寄往香港途中 (淡紫色) */
+        .badge-in-transit { background: #f3e8ff; color: #6b21a8; }
+        /* 順豐已寄出 (淡青色/綠色) */
+        .badge-shipped { background: #dcfce7; color: #15803d; }
+        /* 待自取 (黃色) */
+        .badge-pickup { background: #fef3c7; color: #b45309; }
 
-        .ship-details { display: none; padding: 24px; border-top: 1px solid #eee; background: #fdfdfd; }
-        .ship-card.open .ship-details { display: block; }
-        
-        .details-box { background: #f9f9f9; padding: 16px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #eee; font-size: 14px; line-height: 1.6; }
-        
-        /* 貨品細項表格 (僅保留貨品名稱與數量) */
-        .details-table { width: 100%; border-collapse: collapse; margin-top: 10px; margin-bottom: 10px; }
-        .details-table th { text-align: left; padding: 10px; font-size: 13px; color: #666; border-bottom: 2px solid #ddd; }
-        .details-table td { padding: 12px 10px; font-size: 14px; color: #333; border-bottom: 1px solid #eee; vertical-align: middle; }
+        /* 「立即支付」按鈕 (酒紅色) */
+        .btn-pay-now {
+            background: #743133; color: #ffffff; border: none; padding: 8px 18px;
+            border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer;
+            transition: all 0.2s ease; text-decoration: none; display: inline-flex;
+            align-items: center; gap: 6px;
+        }
 
-        .btn-pay-now { background: #743133; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 14px; }
-        .btn-pay-now:hover { background: #5a2527; }
+        .btn-pay-now:hover { background: #522223; transform: translateY(-1px); }
 
-        .notice-box { background: #fffbeb; border: 1px solid #fde68a; border-left: 4px solid #f59e0b; padding: 16px; border-radius: 6px; margin-bottom: 24px; font-size: 13.5px; color: #555; line-height: 1.6; }
-        .notice-box ul { margin-left: 20px; margin-top: 8px; }
+        .chevron-icon { font-size: 16px; color: #888; transition: transform 0.3s ease; }
+        .accordion-card.active .chevron-icon { transform: rotate(180deg); }
 
-        /* Modal 視窗 */
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 2000; display: none; justify-content: center; align-items: center; padding: 20px; }
-        .modal-box { background: #fff; width: 100%; max-width: 500px; border-radius: 12px; padding: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .pay-tabs { display: flex; gap: 10px; margin-bottom: 20px; }
-        .pay-tab { flex: 1; text-align: center; padding: 10px; background: #f0f0f0; color: #555; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; }
-        .pay-tab.active { background: #fdf8f8; color: #743133; border-color: #743133; }
-        .pay-content { display: none; background: #f9f9f9; padding: 20px; border-radius: 8px; border: 1px solid #eee; text-align: center; margin-bottom: 20px; }
-        .pay-content.active { display: block; }
-        .upload-section { margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px; }
-        .upload-btn { display: block; width: 100%; background: #fff; border: 2px dashed #743133; color: #743133; padding: 12px; text-align: center; border-radius: 8px; font-weight: 600; cursor: pointer; margin-bottom: 12px; }
-        .whatsapp-cs { display: block; width: 100%; background: #25D366; color: #fff; text-decoration: none; text-align: center; padding: 12px; border-radius: 8px; font-weight: 600; }
+        /* 展開身體細節 */
+        .accordion-body {
+            max-height: 0; overflow: hidden; transition: max-height 0.35s ease-in-out;
+            background: #ffffff; border-top: 1px solid transparent;
+        }
 
-        .no-data { text-align: center; padding: 40px; color: #888; font-size: 15px; background: #fff; border-radius: 12px; border: 1px solid #eee; }
+        .accordion-card.active .accordion-body {
+            max-height: 800px; border-top: 1px solid #eee;
+        }
+
+        .body-inner { padding: 24px; }
+
+        .detail-row { display: flex; margin-bottom: 12px; font-size: 14px; line-height: 1.6; }
+        .detail-label { width: 120px; color: #666; font-weight: 600; }
+        .detail-val { flex: 1; color: #222; font-weight: 500; }
+
+        /* 📄 分頁按鈕 Controls */
+        .pagination-container {
+            display: flex; justify-content: center; align-items: center;
+            gap: 12px; margin-top: 32px;
+        }
+        .page-btn {
+            background: #ffffff; border: 1px solid rgba(116, 49, 51, 0.2);
+            color: #743133; padding: 8px 16px; border-radius: 10px;
+            font-size: 13px; font-weight: 700; cursor: pointer; transition: 0.2s;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .page-btn:hover:not(:disabled) { background: #743133; color: #fff; }
+        .page-btn:disabled { opacity: 0.4; cursor: not-allowed; border-color: #ddd; color: #999; }
+        .page-info { font-size: 13.5px; font-weight: 600; color: #666; }
+
+        .empty-box {
+            text-align: center; padding: 60px 20px; background: #fff; border-radius: 20px;
+            border: 1px dashed #ddd; color: #888;
+        }
+        .empty-box i { font-size: 48px; color: #ccc; margin-bottom: 12px; }
+
+        /* 📱 手機版 Bottom Navigation Bar */
+        .mobile-bottom-nav {
+            display: none; position: fixed; bottom: 0; left: 0; right: 0;
+            height: 65px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(0, 0, 0, 0.08); z-index: 1000;
+            justify-content: space-around; align-items: center;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            color: #888; text-decoration: none; font-size: 11px; font-weight: 600; gap: 4px;
+            width: 20%; background: none; border: none; cursor: pointer; transition: 0.2s;
+        }
+        .nav-item i { font-size: 18px; }
+        .nav-item.active, .nav-item:hover { color: #743133; }
+
+        /* Pop-up List 選單 */
+        .popup-overlay {
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 1001; opacity: 0; transition: opacity 0.25s ease;
+        }
+        .popup-overlay.show { display: block; opacity: 1; }
+        .popup-menu {
+            position: fixed; bottom: -250px; left: 16px; right: 16px;
+            background: #ffffff; border-radius: 20px; padding: 20px 16px;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.15); z-index: 1002; transition: bottom 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .popup-overlay.show .popup-menu { bottom: 80px; }
+        .popup-header { font-size: 14px; font-weight: 700; color: #743133; text-align: center; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px dashed #eee; }
+        .popup-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+        .popup-list a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #faf7f7; border-radius: 12px; color: #333; text-decoration: none; font-size: 14px; font-weight: 600; transition: 0.2s; }
+        .popup-list a i { color: #743133; font-size: 16px; width: 20px; }
 
         @media (max-width: 768px) {
-            .sidebar { transform: translateX(-250px); }
-            .main-content { margin-left: 0; width: 100%; }
-            .details-table th { display: none; }
-            .details-table td { display: block; text-align: right; padding: 8px 10px; border-bottom: none; }
-            .details-table td::before { content: attr(data-label); float: left; font-weight: 600; color: #666; }
-            .details-table tr { display: block; border-bottom: 1px solid #ddd; padding-bottom: 8px; margin-bottom: 8px; }
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; width: 100%; padding-bottom: 80px; }
+            .topbar { padding: 14px 20px; }
+            .topbar-logo { height: 32px; }
+            .mobile-lang-tag { display: block; }
+            .content-area { padding: 20px; }
+            .accordion-header { padding: 16px; flex-wrap: wrap; gap: 12px; }
+            .header-right { flex-wrap: wrap; justify-content: flex-end; }
+            .mobile-bottom-nav { display: flex; }
         }
     </style>
 </head>
 <body>
 
-    <nav class="sidebar" id="sidebar">
-        <div class="logo-area"><img src="Serenestudio_2.png" alt="Logo"></div>
-        <ul class="menu-list">
-            <li><a href="dashboard.html"><i class="fa-solid fa-house"></i> 我的帳戶首頁</a></li>
-            <li><a href="profile.html"><i class="fa-solid fa-id-card"></i> 會員帳戶資料</a></li>
-            <li><a href="guidelines.html"><i class="fa-solid fa-book-open"></i> 購物流程及須知</a></li>
-            <li><a href="orders.html"><i class="fa-solid fa-file-invoice-dollar"></i> 代購訂單紀錄</a></li>
-            <li><a href="tracking.html"><i class="fa-solid fa-box-open"></i> 韓國倉及物流追蹤</a></li>
-            <li class="active"><a href="consolidation.html"><i class="fa-solid fa-plane-departure"></i> 集運單及國際運費</a></li>
-            <li><a href="calculator.html"><i class="fa-solid fa-calculator"></i> 運費計算機</a></li>
-            <li><a href="intel.html"><i class="fa-solid fa-fire"></i> 韓國網購情報</a></li>
-            <li style="margin-top: 20px; border-top: 1px solid #eee;"><a href="index.html"><i class="fa-solid fa-arrow-right-from-bracket"></i> 登出帳戶</a></li>
-        </ul>
+    <!-- 電腦版側邊選單 -->
+    <nav class="sidebar">
+        <div class="logo-area">
+            <img src="Serenestudio.png" alt="Serene Studio Logo">
+        </div>
+
+        <div class="menu-wrapper">
+            <div class="menu-section-title" data-zh="帳戶總覽" data-en="Overview">帳戶總覽</div>
+            <ul class="menu-list">
+                <li><a href="dashboard.html"><i class="fa-solid fa-house"></i> <span data-zh="我的帳戶首頁" data-en="Home Dashboard">我的帳戶首頁</span></a></li>
+                <li><a href="profile.html"><i class="fa-solid fa-id-card"></i> <span data-zh="會員帳戶資料" data-en="Profile Settings">會員帳戶資料</span></a></li>
+            </ul>
+
+            <div class="menu-section-title" data-zh="訂單及物流" data-en="Orders & Shipping">訂單及物流</div>
+            <ul class="menu-list">
+                <li><a href="orders.html"><i class="fa-solid fa-file-invoice-dollar"></i> <span data-zh="代購訂單紀錄" data-en="Proxy Orders">代購訂單紀錄</span></a></li>
+                <li><a href="tracking.html"><i class="fa-solid fa-box-open"></i> <span data-zh="韓國倉及物流追蹤" data-en="Warehouse Tracking">韓國倉及物流追蹤</span></a></li>
+                <li class="active"><a href="consolidation.html"><i class="fa-solid fa-plane-departure"></i> <span data-zh="集運單及國際運費" data-en="Consolidations">集運單及國際運費</span></a></li>
+            </ul>
+
+            <div class="menu-section-title" data-zh="服務與情報" data-en="Services & Info">服務與情報</div>
+            <ul class="menu-list">
+                <li><a href="calculator.html"><i class="fa-solid fa-calculator"></i> <span data-zh="運費計算機" data-en="Shipping Calculator">運費計算機</span></a></li>
+                <li><a href="intel.html"><i class="fa-solid fa-fire"></i> <span data-zh="韓國網購情報" data-en="Korea Shopping Intel">韓國網購情報</span></a></li>
+                <li><a href="guidelines.html"><i class="fa-solid fa-book-open"></i> <span data-zh="購物流程及須知" data-en="Guidelines">購物流程及須知</span></a></li>
+            </ul>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="lang-switch-desktop">
+                <button onclick="switchLanguage('zh')" id="btnZhDt" class="lang-btn-dt active">繁體中文</button>
+                <button onclick="switchLanguage('en')" id="btnEnDt" class="lang-btn-dt">English</button>
+            </div>
+            <a href="index.html" onclick="logout()" style="display:flex; align-items:center; gap:8px; color:#e11d48; text-decoration:none; font-size:13px; font-weight:600; padding:6px 8px;">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                <span data-zh="登出帳戶" data-en="Logout">登出帳戶</span>
+            </a>
+        </div>
     </nav>
 
+    <!-- 主內容區 -->
     <main class="main-content">
         <header class="topbar">
-            <button onclick="toggleSidebar()" style="background:none; border:none; font-size:20px; cursor:pointer;"><i class="fa-solid fa-bars"></i></button>
-            <div class="page-title">集運單及國際運費</div>
+            <img src="Serenestudio.png" alt="Serene Studio Logo" class="topbar-logo">
+            <div class="mobile-lang-tag" onclick="toggleMobileLang()" id="mobileLangBtn">EN</div>
         </header>
 
         <div class="content-area">
             
-            <div id="consolidationContainer">
-                <div class="no-data">正在載入您的集運單資料...</div>
+            <div class="page-header-title">
+                <div>
+                    <i class="fa-solid fa-plane-departure" style="color:#743133; margin-right:8px;"></i>
+                    <span data-zh="集運單及國際運費" data-en="Consolidations & Int'l Shipping">集運單及國際運費</span>
+                </div>
             </div>
 
-            <!-- 底部注意事項 -->
-            <div class="notice-box">
-                <strong><i class="fa-solid fa-circle-info"></i> 國際集運注意事項：</strong>
-                <ul>
-                    <li>國際運費計算方式會以貨品的 <strong>「實際重量」與「體積重」兩者取其大</strong> 作為收費標準。</li>
-                    <li>店主於貨物抵港打包後會更新「包裹總重量」與「國際運費」，未更新前會顯示為 <strong>待確認</strong>。</li>
-                    <li>運費更新後，請點擊「立即支付」並上傳付款憑證（支持 PayMe / FPS / 銀行轉賬），店主核對後將盡快發貨。</li>
+            <!-- 💡 1. 國際集運注意事項卡片 (完全復刻舊版內容與顏色) -->
+            <div class="notice-card-amber">
+                <div class="notice-title-amber">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <span data-zh="國際集運注意事項：" data-en="International Shipping Notice:">國際集運注意事項：</span>
+                </div>
+                <ul class="notice-list-amber">
+                    <li><span data-zh="國際運費計算方式會以貨品的「" data-en="Shipping rate is charged based on the larger of ">國際運費計算方式會以貨品的「</span><strong style="color:#854d0e;">實際重量</strong><span data-zh="」與「" data-en=" and ">」與「</span><strong style="color:#854d0e;">體積重</strong><span data-zh="」兩者取其大 作為收費標準。" data-en="'.">」兩者取其大 作為收費標準。</span></li>
+                    <li><span data-zh="當收到【待支付】運費通知後，請於 " data-en="Upon receiving 'Unpaid' notification, please pay within ">當收到【待支付】運費通知後，請於 </span><strong style="color:#854d0e;">3天內</strong><span data-zh=" 繳付並上傳憑證，逾期將暫緩發貨並可能產生額外倉租。" data-en=" 3 days."> 繳付並上傳憑證，逾期將暫緩發貨並可能產生額外倉租。</span></li>
+                    <li><span data-zh="選擇順豐到付的客人，國際運費需先於本網支付，本地派件運費將由順豐派遞員直接收取。" data-en="For SF Express COD, int'l fee must be paid on site. Local fee collected by SF driver.">選擇順豐到付的客人，國際運費需先於本網支付，本地派件運費將由順豐派遞員直接收取。</span></li>
                 </ul>
+            </div>
+
+            <!-- 📦 2. 集運單列表容器 -->
+            <div class="consolidations-container" id="consolidationsContainer">
+                <div class="empty-box">
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+                    <p data-zh="正在載入您的集運單紀錄..." data-en="Loading consolidation history...">正在載入您的集運單紀錄...</p>
+                </div>
+            </div>
+
+            <!-- 📄 3. 分頁按鈕 Controls -->
+            <div class="pagination-container" id="paginationControls" style="display: none;">
+                <button class="page-btn" id="prevPageBtn" onclick="changePage(-1)">
+                    <i class="fa-solid fa-chevron-left"></i> <span data-zh="上一頁" data-en="Prev">上一頁</span>
+                </button>
+                <span class="page-info" id="pageInfoText">第 1 / 1 頁</span>
+                <button class="page-btn" id="nextPageBtn" onclick="changePage(1)">
+                    <span data-zh="下一頁" data-en="Next">下一頁</span> <i class="fa-solid fa-chevron-right"></i>
+                </button>
             </div>
 
         </div>
     </main>
 
-    <!-- 支付及上傳證明 Modal -->
-    <div class="modal-overlay" id="paymentModal">
-        <div class="modal-box">
-            <div class="modal-header">
-                <h3>支付國際運費</h3>
-                <button onclick="closePaymentModal()" style="background:none; border:none; font-size:20px; cursor:pointer; color:#888;"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            
-            <div style="text-align: center; margin-bottom: 20px;">
-                <div style="font-size: 14px; color: #666;">集運單號: <span id="modalOrderNo" style="font-weight:bold; color:#111;">-</span></div>
-                <div style="font-size: 28px; font-weight: bold; color: #743133; margin-top: 5px;" id="modalAmount">HK$ 0.00</div>
-            </div>
+    <!-- 📱 手機專屬 Bottom Navigation Bar -->
+    <nav class="mobile-bottom-nav">
+        <a href="dashboard.html" class="nav-item">
+            <i class="fa-solid fa-house"></i>
+            <span data-zh="首頁" data-en="Home">首頁</span>
+        </a>
 
-            <div class="pay-tabs">
-                <div class="pay-tab active" onclick="switchPayTab('fps', event)">轉數快 FPS</div>
-                <div class="pay-tab" onclick="switchPayTab('payme', event)">PayMe</div>
-                <div class="pay-tab" onclick="switchPayTab('bank', event)">銀行轉賬</div>
-            </div>
+        <button type="button" class="nav-item active" onclick="toggleOrderPopup()">
+            <i class="fa-solid fa-boxes-stacked"></i>
+            <span data-zh="管理訂單" data-en="Orders">管理訂單</span>
+        </button>
 
-            <div id="tab-fps" class="pay-content active">
-                <p style="font-size: 14px; margin-bottom: 10px;">請轉賬至以下 FPS 識別碼：</p>
-                <div style="font-size: 24px; font-weight: bold; letter-spacing: 2px; color: #743133;">1234567</div>
-                <p style="font-size: 12px; color: #888; margin-top: 5px;">收款人名稱: Serene Studio Limited</p>
-            </div>
+        <a href="calculator.html" class="nav-item">
+            <i class="fa-solid fa-calculator"></i>
+            <span data-zh="運費試算" data-en="Calc">運費試算</span>
+        </a>
 
-            <div id="tab-payme" class="pay-content">
-                <p style="font-size: 14px; margin-bottom: 10px;">請掃描下方 PayMe QR Code：</p>
-                <div style="width: 140px; height: 140px; background: #fff; border: 1px dashed #ccc; display: inline-flex; justify-content: center; align-items: center; margin: 10px 0; color: #aaa;"><i class="fa-solid fa-qrcode" style="font-size:40px;"></i></div><br>
-                <a href="#" style="font-size: 13px; color: #2563eb; font-weight: 600;">點擊開啟 PayMe App</a>
-            </div>
+        <a href="intel.html" class="nav-item">
+            <i class="fa-solid fa-fire"></i>
+            <span data-zh="網購情報" data-en="Intel">網購情報</span>
+        </a>
 
-            <div id="tab-bank" class="pay-content">
-                <p style="font-size: 14px; margin-bottom: 10px;">請轉賬至以下匯豐銀行戶口：</p>
-                <div style="font-size: 18px; font-weight: bold; color: #743133; margin-bottom: 5px;">123-456789-001</div>
-                <p style="font-size: 13px;">Fung L** Y** (Serene Studio)</p>
-            </div>
+        <a href="profile.html" class="nav-item">
+            <i class="fa-solid fa-user"></i>
+            <span data-zh="我的帳戶" data-en="Account">我的帳戶</span>
+        </a>
+    </nav>
 
-            <div class="upload-section">
-                <input type="file" id="receiptUpload" style="display:none;" accept="image/*">
-                <button class="upload-btn" onclick="document.getElementById('receiptUpload').click();">
-                    <i class="fa-solid fa-cloud-arrow-up"></i> 於此處上傳付款憑證紀錄 (JPG/PNG)
-                </button>
-                <div style="text-align: center; margin: 10px 0; font-size: 12px; color: #888;">或</div>
-                <a href="https://wa.me/85200000000?text=你好，我已支付集運運費！" target="_blank" class="whatsapp-cs">
-                    <i class="fa-brands fa-whatsapp"></i> 經 WhatsApp 傳送紀錄給客服
-                </a>
-            </div>
+    <!-- 💬 Pop-up List -->
+    <div class="popup-overlay" id="popupOverlay" onclick="closeOrderPopup()">
+        <div class="popup-menu" onclick="event.stopPropagation();">
+            <div class="popup-header" data-zh="請選擇訂單管理項目" data-en="Select Order Category">請選擇訂單管理項目</div>
+            <ul class="popup-list">
+                <li>
+                    <a href="orders.html">
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                        <span data-zh="代購訂單紀錄" data-en="Proxy Orders History">代購訂單紀錄</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="tracking.html">
+                        <i class="fa-solid fa-box-open"></i>
+                        <span data-zh="韓國物流追蹤" data-en="KR Warehouse Inventory">韓國物流追蹤</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="consolidation.html">
+                        <i class="fa-solid fa-plane-departure"></i>
+                        <span data-zh="集運單及國際運費" data-en="Consolidation Requests">集運單及國際運費</span>
+                    </a>
+                </li>
+            </ul>
         </div>
     </div>
 
     <script>
         const GAS_URL = "https://script.google.com/macros/s/AKfycbyTpnxEfQ9B2ysDjq-H7C1N_1BqRcEZVL0nPBInlHoYKOFQVTP-QM13pLEq3d3opbdm/exec";
 
+        let consolidationsList = [];
+        let currentPage = 1;
+        const ITEMS_PER_PAGE = 5;
+
         window.addEventListener('DOMContentLoaded', () => {
             const userData = JSON.parse(localStorage.getItem('serene_user'));
+
             if (!userData || !userData.phone) {
-                alert("請先登入！");
+                alert("您尚未登入，請先登入帳戶！");
                 window.location.href = "index.html";
                 return;
             }
+
+            const savedLang = localStorage.getItem('serene_lang') || 'zh';
+            switchLanguage(savedLang);
+
             fetchConsolidations(userData.phone);
         });
 
-        // 格式化日期顯示
-        function formatDate(dateStr) {
-            if (!dateStr) return '最近';
-            try {
-                const d = new Date(dateStr);
-                if (isNaN(d.getTime())) return dateStr;
-                const year = d.getFullYear();
-                const month = String(d.getMonth() + 1).padStart(2, '0');
-                const day = String(d.getDate()).padStart(2, '0');
-                const hours = String(d.getHours()).padStart(2, '0');
-                const minutes = String(d.getMinutes()).padStart(2, '0');
-                return `${year}-${month}-${day} ${hours}:${minutes}`;
-            } catch (e) {
-                return dateStr;
-            }
-        }
-
+        // 讀取集運單數據
         async function fetchConsolidations(phone) {
-            const container = document.getElementById('consolidationContainer');
+            const container = document.getElementById('consolidationsContainer');
+            const currentLang = localStorage.getItem('serene_lang') || 'zh';
 
             try {
                 const response = await fetch(GAS_URL, {
-                    method: "POST", mode: "cors",
+                    method: "POST",
+                    mode: "cors",
                     headers: { "Content-Type": "text/plain;charset=utf-8" },
                     body: JSON.stringify({ action: "getConsolidations", phone: phone })
                 });
 
                 const result = await response.json();
 
-                if (result.status === "success" && result.data.length > 0) {
-                    let html = "";
-                    result.data.forEach(item => {
-                        let isConfirmed = item.shippingFee !== "待確認";
-                        let badgeClass = isConfirmed ? "badge pending-pay" : "badge pending";
-                        let statusText = isConfirmed ? "待支付" : "待店主秤重確認";
-                        let displayFee = isConfirmed ? (item.shippingFee.toString().includes("HK$") ? item.shippingFee : "HK$ " + item.shippingFee) : "待確認";
+                if (result.status === "success" && result.data && result.data.length > 0) {
+                    consolidationsList = result.data.reverse(); // 最新集運單顯示在最上面
+                    currentPage = 1;
+                    renderConsolidationsPage();
+                } else {
+                    container.innerHTML = `
+                        <div class="empty-box">
+                            <i class="fa-solid fa-plane-arrival"></i>
+                            <p>${currentLang === 'en' ? 'No consolidation records found' : '尚無集運單紀錄'}</p>
+                        </div>
+                    `;
+                    document.getElementById('paginationControls').style.display = "none";
+                }
+            } catch (err) {
+                console.error(err);
+                container.innerHTML = `
+                    <div class="empty-box">
+                        <i class="fa-solid fa-triangle-exclamation" style="color:#e11d48;"></i>
+                        <p>${currentLang === 'en' ? 'Failed to load consolidation data' : '無法讀取集運資料，請稍後再試'}</p>
+                    </div>
+                `;
+                document.getElementById('paginationControls').style.display = "none";
+            }
+        }
 
-                        // 將逗號分隔的貨品拆解成清爽表格 Rows (移除韓圜價錢欄位)
-                        const itemsList = item.items.split(',').map(s => s.trim()).filter(s => s);
-                        let tableRowsHtml = "";
-                        itemsList.forEach(itemName => {
-                            tableRowsHtml += `
-                                <tr>
-                                    <td data-label="貨品名稱"><strong>${itemName}</strong></td>
-                                    <td data-label="數量" style="width: 100px;">1</td>
-                                </tr>
-                            `;
-                        });
+        // 渲染集運卡片
+        function renderConsolidationsPage() {
+            const container = document.getElementById('consolidationsContainer');
+            const currentLang = localStorage.getItem('serene_lang') || 'zh';
 
-                        html += `
-                            <div class="ship-card" onclick="toggleCard(this)">
-                                <div class="ship-summary">
-                                    <div class="ship-info">
-                                        <div>
-                                            <div class="ship-id">集運單號 ${item.requestId}</div>
-                                            <div class="ship-meta">申請集運日期: ${formatDate(item.timestamp)}</div>
-                                        </div>
-                                        <div style="display: flex; align-items: center; gap: 15px;">
-                                            <span class="ship-price">${displayFee}</span>
-                                            <span class="${badgeClass}">${statusText}</span>
-                                            ${isConfirmed ? `<button class="btn-pay-now" onclick="openPaymentModal(event, '${displayFee}', '${item.requestId}')">立即支付</button>` : ''}
-                                        </div>
-                                    </div>
-                                    <i class="fa-solid fa-chevron-down toggle-icon"></i>
-                                </div>
-                                
-                                <div class="ship-details" onclick="event.stopPropagation();">
-                                    <div class="details-box">
-                                        <strong>收貨方式：</strong> ${item.deliveryMethod}<br>
-                                        <strong>包裹總重量：</strong> ${item.totalWeight}
-                                    </div>
+            const totalPages = Math.ceil(consolidationsList.length / ITEMS_PER_PAGE) || 1;
+            const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+            const endIndex = startIndex + ITEMS_PER_PAGE;
+            const currentList = consolidationsList.slice(startIndex, endIndex);
 
-                                    <table class="details-table">
-                                        <thead>
-                                            <tr>
-                                                <th>貨品名稱</th>
-                                                <th style="width: 100px;">數量</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            ${tableRowsHtml}
-                                        </tbody>
-                                    </table>
+            container.innerHTML = "";
+
+            currentList.forEach((item, index) => {
+                // 狀態標籤與按鈕樣式判斷 (完全對應舊版截圖)
+                let badgeClass = "badge-in-transit";
+                let payBtnHtml = "";
+
+                if (item.status === "待支付") {
+                    badgeClass = "badge-unpaid";
+                    payBtnHtml = `
+                        <a href="javascript:void(0)" onclick="handlePayNow('${item.shpID}', ${item.feeHKD})" class="btn-pay-now">
+                            <i class="fa-solid fa-credit-card"></i> ${currentLang === 'en' ? 'Pay Now' : '立即支付'}
+                        </a>
+                    `;
+                } else if (item.status === "正在寄往香港途中") {
+                    badgeClass = "badge-in-transit";
+                } else if (item.status === "順豐已寄出") {
+                    badgeClass = "badge-shipped";
+                } else if (item.status === "待自取") {
+                    badgeClass = "badge-pickup";
+                }
+
+                const cardHtml = `
+                    <div class="accordion-card" id="card-${index}">
+                        <!-- Header 預覽列 (完全還原舊版佈局) -->
+                        <div class="accordion-header" onclick="toggleAccordion(${index})">
+                            <div class="header-left">
+                                <div class="shp-id-title">${currentLang === 'en' ? 'Consolidation No.' : '集運單號'} #${item.shpID}</div>
+                                <div class="shp-sub-info">
+                                    ${currentLang === 'en' ? 'Apply Date:' : '申請日期:'} ${item.applyDate} | 
+                                    ${currentLang === 'en' ? 'Total Weight:' : '總重量:'} ${item.totalWeight || '0.0'}kg
                                 </div>
                             </div>
-                        `;
-                    });
-                    container.innerHTML = html;
-                } else {
-                    container.innerHTML = `<div class="no-data">目前尚無任何集運單記錄。請先到【韓國倉及物流追蹤】勾選已到倉貨品進行申請。</div>`;
-                }
-            } catch (error) {
-                console.error("Error:", error);
-                container.innerHTML = `<div class="no-data" style="color: #743133;">載入集運單失敗，請稍後再試。</div>`;
+
+                            <div class="header-right">
+                                <div class="shp-price">HK$ ${Number(item.feeHKD || 0).toFixed(2)}</div>
+                                <span class="badge ${badgeClass}">${item.status}</span>
+                                ${payBtnHtml}
+                                <i class="fa-solid fa-chevron-down chevron-icon"></i>
+                            </div>
+                        </div>
+
+                        <!-- Body 展開細節 -->
+                        <div class="accordion-body">
+                            <div class="body-inner">
+                                <div class="detail-row">
+                                    <div class="detail-label">${currentLang === 'en' ? 'Items Included:' : '包含貨品：'}</div>
+                                    <div class="detail-val">${item.itemsList || '無資料'}</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">${currentLang === 'en' ? 'Delivery Address:' : '派送資料：'}</div>
+                                    <div class="detail-val">${item.deliveryMethod || '順豐到付'}</div>
+                                </div>
+                                ${item.trackingNo ? `
+                                    <div class="detail-row">
+                                        <div class="detail-label">${currentLang === 'en' ? 'Tracking No:' : '運單追蹤號：'}</div>
+                                        <div class="detail-val" style="font-weight:700; color:#743133;">${item.trackingNo}</div>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += cardHtml;
+            });
+
+            // 更新分頁 Controls
+            const controls = document.getElementById('paginationControls');
+            if (consolidationsList.length > ITEMS_PER_PAGE) {
+                controls.style.display = "flex";
+                document.getElementById('pageInfoText').innerText = currentLang === 'en' ? 
+                    `Page ${currentPage} of ${totalPages}` : `第 ${currentPage} / ${totalPages} 頁`;
+                
+                document.getElementById('prevPageBtn').disabled = (currentPage === 1);
+                document.getElementById('nextPageBtn').disabled = (currentPage === totalPages);
+            } else {
+                controls.style.display = "none";
             }
         }
 
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.style.transform = sidebar.style.transform === 'translateX(0px)' ? 'translateX(-250px)' : 'translateX(0px)';
+        function toggleAccordion(index) {
+            const card = document.getElementById(`card-${index}`);
+            card.classList.toggle('active');
         }
 
-        function toggleCard(card) { card.classList.toggle('open'); }
-        function openPaymentModal(event, amount, orderNo) {
-            event.stopPropagation();
-            document.getElementById('modalAmount').innerText = amount;
-            document.getElementById('modalOrderNo').innerText = orderNo;
-            document.getElementById('paymentModal').style.display = 'flex';
-        }
-        function closePaymentModal() { document.getElementById('paymentModal').style.display = 'none'; }
-
-        function switchPayTab(tabId, event) {
-            document.querySelectorAll('.pay-tab').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.pay-content').forEach(content => content.classList.remove('active'));
-            event.target.classList.add('active');
-            document.getElementById('tab-' + tabId).classList.add('active');
+        function changePage(direction) {
+            const totalPages = Math.ceil(consolidationsList.length / ITEMS_PER_PAGE);
+            currentPage += direction;
+            if (currentPage < 1) currentPage = 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+            
+            renderConsolidationsPage();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        document.getElementById('receiptUpload').addEventListener('change', function() {
-            if(this.files.length > 0) {
-                alert('付款紀錄上傳成功！客服會盡快核對並安排發貨。');
-                closePaymentModal();
+        // 「立即支付」處理函式
+        function handlePayNow(shpID, amount) {
+            event.stopPropagation(); // 阻止手風琴展開
+            alert(`請轉帳 HK$ ${amount} 至 FPS / PayMe，並聯絡店主提交憑證（集運單號: ${shpID}）。`);
+        }
+
+        /* 雙語切換邏輯 */
+        function switchLanguage(lang) {
+            localStorage.setItem('serene_lang', lang);
+            document.documentElement.lang = lang === 'en' ? 'en' : 'zh-HK';
+
+            document.getElementById('btnZhDt').classList.toggle('active', lang === 'zh');
+            document.getElementById('btnEnDt').classList.toggle('active', lang === 'en');
+            document.getElementById('mobileLangBtn').innerText = lang === 'en' ? '繁中' : 'EN';
+
+            document.querySelectorAll('[data-zh]').forEach(el => {
+                el.innerText = lang === 'en' ? el.getAttribute('data-en') : el.getAttribute('data-zh');
+            });
+
+            if (consolidationsList.length > 0) {
+                renderConsolidationsPage();
             }
-        });
+        }
+
+        function toggleMobileLang() {
+            const currentLang = localStorage.getItem('serene_lang') || 'zh';
+            switchLanguage(currentLang === 'zh' ? 'en' : 'zh');
+        }
+
+        function toggleOrderPopup() { document.getElementById('popupOverlay').classList.toggle('show'); }
+        function closeOrderPopup() { document.getElementById('popupOverlay').classList.remove('show'); }
+
+        function logout() {
+            localStorage.removeItem('serene_user');
+            window.location.href = 'index.html';
+        }
     </script>
 </body>
 </html>
