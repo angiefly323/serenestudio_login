@@ -621,6 +621,11 @@
         /* 提交集運至 Apps Script */
         async function handleConsolidationSubmit(event) {
             event.preventDefault();
+            // 提交前提示：申請一經提交不能更改
+            const isEn = localStorage.getItem('serene_lang') === 'en';
+            if (!confirm(isEn
+                ? 'Please note: once submitted, this consolidation request cannot be changed (no adding or removing items). Submit now?'
+                : '提提你：集運申請一經提交，便不能更改或加減貨品。\n確定提交？')) return;
             const btnSubmit = document.getElementById('btnModalSubmit');
             btnSubmit.disabled = true;
 
