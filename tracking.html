@@ -571,6 +571,8 @@
             const radioSf = document.getElementById('radioSf');
             const radioSelf = document.getElementById('radioSelf');
             const sfDetailsBox = document.getElementById('sfDetailsBox');
+            // required-toggle: 自取時順豐欄位唔再必填，否則隱藏欄位會令表單提交無反應
+            ['sfName','sfPhone','sfAddress'].forEach(function(id){ var el = document.getElementById(id); if (el) el.required = (opt === 'SF'); });
 
             if (opt === 'SF') {
                 sfCard.classList.add('selected');
