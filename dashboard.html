@@ -150,6 +150,11 @@
             .mobile-bottom-nav { display: flex; }
         }
     </style>
+    <link rel="stylesheet" href="serene-member.css">
+    <link rel="icon" href="favicon.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta name="robots" content="noindex, nofollow">
+    <script src="site-ui.js"></script>
     <script src="serene-auth.js"></script>
 </head>
 <body>
@@ -191,7 +196,8 @@
                 <button onclick="switchLanguage('zh')" id="btnZhDt" class="lang-btn-dt active">繁體中文</button>
                 <button onclick="switchLanguage('en')" id="btnEnDt" class="lang-btn-dt">English</button>
             </div>
-            <a href="index.html" onclick="logout()" style="display:flex; align-items:center; gap:8px; color:#e11d48; text-decoration:none; font-size:13px; font-weight:600; padding:6px 8px;">
+            <a href="privacy.html" class="serene-privacy-link" data-zh="私隱政策" data-en="Privacy Policy">私隱政策</a>
+            <a href="login.html" onclick="logout()" style="display:flex; align-items:center; gap:8px; color:#e11d48; text-decoration:none; font-size:13px; font-weight:600; padding:6px 8px;">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
                 <span data-zh="登出帳戶" data-en="Logout">登出帳戶</span>
             </a>
@@ -209,10 +215,10 @@
         </header>
 
         <div class="content-area">
-            <!-- 歡迎 Banner (顯示 DisplayName 或親愛的會員) -->
+            <!-- 歡迎 Banner (顯示 DisplayName 或尊貴會員) -->
             <div class="welcome-card">
                 <h2><i class="fa-solid fa-sparkles"></i> <span data-zh="歡迎回來，" data-en="Welcome back, ">歡迎回來，</span><span id="userNameDisplay">尊貴會員</span>！</h2>
-                <p data-zh="感謝選擇 Serene Studio！您可以在此隨時查看最新的韓國代購訂單進度、韓國倉到貨狀況、申請合併寄回香港，或是使用我們的計算機試算費用。" data-en="Thank you for choosing Serene Studio! Manage your Korean proxy orders, track warehouse inventory, submit shipping consolidation, or calculate costs all in one place.">感謝選擇 Serene Studio！您可以在此隨時查看最新的韓國代購訂單進度、韓國倉到貨狀況、申請合併寄回香港，或是使用我們的計算機試算費用。</p>
+                <p data-zh="感謝選擇 Serene Studio！你可以在此隨時查看最新的韓國代購訂單進度、韓國倉到貨狀況、申請合併寄回香港，或是使用我們的計算機試算費用。" data-en="Thank you for choosing Serene Studio! Manage your Korean proxy orders, track warehouse inventory, submit shipping consolidation, or calculate costs all in one place.">感謝選擇 Serene Studio！你可以在此隨時查看最新的韓國代購訂單進度、韓國倉到貨狀況、申請合併寄回香港，或是使用我們的計算機試算費用。</p>
             </div>
 
             <!-- 數據概覽區 -->
@@ -348,12 +354,12 @@
             const userData = JSON.parse(localStorage.getItem('serene_user'));
 
             if (!userData || !userData.phone) {
-                alert("您尚未登入，請先登入帳戶！");
-                window.location.href = "index.html";
+                alert("你尚未登入，請先登入帳戶！");
+                window.location.href = "login.html";
                 return;
             }
 
-            // 優先顯示自訂用戶名稱 (displayName)，無自訂則顯示親愛的會員
+            // 優先顯示自訂用戶名稱 (displayName)，無自訂則顯示尊貴會員
             const nameToDisplay = userData.displayName || (localStorage.getItem('serene_lang') === 'en' ? 'Valued Member' : '尊貴會員');
             document.getElementById('userNameDisplay').innerText = nameToDisplay;
             
@@ -399,7 +405,7 @@
         function logout() {
             if (window.sereneLogoutRemote) sereneLogoutRemote();
             localStorage.removeItem('serene_user');
-            window.location.href = 'index.html';
+            window.location.href = 'login.html';
         }
     </script>
 </body>

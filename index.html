@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Serene Studio｜韓國代購 · 集運到香港</title>
+<meta name="description" content="韓國代購及集運：K-pop 專輯周邊、服飾、美妝、零食、寵物用品。手續費 ₩3,500 起／件，首 0.5kg 運費 HK$24。">
+<!-- 設計稿：公開首頁（雜誌風）· 黃色 = 待填 · 斜線框 = 相片留位 -->
+<link rel="stylesheet" href="serene-editorial.css">
+<style>
+body{background:var(--grad-mist);padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+/* Masthead */
+.topline{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);text-align:center;padding:10px var(--gutter);border-bottom:1px solid var(--line)}
+.mast{text-align:center;padding:18px 0 0}
+.mast .wordmark{font-family:var(--f-display);font-size:clamp(34px,6vw,64px);font-weight:500;color:var(--ink);text-decoration:none;letter-spacing:.02em;line-height:1}
+.mast .wordmark em{color:var(--wine)}
+.navbar{display:flex;justify-content:center;gap:28px;padding:14px 0;margin-top:14px;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+.navbar a{text-decoration:none}
+.navbar a:hover{color:var(--wine)}
+.navbar .hide-m{display:none}
+.login-link{position:absolute;right:var(--gutter);top:44px;font-size:13px;font-weight:600;letter-spacing:.08em}
+@media(min-width:900px){.navbar .hide-m{display:inline}}
+/* Hero */
+.hero{padding:40px 0 var(--section);background:var(--grad-glow)}
+.hero-grid{display:grid;gap:32px}
+.hero .display{margin:14px 0 18px}
+.hero h1{font-size:clamp(22px,3vw,30px);font-weight:600;margin-bottom:14px}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:12px;margin:28px 0}
+.facts{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--ink)}
+.facts div{padding:14px 0;border-bottom:1px solid var(--line)}
+.facts div:nth-child(odd){padding-right:12px;border-right:1px solid var(--line)}
+.facts div:nth-child(even){padding-left:14px}
+.facts b{display:block;font-family:var(--f-display);font-size:28px;font-weight:500;color:var(--ink);line-height:1.1}
+.facts span{font-size:13px;color:var(--muted)}
+@media(min-width:900px){.hero-grid{grid-template-columns:1.25fr .75fr;align-items:end}.facts{grid-template-columns:repeat(4,1fr)}.facts div{border-right:1px solid var(--line);padding:16px 14px!important}.facts div:last-child{border-right:0}}
+section{padding:var(--section) 0}
+/* Index list (categories) */
+.index a{display:grid;grid-template-columns:48px 1fr auto;gap:12px;align-items:baseline;padding:20px 0;border-bottom:1px solid var(--line);text-decoration:none;transition:padding .2s,color .2s}
+.index a:first-child{border-top:1px solid var(--ink)}
+.index a:hover{padding-left:10px;color:var(--wine)}
+.index .n{font-family:var(--f-display);font-style:italic;color:var(--wine);font-size:18px}
+.index h3{font-size:clamp(20px,2.6vw,30px)}
+.index p{grid-column:2/4;font-size:14px;color:var(--muted)}
+.index .en{font-family:var(--f-display);font-style:italic;font-size:18px;color:var(--muted)}
+@media(min-width:900px){.cat-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:56px;align-items:start}.index p{grid-column:auto}.index a{grid-template-columns:56px 1fr 1fr auto}}
+/* Steps */
+.steps{display:grid;border-top:1px solid var(--ink)}
+.step{padding:24px 0;border-bottom:1px solid var(--line)}
+.step .big{font-family:var(--f-display);font-size:64px;line-height:1;color:var(--wine);font-style:italic}
+.step h3{margin:8px 0 6px}
+.step p{font-size:14px;color:var(--muted)}
+@media(min-width:900px){.steps{grid-template-columns:repeat(4,1fr)}.step{padding:28px 24px 28px 0;border-bottom:0;border-right:1px solid var(--line);margin-right:24px}.step:last-child{border-right:0;margin-right:0}}
+/* Pricing */
+.price{display:grid;gap:40px}
+.ptable{width:100%;border-collapse:collapse}
+.ptable caption{text-align:left;font-family:var(--f-serif);font-size:19px;font-weight:600;color:var(--ink);padding-bottom:12px;border-bottom:1px solid var(--ink)}
+.ptable td{padding:16px 0;border-bottom:1px solid var(--line);font-size:15px}
+.ptable td:last-child{text-align:right;font-family:var(--f-display);font-size:26px;color:var(--ink)}
+.ptable tr.best td{color:var(--wine)}
+.ptable tr.best td:last-child{color:var(--wine)}
+@media(min-width:900px){.price{grid-template-columns:1fr 1fr;gap:64px}}
+/* Calculator */
+.calc{display:grid;gap:32px}
+.calc .row{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.receipt{background:var(--paper);border:1px solid var(--line);padding:24px}
+.receipt .l{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px dashed var(--line);font-size:14px;color:var(--muted)}
+.receipt .t{display:flex;justify-content:space-between;align-items:baseline;padding-top:16px}
+.receipt .t b{font-family:var(--f-display);font-size:44px;font-weight:500;color:var(--wine);line-height:1}
+.tip{margin-top:14px;font-size:13px;border-left:2px solid var(--wine);padding-left:12px;color:var(--text)}
+@media(min-width:900px){.calc{grid-template-columns:1fr 1fr;gap:64px;align-items:start}}
+/* Quote */
+.quotes{display:grid;gap:24px}
+.quote{border-top:1px solid var(--ink);padding-top:20px}
+.quote blockquote{font-family:var(--f-serif);font-size:20px;line-height:1.6;color:var(--ink)}
+.quote blockquote:before{content:"“";font-family:var(--f-display);font-size:64px;color:var(--wine);line-height:0;vertical-align:-24px;margin-right:4px}
+.quote cite{display:block;margin-top:12px;font-style:normal;font-size:13px;letter-spacing:.1em;color:var(--muted)}
+@media(min-width:900px){.quotes{grid-template-columns:repeat(3,1fr);gap:40px}}
+/* FAQ */
+.faq details{border-bottom:1px solid var(--line)}
+.faq details:first-child{border-top:1px solid var(--ink)}
+.faq summary{list-style:none;cursor:pointer;min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px;font-family:var(--f-serif);font-size:18px;font-weight:600;color:var(--ink)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary:after{content:"+";font-family:var(--f-display);font-size:30px;color:var(--wine)}
+.faq details[open] summary:after{content:"−"}
+.faq p{padding:0 0 20px;color:var(--muted);font-size:15px;max-width:44em}
+/* Closing */
+.closing{background:var(--grad-wine);color:#fff;text-align:center;padding:var(--section) var(--gutter)}
+.closing .display{color:#fff;font-size:clamp(40px,7vw,88px)}
+.closing .display em{color:#F3D9DA}
+.closing p{opacity:.85;margin:14px 0 28px}
+footer{padding:36px 0;font-size:13px;color:var(--muted);border-top:1px solid var(--line)}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+footer a{margin-right:16px}
+/* Mobile CTA bar */
+.mbar{position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(250,247,246,.96);backdrop-filter:blur(10px);border-top:1px solid var(--ink);display:grid;grid-template-columns:1fr 1.5fr;gap:10px;padding:10px 16px calc(10px + env(safe-area-inset-bottom))}
+@media(min-width:900px){body{padding-bottom:0}.mbar{display:none}}
+</style>
+<link rel="icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+</head>
+<body>
+<header class="site-head" id="siteHead">
+  <!-- ===== 最新優惠通知欄：改下面 ANNOUNCEMENTS 文字就得 ===== -->
+  <div class="announce" id="announce" role="region" aria-label="最新優惠">
+    <span class="ann-tag">News</span>
+    <a class="ann-text" id="annText" href="#"></a>
+    <button type="button" class="ann-close" aria-label="關閉通知" onclick="closeAnnounce()">×</button>
+  </div>
+  <script>
+    /* ✏️ 喺度更新優惠：text = 顯示文字；link = 撳落去去邊（可留空）
+       改咗內容記得將 ANNOUNCE_VERSION 改新，之前撳咗關閉嘅客人會再見到 */
+    const ANNOUNCE_VERSION = "2026-11-a";
+    const ANNOUNCEMENTS = [
+      { text: "首張訂單可獲順豐包郵優惠", link: "https://wa.me/85200000000" },
+      { text: "[第二條優惠訊息，例如：本月 Olive Young 滿 ₩50,000 送小樣]", link: "" },
+      { text: "[第三條訊息，例如：新年假期集運安排]", link: "" }
+    ];
+  </script>
+
+  <div class="wrap head-row">
+    <a class="wordmark logo-script" href="index.html" aria-label="Serenestudio 首頁">Serenestudio</a>
+    <div class="head-right">
+      <div class="lang">
+        <button type="button" class="icon-btn" id="langBtn" aria-haspopup="true" aria-expanded="false" aria-label="選擇語言"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg><span class="lbl-lang">繁體中文</span></button>
+        <div class="lang-menu" id="langMenu" hidden>
+          <button type="button" class="on" data-lang="zh">繁體中文</button>
+          <button type="button" data-lang="en">English <small>Soon</small></button>
+        </div>
+      </div>
+      <a class="icon-btn" href="login.html" aria-label="會員登入"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg><span>登入</span></a>
+    </div>
+  </div>
+  <nav class="navbar" aria-label="主選單"><a href="#what">代購類別</a><a href="#how">流程</a><a href="pricing.html">收費及試算</a><a href="korea-intel.html">韓國代購情報<span class="new">NEW</span></a><a href="#faq">FAQ</a><a class="nav-ig" href="https://www.instagram.com/serenestudio_/" target="_blank" rel="noopener" aria-label="Instagram @serenestudio_"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a></nav>
+</header>
+
+
+<main>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="kicker">Korean Proxy · Since <span class="todo">[年份]</span></span>
+        <div class="display">Seoul,<br><em>delivered.</em></div>
+        <h1>韓國嘅好物，我哋幫你買埋寄返香港</h1>
+        <p class="lead">專輯周邊、韓系服飾、美妝、零食、寵物用品。WhatsApp 發商品連結，即時報價，收費透明。</p>
+        <div class="ctas">
+          <a class="btn btn-primary" href="https://wa.me/85200000000?text=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%83%B3%E4%BB%A3%E8%B3%BC%EF%BC%9A" target="_blank" rel="noopener"><svg class="b-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 20.5l1.3-4.3A8.5 8.5 0 1 1 7.9 19.3z"/><path d="M9.2 8.4c-.4 2.9 3.4 6.7 6.4 6.4l.9-1.4-1.9-1-.9.8a4.6 4.6 0 0 1-2.3-2.3l.8-.9-1-1.9z"/></svg>WhatsApp 免費報價 <span class="arrow">→</span></a>
+          <a class="btn btn-line" href="pricing.html#calc"><svg class="b-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8"/><path d="M8.5 11h0M12 11h0M15.5 11h0M8.5 14.5h0M12 14.5h0M15.5 14.5h0M8.5 18h0M12 18h0M15.5 18h0" stroke-width="2.2"/></svg>試算總價</a>
+        </div>
+        <div class="facts">
+          <div><b>₩3,500</b><span>起／件手續費</span></div>
+          <div><b>HK$24</b><span>首 0.5kg 運費</span></div>
+          <div><b>FPS</b><span>PayMe 本地付款</span></div>
+          <div><b>SF</b><span>順豐寄到香港</span></div>
+        </div>
+      </div>
+      <figure>
+        <div class="photo ratio-45"><span>Cover photo · 4:5</span></div>
+        <figcaption class="caption">— 本期封面：<span class="todo">[例如 11 月開箱]</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <div class="ticker" aria-hidden="true"><div class="ticker-track">
+    <span>K-pop Albums <b>·</b></span><span>Fashion <b>·</b></span><span>Beauty <b>·</b></span><span>Living &amp; Snacks <b>·</b></span><span>Pets <b>·</b></span>
+    <span>K-pop Albums <b>·</b></span><span>Fashion <b>·</b></span><span>Beauty <b>·</b></span><span>Living &amp; Snacks <b>·</b></span><span>Pets <b>·</b></span>
+  </div></div>
+
+  <section id="what">
+    <div class="wrap cat-grid">
+      <div>
+        <div class="sec-head" style="border:0;margin-bottom:16px"><span class="no">No.01</span><span class="kicker">What we buy</span><h2>你鍾意嘅韓國嘢</h2></div>
+        <div class="photo ratio-34" style="display:none" id="catPhoto"><span>Photo · 3:4</span></div>
+        <p class="lead">由追星到日常，五個類別都有熟手代購經驗。</p>
+      </div>
+      <div class="index">
+        <a href="#"><span class="n">01</span><h3>K-pop 專輯周邊</h3><p>Weverse Shop、Ktown4u 預購及限定</p><span class="en">Albums</span></a>
+        <a href="#"><span class="n">02</span><h3>韓系服飾</h3><p>MUSINSA、29CM 本地品牌</p><span class="en">Fashion</span></a>
+        <a href="#"><span class="n">03</span><h3>美妝護膚</h3><p>Olive Young 熱賣及新品</p><span class="en">Beauty</span></a>
+        <a href="#"><span class="n">04</span><h3>生活用品零食</h3><p>Coupang、Gmarket 日常好物</p><span class="en">Living</span></a>
+        <a href="#"><span class="n">05</span><h3>寵物用品</h3><p>寵物零食、衣服、玩具</p><span class="en">Pets</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section id="how" style="background:var(--paper)">
+    <div class="wrap">
+      <div class="sec-head"><span class="no">No.02</span><span class="kicker">How it works</span><h2>四步，由首爾到你手</h2></div>
+      <div class="steps">
+        <div class="step"><div class="big">i.</div><h3>WhatsApp 發連結</h3><p>商品連結、款式、數量發畀我哋。</p></div>
+        <div class="step"><div class="big">ii.</div><h3>報價・付款</h3><p>收專屬報價，FPS / PayMe 付款，即收客戶專區帳號。</p></div>
+        <div class="step"><div class="big">iii.</div><h3>代購・到韓國倉</h3><p>我哋落單，貨到韓國倉後喺客戶專區更新。</p></div>
+        <div class="step"><div class="big">iv.</div><h3>合併集運到港</h3><p>自選貨品合併寄出，順豐送到你手。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="price">
+    <div class="wrap">
+      <div class="sec-head"><span class="no">No.03</span><span class="kicker">Pricing</span><h2>收費，一眼睇晒</h2></div>
+      <div class="teaser">
+        <div class="t-item"><b>₩3,500</b><span>起／件手續費<br>買越多越平</span></div>
+        <div class="t-item"><b>HK$24</b><span>首 0.5kg 國際運費<br>之後每 0.5kg HK$15</span></div>
+        <div class="t-item"><b>HK$0</b><span>報價費用<br>WhatsApp 即問即答</span></div>
+      </div>
+      <div class="t-cta"><a class="btn btn-primary" href="pricing.html">睇完整收費及試算 <span class="arrow">→</span></a></div>
+    </div>
+  </section>
+
+
+  <!-- ===== 客人評價（暫時隱藏，有 feedback 後刪走呢行同「客人評價完」嗰行就會再顯示；記得將下面 FAQ 改返 No.05） =====
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head"><span class="no">No.04</span><span class="kicker">Voices</span><h2>客人點講</h2></div>
+      <!- - ⚠️ 換成真實客人評價（先問准客人） - ->
+      <div class="quotes">
+        <div class="quote"><blockquote class="todo">[真實客人評價 1]</blockquote><cite>— [暱稱]・K-pop 專輯</cite></div>
+        <div class="quote"><blockquote class="todo">[真實客人評價 2]</blockquote><cite>— [暱稱]・美妝護膚</cite></div>
+        <div class="quote"><blockquote class="todo">[真實客人評價 3]</blockquote><cite>— [暱稱]・寵物用品</cite></div>
+      </div>
+    </div>
+  </section>
+
+  ===== 客人評價完 ===== -->
+
+  <section id="faq" style="background:var(--paper)">
+    <div class="wrap" style="max-width:860px">
+      <div class="sec-head"><span class="no">No.04</span><span class="kicker">FAQ</span><h2>常見問題</h2></div>
+      <div class="faq">
+        <details><summary>由落單到收貨大約幾耐？</summary><p class="todo">[請填到貨時間]</p></details>
+        <details><summary>預購專輯／限定周邊可唔可以代購？</summary><p class="todo">[請填預購規則]</p></details>
+        <details><summary>有冇咩唔可以寄？</summary><p>部分物品（例如鋰電池、易燃噴霧、大量液體）可能唔可以空運，落單前會先同你確認。<span class="todo">[請補充]</span></p></details>
+        <details><summary>點樣付款？</summary><p>確認報價後用 FPS 或 PayMe 付款；集運運費會喺秤重後另外通知。</p></details>
+        <details><summary>貨品有問題點算？</summary><p class="todo">[請填退換政策]</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="closing">
+    <div class="kicker" style="color:#F3D9DA">Next issue is yours</div>
+    <div class="display">Shop <em>Seoul.</em></div>
+    <p>發商品連結就得，報價唔使錢</p>
+    <a class="btn btn-light" href="https://wa.me/85200000000" target="_blank" rel="noopener"><svg class="b-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 20.5l1.3-4.3A8.5 8.5 0 1 1 7.9 19.3z"/><path d="M9.2 8.4c-.4 2.9 3.4 6.7 6.4 6.4l.9-1.4-1.9-1-.9.8a4.6 4.6 0 0 1-2.3-2.3l.8-.9-1-1.9z"/></svg>WhatsApp 免費報價 <span class="arrow">→</span></a>
+  </section>
+</main>
+
+<footer><div class="wrap">
+  <div><a href="login.html">客戶登入</a><a href="privacy.html">私隱政策</a><a href="#" class="todo">[Instagram]</a></div>
+  <span>© 2026 Serene Studio</span>
+</div></footer>
+
+<div class="mbar">
+  <a class="btn btn-line" href="login.html">客戶登入</a>
+  <a class="btn btn-primary" href="https://wa.me/85200000000" target="_blank" rel="noopener"><svg class="b-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 20.5l1.3-4.3A8.5 8.5 0 1 1 7.9 19.3z"/><path d="M9.2 8.4c-.4 2.9 3.4 6.7 6.4 6.4l.9-1.4-1.9-1-.9.8a4.6 4.6 0 0 1-2.3-2.3l.8-.9-1-1.9z"/></svg>WhatsApp 報價</a>
+</div>
+
+<script>
+/* 通知欄：輪流顯示 + 可關閉（記住關閉狀態，直至 ANNOUNCE_VERSION 改變） */
+(function(){
+  var bar=document.getElementById('announce'), el=document.getElementById('annText');
+  var list=(typeof ANNOUNCEMENTS!=='undefined'?ANNOUNCEMENTS:[]).filter(function(a){return a.text && a.text.charAt(0)!=='[';});
+  if(!bar||!list.length||localStorage.getItem('serene_announce_closed')===ANNOUNCE_VERSION){ if(bar) bar.remove(); return; }
+  var i=0;
+  function show(){ var a=list[i]; el.textContent=a.text; if(a.link){el.href=a.link;el.target='_blank';el.rel='noopener';}else{el.removeAttribute('href');} el.classList.remove('fade'); void el.offsetWidth; el.classList.add('fade'); }
+  show();
+  if(list.length>1) setInterval(function(){ i=(i+1)%list.length; show(); },4500);
+  window.closeAnnounce=function(){ localStorage.setItem('serene_announce_closed',ANNOUNCE_VERSION); bar.remove(); };
+})();
+</script>
+<script src="site-ui.js"></script>
+<script>
+/* 語言選單：English 版未推出，暫時顯示提示 */
+(function(){
+  var b=document.getElementById('langBtn'), m=document.getElementById('langMenu'); if(!b||!m) return;
+  function close(){ m.hidden=true; b.setAttribute('aria-expanded','false'); }
+  b.addEventListener('click',function(e){ e.stopPropagation(); var open=m.hidden; m.hidden=!open; b.setAttribute('aria-expanded',String(open)); });
+  document.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
+  m.querySelector('[data-lang="zh"]').addEventListener('click',close);
+  m.querySelector('[data-lang="en"]').addEventListener('click',function(){ close(); (window.showToast||alert)('English version coming soon｜英文版即將推出'); });
+})();
+</script>
+</body>
+
+
+</html>

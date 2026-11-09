@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Serene Studio - 客戶專區登入</title>
+<meta name="description" content="Serene Studio 韓國代購客戶專區：追蹤代購訂單、韓國倉及順豐物流。">
+<!-- 設計稿：登入頁（保留原本酒紅背景 + 白卡結構，加入雜誌風細節）-->
+<link rel="stylesheet" href="serene-editorial.css">
+<script src="site-ui.js"></script>
+<style>
+body{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 20px;background:var(--grad-glow),var(--grad-wine)}
+.card-login{position:relative;width:100%;max-width:420px;background:var(--paper);padding:36px 28px 28px;border-radius:var(--radius)}
+.card-login:before{content:"";position:absolute;inset:8px;border:1px solid var(--wine-18);pointer-events:none}
+.lang{position:absolute;top:18px;right:20px;display:flex;gap:2px;font-size:12px;font-weight:700;letter-spacing:.08em;z-index:1}
+.lang button{border:0;background:none;min-height:32px;padding:0 6px;color:var(--muted);cursor:pointer;font:inherit}
+.lang button.on{color:var(--wine);text-decoration:underline;text-underline-offset:4px}
+.head{text-align:center;margin-bottom:26px}
+.head .wordmark{font-family:var(--f-display);font-size:40px;font-weight:500;color:var(--ink);line-height:1}
+.head .wordmark em{color:var(--wine)}
+.head .double-rule{width:64px;margin:14px auto}
+.head h1{font-size:20px;margin-bottom:4px}
+.phone{display:grid;grid-template-columns:84px 1fr;gap:14px}
+.forgot{text-align:right;margin:-4px 0 22px}
+.forgot a{font-size:13px;color:var(--muted);text-decoration:none;border-bottom:1px solid var(--line)}
+.new{margin-top:26px;padding-top:20px;border-top:1px solid var(--line);text-align:center}
+.new .no{display:block;margin-bottom:4px}
+.new p{font-size:13px;color:var(--muted);text-align:left;margin:8px 0 16px;line-height:1.7}
+.new strong{color:var(--ink)}
+.foot{margin-top:20px;font-size:12px;letter-spacing:.08em;color:rgba(255,255,255,.75);text-align:center}
+.foot a{color:#fff}
+</style>
+<link rel="icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="robots" content="noindex, follow">
+</head>
+<body>
+<main class="card-login">
+  <div class="lang" role="group" aria-label="Language"><button type="button" id="bZh" class="on" onclick="setLang('zh')">繁中</button><button type="button" id="bEn" onclick="setLang('en')">EN</button></div>
+
+  <div class="head">
+    <div class="kicker" data-zh="客戶專區" data-en="Client Area">客戶專區</div>
+    <div class="wordmark" style="margin-top:10px">Serene <em>Studio</em></div>
+    <div class="double-rule"></div>
+    <h1 data-zh="歡迎回來" data-en="Welcome back">歡迎回來</h1>
+    <p class="small" data-zh="隨時追蹤你的韓國代購訂單與物流狀態" data-en="Track your Korean proxy orders and shipping">隨時追蹤你的韓國代購訂單與物流狀態</p>
+  </div>
+
+  <form id="loginForm" onsubmit="handleLogin(event)">
+    <div class="field">
+      <label for="phoneNumber" data-zh="登入電話號碼" data-en="Login phone">登入電話號碼</label>
+      <div class="phone">
+        <select id="phonePrefix" class="input" aria-label="電話區碼"><option value="+852">+852</option><option value="+886">+886</option></select>
+        <input id="phoneNumber" class="input" type="tel" autocomplete="tel-national" placeholder="9123 4567" required>
+      </div>
+    </div>
+    <div class="field">
+      <label for="password" data-zh="密碼" data-en="Password">密碼</label>
+      <input id="password" class="input" type="password" autocomplete="current-password" data-zh-ph="系統預設或專屬密碼" data-en-ph="Default or personal password" placeholder="系統預設或專屬密碼" required>
+    </div>
+    <!-- ⚠️ 85200000000 改成真號碼（本頁 2 處）-->
+    <div class="forgot"><a href="https://wa.me/85200000000?text=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E5%BF%98%E8%A8%98%E4%BA%86%E5%AE%A2%E6%88%B6%E5%B0%88%E5%8D%80%E5%AF%86%E7%A2%BC%EF%BC%8C%E9%BA%BB%E7%85%A9%E5%B9%AB%E6%88%91%E9%87%8D%E8%A8%AD%E3%80%82" target="_blank" rel="noopener" data-zh="忘記密碼？WhatsApp 客服重設" data-en="Forgot password? Reset via WhatsApp">忘記密碼？WhatsApp 客服重設</a></div>
+    <button id="loginBtn" type="submit" class="btn btn-primary btn-block" data-zh="登入" data-en="Log in">登入</button>
+  </form>
+
+  <div class="new">
+    <span class="no" data-zh="首次使用？" data-en="First time?">首次使用？</span>
+    <p data-zh-html="首次落單請直接 WhatsApp 聯絡我們，提供商品連結後即計專屬報價。確認 FPS / PayMe 付款後，客服會發送你的<strong>登入電話號碼</strong>及<strong>系統預設密碼</strong>。" data-en-html="For your first order, WhatsApp us your product links for a quote. After FPS / PayMe payment, we will send your <strong>login phone</strong> and <strong>default password</strong>.">首次落單請直接 WhatsApp 聯絡我們，提供商品連結後即計專屬報價。確認 FPS / PayMe 付款後，客服會發送你的<strong>登入電話號碼</strong>及<strong>系統預設密碼</strong>。</p>
+    <a class="btn btn-line btn-block" href="https://wa.me/85200000000" target="_blank" rel="noopener" data-zh="WhatsApp 客服落單" data-en="Order via WhatsApp">WhatsApp 客服落單</a>
+  </div>
+</main>
+<p class="foot"><a href="index.html" data-zh="← 返回首頁" data-en="← Home">← 返回首頁</a> · <a href="privacy.html" data-zh="私隱政策" data-en="Privacy">私隱政策</a></p>
+
+<script>
+const GAS_URL = "https://script.google.com/macros/s/AKfycbyTpnxEfQ9B2ysDjq-H7C1N_1BqRcEZVL0nPBInlHoYKOFQVTP-QM13pLEq3d3opbdm/exec";
+const T = {
+  zh:{v:"驗證中...",l:"登入",ok:"登入成功！即將進入客戶專區。",fail:"登入失敗：",net:"連接伺服器發生錯誤，請稍後再試！"},
+  en:{v:"Verifying...",l:"Log in",ok:"Login successful!",fail:"Login failed: ",net:"Unable to connect. Please try again later."}
+};
+function lang(){ return localStorage.getItem('serene_lang') === 'en' ? 'en' : 'zh'; }
+function setLang(l){
+  localStorage.setItem('serene_lang', l);
+  document.documentElement.lang = l === 'en' ? 'en' : 'zh-HK';
+  document.getElementById('bZh').classList.toggle('on', l === 'zh');
+  document.getElementById('bEn').classList.toggle('on', l === 'en');
+  document.querySelectorAll('[data-zh]').forEach(e => e.innerText = e.getAttribute(l === 'en' ? 'data-en' : 'data-zh'));
+  document.querySelectorAll('[data-zh-html]').forEach(e => e.innerHTML = e.getAttribute(l === 'en' ? 'data-en-html' : 'data-zh-html'));
+  document.querySelectorAll('[data-zh-ph]').forEach(e => e.placeholder = e.getAttribute(l === 'en' ? 'data-en-ph' : 'data-zh-ph'));
+}
+setLang(lang());
+
+async function handleLogin(ev){
+  ev.preventDefault();
+  const t = T[lang()], btn = document.getElementById('loginBtn');
+  const phone = document.getElementById('phonePrefix').value + ' ' + document.getElementById('phoneNumber').value.trim();
+  const password = document.getElementById('password').value.trim();
+  btn.innerText = t.v; btn.disabled = true;
+  try {
+    const res = await fetch(GAS_URL, { method:"POST", mode:"cors", headers:{ "Content-Type":"text/plain;charset=utf-8" }, body: JSON.stringify({ action:"login", phone: phone, password: password }) });
+    const r = await res.json();
+    if (r.status === "success") {
+      localStorage.setItem('serene_user', JSON.stringify(r.data));
+      showToast(t.ok);
+      setTimeout(() => { window.location.href = "dashboard.html"; }, 800);
+      return;
+    }
+    showToast(t.fail + (r.message || ""));
+  } catch (e) {
+    console.error(e); showToast(t.net);
+  }
+  btn.innerText = t.l; btn.disabled = false;
+}
+</script>
+</body>
+</html>

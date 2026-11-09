@@ -1,0 +1,246 @@
+/* =====================================================================
+   SERENE STUDIO — Editorial Style System v1 (2026-11-09)
+   簡約時尚雜誌風｜品牌主色 #743133（保留）
+   ---------------------------------------------------------------------
+   字體：
+     英文標題  Cormorant Garamond（襯線，雜誌感）
+     中文標題  Noto Serif TC（襯線，同英文配對）
+     正文      Pretendard + Noto Sans TC（無襯線，易讀）
+   規則：
+     · 只用 3 種主色：酒紅 #743133、淡粉灰底 #F3EDEC、墨黑 #1E1415
+     · 線條代替陰影：1px 細線分隔
+     · 直角或 2px 細圓角（雜誌感），只有 tag 用全圓
+     · 每版只有 1 個實心主按鈕
+     · 按鈕 ≥ 44px 高、手機輸入框 16px、最細字 12px
+===================================================================== */
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Noto+Serif+TC:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap");
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css");
+
+:root{
+  /* Colour */
+  --wine:#743133;          /* 品牌主色 */
+  --wine-deep:#522223;     /* 原本漸變嘅深色端 */
+  --wine-10:rgba(116,49,51,.10);
+  --wine-18:rgba(116,49,51,.18);
+  --bg:#F3EDEC;            /* 淡粉灰：主背景 */
+  --paper:#FAF7F6;         /* 卡片／紙張 */
+  --white:#FFFFFF;
+  --ink:#1E1415;           /* 墨黑：標題 */
+  --text:#3A2E2F;          /* 正文 */
+  --muted:#7D6E6F;         /* 次要文字 */
+  --line:rgba(30,20,21,.12);
+  --ok:#3F6B55;            /* 狀態：完成（低飽和綠）*/
+  --wait:#9A6B1F;          /* 狀態：待處理（低飽和金）*/
+
+  /* Gradient */
+  --grad-wine:linear-gradient(135deg,#743133 0%,#522223 100%);
+  --grad-mist:linear-gradient(180deg,#F7F2F1 0%,#F3EDEC 55%,#EDE3E2 100%);
+  --grad-glow:radial-gradient(60% 60% at 80% 10%,rgba(116,49,51,.14) 0%,rgba(116,49,51,0) 70%);
+
+  /* Type */
+  --f-display:"Cormorant Garamond","Noto Serif TC",Georgia,serif;
+  --f-serif:"Noto Serif TC","Cormorant Garamond",serif;
+  --f-sans:"Pretendard","Noto Sans TC",-apple-system,BlinkMacSystemFont,sans-serif;
+
+  /* Space & shape */
+  --gutter:20px;
+  --section:64px;
+  --radius:2px;
+  --max:1160px;
+}
+@media (min-width:900px){ :root{ --gutter:40px; --section:112px; } }
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--f-sans);font-size:16px;line-height:1.7;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{color:inherit}
+::selection{background:var(--wine);color:#fff}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gutter)}
+.todo{background:#FFE58A;color:var(--ink);padding:0 4px}
+
+/* ---------- Typography ---------- */
+.kicker{font-family:var(--f-sans);font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--wine)}
+.no{font-family:var(--f-display);font-style:italic;font-size:18px;color:var(--wine)}
+.display{font-family:var(--f-display);font-weight:500;font-size:clamp(44px,9vw,112px);line-height:.95;letter-spacing:-.01em;color:var(--ink)}
+.display em{font-style:italic;color:var(--wine)}
+h1,.h1{font-family:var(--f-serif);font-weight:700;font-size:clamp(30px,5.2vw,58px);line-height:1.2;letter-spacing:-.01em;color:var(--ink)}
+h2,.h2{font-family:var(--f-serif);font-weight:600;font-size:clamp(24px,3.4vw,38px);line-height:1.3;color:var(--ink)}
+h3,.h3{font-family:var(--f-serif);font-weight:600;font-size:19px;line-height:1.4;color:var(--ink)}
+.lead{font-size:17px;color:var(--muted);max-width:34em}
+.small{font-size:13px;color:var(--muted)}
+.serif-num{font-family:var(--f-display);font-weight:500;color:var(--ink)}
+
+/* ---------- Lines ---------- */
+.rule{height:1px;background:var(--line);border:0}
+.rule-wine{height:1px;background:var(--wine-18);border:0}
+.double-rule{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);height:4px}
+.sec-head{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;align-items:end;padding-bottom:18px;border-bottom:1px solid var(--line);margin-bottom:36px}
+.sec-head .no{grid-row:span 2;align-self:start;padding-top:6px}
+.sec-head .kicker{grid-column:2}
+.sec-head h2{grid-column:2}
+
+/* ---------- Buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 26px;font-family:var(--f-sans);font-size:15px;font-weight:600;letter-spacing:.04em;text-decoration:none;border-radius:var(--radius);border:1px solid transparent;cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.btn-primary{background:var(--wine);color:#fff}
+.btn-primary:hover{background:var(--wine-deep)}
+.btn-line{background:transparent;color:var(--ink);border-color:var(--ink)}
+.btn-line:hover{background:var(--ink);color:#fff}
+.btn-light{background:#fff;color:var(--wine)}
+.btn-text{min-height:44px;padding:0;color:var(--wine);border-bottom:1px solid var(--wine);border-radius:0}
+.btn .arrow{font-family:var(--f-display);font-size:20px;line-height:1}
+.btn-block{width:100%}
+
+/* ---------- Tags / status ---------- */
+.tag{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;letter-spacing:.08em;padding:4px 10px;border:1px solid currentColor;border-radius:999px}
+.tag-wine{color:var(--wine)}
+.tag-ok{color:var(--ok)}
+.tag-wait{color:var(--wait)}
+.dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+
+/* ---------- Cards ---------- */
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:24px}
+.card-wine{background:var(--grad-wine);color:#fff;border:0}
+.card-wine h2,.card-wine h3{color:#fff}
+
+/* ---------- Form ---------- */
+.field{margin-bottom:18px}
+.field label{display:block;font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.input{width:100%;min-height:50px;font-family:var(--f-sans);font-size:16px;color:var(--ink);background:transparent;border:0;border-bottom:1px solid var(--ink);border-radius:0;padding:0 2px;outline:none;transition:border-color .2s}
+.input:focus{border-bottom:2px solid var(--wine)}
+.input::placeholder{color:#A99B9C}
+select.input{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--ink) 50%),linear-gradient(135deg,var(--ink) 50%,transparent 50%);background-position:calc(100% - 12px) 22px,calc(100% - 7px) 22px;background-size:5px 5px;background-repeat:no-repeat;padding-right:24px}
+
+/* ---------- Photo placeholder（之後換相）---------- */
+.photo{position:relative;background:repeating-linear-gradient(135deg,rgba(116,49,51,.06) 0 1px,transparent 1px 12px),var(--paper);border:1px solid var(--line);display:flex;align-items:flex-end;overflow:hidden}
+.photo span{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:12px 14px}
+.ratio-45{aspect-ratio:4/5}
+.ratio-34{aspect-ratio:3/4}
+.ratio-11{aspect-ratio:1/1}
+.ratio-169{aspect-ratio:16/9}
+.caption{font-family:var(--f-display);font-style:italic;font-size:15px;color:var(--muted);margin-top:8px}
+
+/* ---------- Ticker ---------- */
+.ticker{overflow:hidden;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);white-space:nowrap}
+.ticker-track{display:inline-flex;gap:40px;padding:14px 0;animation:tick 32s linear infinite;font-family:var(--f-display);font-size:22px;font-style:italic;color:var(--ink)}
+.ticker-track b{font-style:normal;color:var(--wine);font-weight:500}
+@keyframes tick{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.ticker-track{animation:none}}
+
+/* ---------- Toast（配合 site-ui.js）---------- */
+.serene-toast{border-radius:var(--radius)!important;background:var(--ink)!important}
+
+/* ===== Homepage v2 (2026-11-09) ===== */
+@font-face{font-family:"Love Hewits";src:url("LoveHewits.ttf") format("truetype");font-display:swap}
+.logo-script{font-family:"Love Hewits","Cormorant Garamond",serif !important;font-style:normal !important;font-weight:400 !important;letter-spacing:0 !important;text-transform:none !important;line-height:1.1 !important}
+
+/* Announcement bar */
+.announce{position:relative;display:flex;align-items:center;justify-content:center;gap:12px;min-height:40px;padding:6px 52px;background:linear-gradient(90deg,#522223,#743133 50%,#522223);color:#F3EDEC;font-size:13px;letter-spacing:.04em;text-align:center}
+.announce[hidden]{display:none}
+.ann-tag{flex:none;border:1px solid rgba(243,237,236,.55);border-radius:2px;padding:1px 8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+.ann-text{transition:opacity .35s ease}
+.ann-text.fade{opacity:0}
+.ann-close{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:44px;height:40px;border:0;background:transparent;color:#F3EDEC;font-size:20px;line-height:1;cursor:pointer}
+.ann-close:hover,.ann-close:focus-visible{opacity:.75}
+
+/* Header login button */
+.login-link.btn-line{position:absolute;right:24px;top:50%;transform:translateY(-50%);min-height:44px;padding:10px 22px;font-size:14px;letter-spacing:.08em}
+@media (max-width:899px){.login-link.btn-line{display:none}}
+
+/* Pricing teaser */
+.teaser{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(116,49,51,.18);border:1px solid rgba(116,49,51,.18);margin-top:28px}
+.t-item{background:#F3EDEC;padding:22px 18px}
+.t-item small{display:block;font-size:12px;letter-spacing:.12em;color:#7a6a6b;text-transform:uppercase}
+.t-item b{display:block;font-family:"Cormorant Garamond",serif;font-weight:500;font-size:44px;line-height:1.1;color:#743133;margin:6px 0 4px}
+.t-item span{font-size:13px;color:#5a4a4b}
+.t-cta{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:24px}
+@media (min-width:900px){.teaser{grid-template-columns:repeat(4,1fr)}}
+
+/* ===== Sticky header v3 (MUSINSA-style, 2026-11-09) ===== */
+.site-head{position:sticky;top:0;z-index:80;background:rgba(243,237,236,.97);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.head-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;min-height:64px;gap:12px}
+.head-row .wordmark{grid-column:2;justify-self:center;font-size:clamp(30px,5vw,48px);color:var(--ink);text-decoration:none;line-height:1}
+.head-right{grid-column:3;justify-self:end;display:flex;align-items:center;gap:6px}
+.icon-btn{display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:0 8px;background:none;border:0;color:var(--ink);font:600 13px/1 var(--f-sans);letter-spacing:.04em;text-decoration:none;cursor:pointer;border-radius:var(--radius)}
+.icon-btn svg{width:22px;height:22px;flex:none}
+.icon-btn:hover,.icon-btn:focus-visible{color:var(--wine)}
+.lang{position:relative}
+.lang-menu{position:absolute;right:0;top:calc(100% + 6px);min-width:150px;background:#FAF7F6;border:1px solid var(--ink);padding:6px 0;z-index:90}
+.lang-menu[hidden]{display:none}
+.lang-menu button{display:flex;justify-content:space-between;width:100%;padding:11px 16px;background:none;border:0;font:500 14px var(--f-sans);color:var(--ink);cursor:pointer;text-align:left}
+.lang-menu button:hover{background:var(--paper,#EFE6E4)}
+.lang-menu .on::after{content:"✓";color:var(--wine)}
+.lang-menu small{color:var(--muted);font-size:11px}
+.site-head .navbar{display:flex;justify-content:center;gap:30px;margin:0;padding:13px var(--gutter);border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);overflow-x:auto;white-space:nowrap;scrollbar-width:none;font-size:13px;font-weight:600;letter-spacing:.12em}
+.site-head .navbar::-webkit-scrollbar{display:none}
+.site-head .navbar a{text-decoration:none;color:var(--ink);position:relative}
+.site-head .navbar a:hover,.site-head .navbar a[aria-current="page"]{color:var(--wine)}
+.site-head .navbar a[aria-current="page"]::after{content:"";position:absolute;left:0;right:0;bottom:-14px;height:2px;background:var(--wine)}
+.site-head .navbar .new{font-size:9px;letter-spacing:.14em;color:var(--wine);vertical-align:super;margin-left:3px}
+main [id],main section[id]{scroll-margin-top:170px}
+@media (max-width:899px){
+  .head-row{min-height:56px}
+  .icon-btn .lbl-lang{display:none}
+  .icon-btn{padding:0 6px;font-size:12px}
+  .site-head .navbar{justify-content:flex-start;gap:22px;font-size:12px;letter-spacing:.08em}
+  .site-head .navbar .hide-m{display:inline}
+}
+
+/* ===== Intel page (韓國代購情報) ===== */
+.ig-strip{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;margin-top:28px;padding:16px 20px;border:1px solid var(--ink);background:#FAF7F6}
+.ig-strip p{margin:0;font-size:14px}
+.ig-strip b{color:var(--wine)}
+.ig-ico{width:20px;height:20px;vertical-align:-4px;margin-right:6px}
+.deals-nav{display:flex;gap:8px}
+.deals-nav button{width:44px;height:44px;border:1px solid var(--ink);background:none;font-size:18px;cursor:pointer;color:var(--ink)}
+.deals-nav button:hover{background:var(--ink);color:#fff}
+.deals{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(270px,1fr);gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin-top:28px;padding-bottom:4px}
+.deals::-webkit-scrollbar{display:none}
+@media (min-width:900px){.deals{grid-auto-columns:calc((100% - 40px)/3)}}
+.deal{scroll-snap-align:start;display:flex;flex-direction:column;border:1px solid var(--line);background:#FAF7F6}
+.deal-top{position:relative;display:flex;align-items:center;justify-content:center;aspect-ratio:4/3;background:var(--grad-wine,linear-gradient(135deg,#522223,#743133));color:#F3EDEC;font-family:var(--f-display);font-size:26px;letter-spacing:.12em;text-align:center;padding:12px}
+.deal:nth-child(even) .deal-top{background:linear-gradient(135deg,#1E1415,#3a2627)}
+.deal-badge{position:absolute;left:0;top:0;background:#F3EDEC;color:var(--wine);font:700 12px var(--f-sans);letter-spacing:.1em;padding:7px 12px}
+.deal-body{display:flex;flex-direction:column;flex:1;padding:20px}
+.deal-brand{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.deal-title{font-family:var(--f-serif-tc,var(--f-display));font-size:20px;margin:6px 0 8px;line-height:1.35}
+.deal-desc{font-size:14px;color:#5a4a4b;line-height:1.6;flex:1}
+.deal-foot{display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:14px;border-top:1px solid var(--line);font-size:13px}
+.deal-foot .time{display:inline-flex;align-items:center;gap:6px;color:var(--muted)}
+.deal-foot .time svg{width:15px;height:15px}
+.deal-foot a{font-weight:600;color:var(--wine);text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
+.cat-tabs{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin-top:28px;padding-bottom:2px}
+.cat-tabs::-webkit-scrollbar{display:none}
+.cat-tab{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border:1px solid var(--line);background:none;font:600 13px var(--f-sans);letter-spacing:.06em;color:var(--ink);white-space:nowrap;cursor:pointer;border-radius:var(--radius)}
+.cat-tab svg{width:18px;height:18px;flex:none}
+.cat-tab:hover{border-color:var(--ink)}
+.cat-tab.active{background:var(--ink);border-color:var(--ink);color:#fff}
+.brand-list{list-style:none;margin:24px 0 0;padding:0;border-top:1px solid var(--ink)}
+.brand-row{display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:14px;padding:18px 0;border-bottom:1px solid var(--line)}
+.brand-row[hidden]{display:none}
+.brand-row .idx{font-family:var(--f-display);font-size:22px;color:var(--wine)}
+.brand-row h4{margin:0;font-family:var(--f-display);font-size:21px;font-weight:500}
+.brand-row p{margin:3px 0 0;font-size:13px;color:#5a4a4b}
+.brand-row .cat{display:inline-flex;align-items:center;gap:5px;margin-top:6px;font-size:11px;letter-spacing:.12em;color:var(--muted)}
+.brand-row .cat svg{width:13px;height:13px}
+.brand-row a{display:inline-flex;align-items:center;gap:6px;min-height:44px;font-size:13px;font-weight:600;color:var(--ink);text-decoration:none;border-bottom:1px solid var(--ink)}
+.brand-row a:hover{color:var(--wine);border-color:var(--wine)}
+.empty-state{padding:32px 0;text-align:center;color:var(--muted)}
+.ig-follow{background:var(--grad-wine,linear-gradient(135deg,#522223,#743133));color:#F3EDEC;text-align:center;padding:var(--section) var(--gutter)}
+.ig-follow .kicker{color:rgba(243,237,236,.75)}
+.ig-follow h2{font-family:var(--f-display);font-size:clamp(34px,6vw,60px);font-weight:500;margin:12px 0 8px;color:#fff}
+.ig-follow p{max-width:520px;margin:0 auto;line-height:1.7}
+.ig-perks{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 28px;list-style:none;padding:0;margin:26px 0 30px;font-size:13px;letter-spacing:.06em}
+.ig-perks li::before{content:"— ";opacity:.6}
+.btn-ivory{background:#F3EDEC;color:var(--wine);border-color:#F3EDEC}
+.btn-ivory:hover{background:transparent;color:#fff;border-color:#fff}
+
+/* ===== v4 (2026-11-09): IG in nav, button icons, compact intel hero ===== */
+.site-head .navbar .nav-ig{display:inline-flex;align-items:center;margin:-6px 0;padding:6px 2px}
+.site-head .navbar .nav-ico{width:18px;height:18px}
+.btn .b-ico{width:19px;height:19px;flex:none}
+.hero.hero-compact{padding:28px 0 0 !important}
+.hero.hero-compact h1{font-size:clamp(30px,5vw,48px)}
+.hero.hero-compact .lead{max-width:620px}
+section.deals-first{padding-top:28px !important}
+@media (max-width:899px){.hero.hero-compact{padding-top:20px !important}.hero.hero-compact .lead{font-size:14px}}

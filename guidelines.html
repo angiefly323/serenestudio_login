@@ -165,6 +165,11 @@
             .mobile-bottom-nav { display: flex; }
         }
     </style>
+    <link rel="stylesheet" href="serene-member.css">
+    <link rel="icon" href="favicon.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta name="robots" content="noindex, nofollow">
+    <script src="site-ui.js"></script>
     <script src="serene-auth.js"></script>
 </head>
 <body>
@@ -202,7 +207,8 @@
                 <button onclick="switchLanguage('zh')" id="btnZhDt" class="lang-btn-dt active">繁體中文</button>
                 <button onclick="switchLanguage('en')" id="btnEnDt" class="lang-btn-dt">English</button>
             </div>
-            <a href="index.html" onclick="logout()" style="display:flex; align-items:center; gap:8px; color:#e11d48; text-decoration:none; font-size:13px; font-weight:600; padding:6px 8px;">
+            <a href="privacy.html" class="serene-privacy-link" data-zh="私隱政策" data-en="Privacy Policy">私隱政策</a>
+            <a href="login.html" onclick="logout()" style="display:flex; align-items:center; gap:8px; color:#e11d48; text-decoration:none; font-size:13px; font-weight:600; padding:6px 8px;">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
                 <span data-zh="登出帳戶" data-en="Logout">登出帳戶</span>
             </a>
@@ -505,7 +511,7 @@
         function logout() {
             if (window.sereneLogoutRemote) sereneLogoutRemote();
             localStorage.removeItem('serene_user');
-            window.location.href = 'index.html';
+            window.location.href = 'login.html';
         }
     </script>
 </body>

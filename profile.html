@@ -249,6 +249,11 @@
             .progress-hint { text-align: center; }
         }
     </style>
+    <link rel="stylesheet" href="serene-member.css">
+    <link rel="icon" href="favicon.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta name="robots" content="noindex, nofollow">
+    <script src="site-ui.js"></script>
     <script src="serene-auth.js"></script>
 </head>
 <body>
@@ -286,7 +291,8 @@
                 <button onclick="switchLanguage('zh')" id="btnZhDt" class="lang-btn-dt active">繁體中文</button>
                 <button onclick="switchLanguage('en')" id="btnEnDt" class="lang-btn-dt">English</button>
             </div>
-            <a href="index.html" onclick="logout()" style="display:flex; align-items:center; gap:8px; color:#e11d48; text-decoration:none; font-size:13px; font-weight:600; padding:6px 8px;">
+            <a href="privacy.html" class="serene-privacy-link" data-zh="私隱政策" data-en="Privacy Policy">私隱政策</a>
+            <a href="login.html" onclick="logout()" style="display:flex; align-items:center; gap:8px; color:#e11d48; text-decoration:none; font-size:13px; font-weight:600; padding:6px 8px;">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
                 <span data-zh="登出帳戶" data-en="Logout">登出帳戶</span>
             </a>
@@ -340,13 +346,13 @@
                 <form id="profileBaseForm" onsubmit="handleSaveProfile(event)">
                     <div class="form-grid">
                         <div class="form-group">
-                            <label><i class="fa-solid fa-phone"></i> <span data-zh="登記電話號碼 / 登入帳號 (無法變更)" data-en="Login Phone (Cannot change)">登記電話號碼 / 登入帳號 (無法變更)</span></label>
+                            <label for="phoneInput"><i class="fa-solid fa-phone"></i> <span data-zh="登記電話號碼 / 登入帳號 (無法變更)" data-en="Login Phone (Cannot change)">登記電話號碼 / 登入帳號 (無法變更)</span></label>
                             <input type="text" id="phoneInput" class="form-input" readonly>
                             <div class="input-hint" data-zh="如需更改登記電話，請聯繫客服協助" data-en="Contact customer service to change login phone">如需更改登記電話，請聯繫客服協助</div>
                         </div>
 
                         <div class="form-group">
-                            <label><i class="fa-solid fa-signature"></i> <span data-zh="用戶名稱 (暱稱)" data-en="Display Name / Nickname">用戶名稱 (暱稱)</span></label>
+                            <label for="displayNameInput"><i class="fa-solid fa-signature"></i> <span data-zh="用戶名稱 (暱稱)" data-en="Display Name / Nickname">用戶名稱 (暱稱)</span></label>
                             <input type="text" id="displayNameInput" class="form-input" placeholder="例如：Jennie / Alex" data-zh-placeholder="例如：Jennie / Alex" data-en-placeholder="e.g. Jennie / Alex">
                         </div>
                     </div>
@@ -360,17 +366,17 @@
 
                         <div class="form-grid">
                             <div class="form-group">
-                                <label><i class="fa-solid fa-user"></i> <span data-zh="收件人姓名" data-en="Recipient Name">收件人姓名</span></label>
+                                <label for="recipientNameInput"><i class="fa-solid fa-user"></i> <span data-zh="收件人姓名" data-en="Recipient Name">收件人姓名</span></label>
                                 <input type="text" id="recipientNameInput" class="form-input" placeholder="例如：陳大文 / Fung Lok Yin">
                             </div>
 
                             <div class="form-group">
-                                <label><i class="fa-solid fa-mobile-retro"></i> <span data-zh="收件人聯絡電話" data-en="Recipient Phone">收件人聯絡電話</span></label>
+                                <label for="recipientPhoneInput"><i class="fa-solid fa-mobile-retro"></i> <span data-zh="收件人聯絡電話" data-en="Recipient Phone">收件人聯絡電話</span></label>
                                 <input type="tel" id="recipientPhoneInput" class="form-input" placeholder="例如：+852 91234567">
                             </div>
 
                             <div class="form-group full-width">
-                                <label><i class="fa-solid fa-location-dot"></i> <span data-zh="預設收件地址 / 順豐站/智能櫃編號" data-en="Default Address / SF Locker Code">預設收件地址 / 順豐站/智能櫃編號</span></label>
+                                <label for="recipientAddressInput"><i class="fa-solid fa-location-dot"></i> <span data-zh="預設收件地址 / 順豐站/智能櫃編號" data-en="Default Address / SF Locker Code">預設收件地址 / 順豐站/智能櫃編號</span></label>
                                 <input type="text" id="recipientAddressInput" class="form-input" placeholder="例如：順豐站 852FCL 或 香港九龍觀塘...">
                             </div>
                         </div>
@@ -395,17 +401,17 @@
                 <form id="passwordForm" onsubmit="handleChangePassword(event)">
                     <div class="form-grid">
                         <div class="form-group full-width">
-                            <label><i class="fa-solid fa-lock"></i> <span data-zh="目前密碼 (或系統預設密碼)" data-en="Current Password">目前密碼 (或系統預設密碼)</span></label>
+                            <label for="currentPassword"><i class="fa-solid fa-lock"></i> <span data-zh="目前密碼 (或系統預設密碼)" data-en="Current Password">目前密碼 (或系統預設密碼)</span></label>
                             <input type="password" id="currentPassword" class="form-input" placeholder="請輸入當前密碼" data-zh-placeholder="請輸入當前密碼" data-en-placeholder="Enter current password" required>
                         </div>
 
                         <div class="form-group">
-                            <label><i class="fa-solid fa-key"></i> <span data-zh="新密碼" data-en="New Password">新密碼</span></label>
+                            <label for="newPassword"><i class="fa-solid fa-key"></i> <span data-zh="新密碼" data-en="New Password">新密碼</span></label>
                             <input type="password" id="newPassword" class="form-input" placeholder="最少 6 個字元" data-zh-placeholder="最少 6 個字元" data-en-placeholder="Minimum 6 characters" required minlength="6">
                         </div>
 
                         <div class="form-group">
-                            <label><i class="fa-solid fa-check-double"></i> <span data-zh="確認新密碼" data-en="Confirm New Password">確認新密碼</span></label>
+                            <label for="confirmPassword"><i class="fa-solid fa-check-double"></i> <span data-zh="確認新密碼" data-en="Confirm New Password">確認新密碼</span></label>
                             <input type="password" id="confirmPassword" class="form-input" placeholder="請再次輸入新密碼" data-zh-placeholder="請再次輸入新密碼" data-en-placeholder="Re-enter new password" required minlength="6">
                         </div>
                     </div>
@@ -484,8 +490,8 @@
             const userData = JSON.parse(localStorage.getItem('serene_user'));
 
             if (!userData || !userData.phone) {
-                alert("您尚未登入，請先登入帳戶！");
-                window.location.href = "index.html";
+                alert("你尚未登入，請先登入帳戶！");
+                window.location.href = "login.html";
                 return;
             }
 
@@ -509,7 +515,7 @@
 
             if (count >= 10) {
                 document.getElementById('userLevelText').innerText = localStorage.getItem('serene_lang') === 'en' ? 'VIP Member' : 'VIP 會員';
-                document.getElementById('progressHint').innerText = localStorage.getItem('serene_lang') === 'en' ? 'Congratulations! You have unlocked VIP Member perks!' : '恭喜您！已成功解鎖「VIP 專屬會員優惠」！';
+                document.getElementById('progressHint').innerText = localStorage.getItem('serene_lang') === 'en' ? 'Congratulations! You have unlocked VIP Member perks!' : '恭喜你！已成功解鎖「VIP 專屬會員優惠」！';
             }
 
             // 初始化語言設定
@@ -642,7 +648,7 @@
         function logout() {
             if (window.sereneLogoutRemote) sereneLogoutRemote();
             localStorage.removeItem('serene_user');
-            window.location.href = 'index.html';
+            window.location.href = 'login.html';
         }
     </script>
 </body>

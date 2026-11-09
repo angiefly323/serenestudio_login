@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Serenestudio｜韓國代購情報</title>
+<meta name="description" content="韓國最新網購折扣、K-pop 預售特典及熱門韓國網站 A–Z 指南，追蹤 Instagram @serenestudio_ 獲取最新情報。">
+<!-- 設計稿：公開首頁（雜誌風）· 黃色 = 待填 · 斜線框 = 相片留位 -->
+<link rel="stylesheet" href="serene-editorial.css">
+<style>
+body{background:var(--grad-mist);padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+/* Masthead */
+.topline{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);text-align:center;padding:10px var(--gutter);border-bottom:1px solid var(--line)}
+.mast{text-align:center;padding:18px 0 0}
+.mast .wordmark{font-family:var(--f-display);font-size:clamp(34px,6vw,64px);font-weight:500;color:var(--ink);text-decoration:none;letter-spacing:.02em;line-height:1}
+.mast .wordmark em{color:var(--wine)}
+.navbar{display:flex;justify-content:center;gap:28px;padding:14px 0;margin-top:14px;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+.navbar a{text-decoration:none}
+.navbar a:hover{color:var(--wine)}
+.navbar .hide-m{display:none}
+.login-link{position:absolute;right:var(--gutter);top:44px;font-size:13px;font-weight:600;letter-spacing:.08em}
+@media(min-width:900px){.navbar .hide-m{display:inline}}
+/* Hero */
+.hero{padding:40px 0 var(--section);background:var(--grad-glow)}
+.hero-grid{display:grid;gap:32px}
+.hero .display{margin:14px 0 18px}
+.hero h1{font-size:clamp(22px,3vw,30px);font-weight:600;margin-bottom:14px}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:12px;margin:28px 0}
+.facts{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--ink)}
+.facts div{padding:14px 0;border-bottom:1px solid var(--line)}
+.facts div:nth-child(odd){padding-right:12px;border-right:1px solid var(--line)}
+.facts div:nth-child(even){padding-left:14px}
+.facts b{display:block;font-family:var(--f-display);font-size:28px;font-weight:500;color:var(--ink);line-height:1.1}
+.facts span{font-size:13px;color:var(--muted)}
+@media(min-width:900px){.hero-grid{grid-template-columns:1.25fr .75fr;align-items:end}.facts{grid-template-columns:repeat(4,1fr)}.facts div{border-right:1px solid var(--line);padding:16px 14px!important}.facts div:last-child{border-right:0}}
+section{padding:var(--section) 0}
+/* Index list (categories) */
+.index a{display:grid;grid-template-columns:48px 1fr auto;gap:12px;align-items:baseline;padding:20px 0;border-bottom:1px solid var(--line);text-decoration:none;transition:padding .2s,color .2s}
+.index a:first-child{border-top:1px solid var(--ink)}
+.index a:hover{padding-left:10px;color:var(--wine)}
+.index .n{font-family:var(--f-display);font-style:italic;color:var(--wine);font-size:18px}
+.index h3{font-size:clamp(20px,2.6vw,30px)}
+.index p{grid-column:2/4;font-size:14px;color:var(--muted)}
+.index .en{font-family:var(--f-display);font-style:italic;font-size:18px;color:var(--muted)}
+@media(min-width:900px){.cat-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:56px;align-items:start}.index p{grid-column:auto}.index a{grid-template-columns:56px 1fr 1fr auto}}
+/* Steps */
+.steps{display:grid;border-top:1px solid var(--ink)}
+.step{padding:24px 0;border-bottom:1px solid var(--line)}
+.step .big{font-family:var(--f-display);font-size:64px;line-height:1;color:var(--wine);font-style:italic}
+.step h3{margin:8px 0 6px}
+.step p{font-size:14px;color:var(--muted)}
+@media(min-width:900px){.steps{grid-template-columns:repeat(4,1fr)}.step{padding:28px 24px 28px 0;border-bottom:0;border-right:1px solid var(--line);margin-right:24px}.step:last-child{border-right:0;margin-right:0}}
+/* Pricing */
+.price{display:grid;gap:40px}
+.ptable{width:100%;border-collapse:collapse}
+.ptable caption{text-align:left;font-family:var(--f-serif);font-size:19px;font-weight:600;color:var(--ink);padding-bottom:12px;border-bottom:1px solid var(--ink)}
+.ptable td{padding:16px 0;border-bottom:1px solid var(--line);font-size:15px}
+.ptable td:last-child{text-align:right;font-family:var(--f-display);font-size:26px;color:var(--ink)}
+.ptable tr.best td{color:var(--wine)}
+.ptable tr.best td:last-child{color:var(--wine)}
+@media(min-width:900px){.price{grid-template-columns:1fr 1fr;gap:64px}}
+/* Calculator */
+.calc{display:grid;gap:32px}
+.calc .row{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.receipt{background:var(--paper);border:1px solid var(--line);padding:24px}
+.receipt .l{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px dashed var(--line);font-size:14px;color:var(--muted)}
+.receipt .t{display:flex;justify-content:space-between;align-items:baseline;padding-top:16px}
+.receipt .t b{font-family:var(--f-display);font-size:44px;font-weight:500;color:var(--wine);line-height:1}
+.tip{margin-top:14px;font-size:13px;border-left:2px solid var(--wine);padding-left:12px;color:var(--text)}
+@media(min-width:900px){.calc{grid-template-columns:1fr 1fr;gap:64px;align-items:start}}
+/* Quote */
+.quotes{display:grid;gap:24px}
+.quote{border-top:1px solid var(--ink);padding-top:20px}
+.quote blockquote{font-family:var(--f-serif);font-size:20px;line-height:1.6;color:var(--ink)}
+.quote blockquote:before{content:"“";font-family:var(--f-display);font-size:64px;color:var(--wine);line-height:0;vertical-align:-24px;margin-right:4px}
+.quote cite{display:block;margin-top:12px;font-style:normal;font-size:13px;letter-spacing:.1em;color:var(--muted)}
+@media(min-width:900px){.quotes{grid-template-columns:repeat(3,1fr);gap:40px}}
+/* FAQ */
+.faq details{border-bottom:1px solid var(--line)}
+.faq details:first-child{border-top:1px solid var(--ink)}
+.faq summary{list-style:none;cursor:pointer;min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px;font-family:var(--f-serif);font-size:18px;font-weight:600;color:var(--ink)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary:after{content:"+";font-family:var(--f-display);font-size:30px;color:var(--wine)}
+.faq details[open] summary:after{content:"−"}
+.faq p{padding:0 0 20px;color:var(--muted);font-size:15px;max-width:44em}
+/* Closing */
+.closing{background:var(--grad-wine);color:#fff;text-align:center;padding:var(--section) var(--gutter)}
+.closing .display{color:#fff;font-size:clamp(40px,7vw,88px)}
+.closing .display em{color:#F3D9DA}
+.closing p{opacity:.85;margin:14px 0 28px}
+footer{padding:36px 0;font-size:13px;color:var(--muted);border-top:1px solid var(--line)}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+footer a{margin-right:16px}
+/* Mobile CTA bar */
+.mbar{position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(250,247,246,.96);backdrop-filter:blur(10px);border-top:1px solid var(--ink);display:grid;grid-template-columns:1fr 1.5fr;gap:10px;padding:10px 16px calc(10px + env(safe-area-inset-bottom))}
+@media(min-width:900px){body{padding-bottom:0}.mbar{display:none}}
+</style>
+<link rel="icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+</head>
+<body>
+<header class="site-head" id="siteHead">
+  <!-- ===== 最新優惠通知欄：改下面 ANNOUNCEMENTS 文字就得 ===== -->
+  <div class="announce" id="announce" role="region" aria-label="最新優惠">
+    <span class="ann-tag">News</span>
+    <a class="ann-text" id="annText" href="#"></a>
+    <button type="button" class="ann-close" aria-label="關閉通知" onclick="closeAnnounce()">×</button>
+  </div>
+  <script>
+    /* ✏️ 喺度更新優惠：text = 顯示文字；link = 撳落去去邊（可留空）
+       改咗內容記得將 ANNOUNCE_VERSION 改新，之前撳咗關閉嘅客人會再見到 */
+    const ANNOUNCE_VERSION = "2026-11-a";
+    const ANNOUNCEMENTS = [
+      { text: "首張訂單可獲順豐包郵優惠", link: "https://wa.me/85200000000" },
+      { text: "[第二條優惠訊息，例如：本月 Olive Young 滿 ₩50,000 送小樣]", link: "" },
+      { text: "[第三條訊息，例如：新年假期集運安排]", link: "" }
+    ];
+  </script>
+
+  <div class="wrap head-row">
+    <a class="wordmark logo-script" href="index.html" aria-label="Serenestudio 首頁">Serenestudio</a>
+    <div class="head-right">
+      <div class="lang">
+        <button type="button" class="icon-btn" id="langBtn" aria-haspopup="true" aria-expanded="false" aria-label="選擇語言"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg><span class="lbl-lang">繁體中文</span></button>
+        <div class="lang-menu" id="langMenu" hidden>
+          <button type="button" class="on" data-lang="zh">繁體中文</button>
+          <button type="button" data-lang="en">English <small>Soon</small></button>
+        </div>
+      </div>
+      <a class="icon-btn" href="login.html" aria-label="會員登入"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg><span>登入</span></a>
+    </div>
+  </div>
+  <nav class="navbar" aria-label="主選單"><a href="index.html#what">代購類別</a><a href="index.html#how">流程</a><a href="pricing.html">收費及試算</a><a href="korea-intel.html" aria-current="page">韓國代購情報<span class="new">NEW</span></a><a href="index.html#faq">FAQ</a><a class="nav-ig" href="https://www.instagram.com/serenestudio_/" target="_blank" rel="noopener" aria-label="Instagram @serenestudio_"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a></nav>
+</header>
+
+
+<main>
+  <section class="hero hero-compact">
+    <div class="wrap">
+      <span class="kicker">Korea Shopping Intel</span>
+      <h1 style="margin-top:10px">韓國代購情報</h1>
+      <p class="lead" style="margin-top:8px">每週整理韓國網站最新折扣、預售特典同熱門網購清單。睇中咩，WhatsApp 我哋代你落單。</p>
+    </div>
+  </section>
+
+  <section id="deals" class="deals-first">
+    <div class="wrap">
+      <div class="sec-head"><span class="no">No.01</span><span class="kicker">Limited Deals</span><h2>期間限定折扣</h2></div>
+      <div class="deals-nav" style="justify-content:flex-end;margin-top:16px">
+        <button type="button" aria-label="上一張" onclick="scrollDeals(-1)">←</button>
+        <button type="button" aria-label="下一張" onclick="scrollDeals(1)">→</button>
+      </div>
+      <!-- ✏️ 更新折扣：複製一個 <article class="deal"> … </article>，改折扣字、品牌、標題、說明、期限同連結 -->
+      <div class="deals" id="dealsTrack">
+        <article class="deal">
+          <div class="deal-top"><span class="deal-badge">30% OFF</span>THE NORTH FACE</div>
+          <div class="deal-body">
+            <span class="deal-brand">The North Face (KR)</span>
+            <h3 class="deal-title">韓國站轉季大減價</h3>
+            <p class="deal-desc">精選羽絨、防風外套及背囊低至 7 折！韓國版獨家剪裁，極速斷碼中。</p>
+            <div class="deal-foot"><span class="time"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>至 11 月 5 日</span><a href="https://www.thenorthfacekorea.co.kr/" target="_blank" rel="noopener">前往掃貨 ↗</a></div>
+          </div>
+        </article>
+        <article class="deal">
+          <div class="deal-top"><span class="deal-badge">10% OFF</span>MUSINSA</div>
+          <div class="deal-body">
+            <span class="deal-brand">Musinsa</span>
+            <h3 class="deal-title">全網服飾類快閃優惠</h3>
+            <p class="deal-desc">韓國最大潮牌集合店，過百個韓國本土設計師品牌全線額外 9 折。</p>
+            <div class="deal-foot"><span class="time"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>隨時完結</span><a href="https://www.musinsa.com/" target="_blank" rel="noopener">前往掃貨 ↗</a></div>
+          </div>
+        </article>
+        <article class="deal">
+          <div class="deal-top"><span class="deal-badge">20% OFF</span>FOLDER</div>
+          <div class="deal-body">
+            <span class="deal-brand">Folder Style</span>
+            <h3 class="deal-title">Nike 新款折扣</h3>
+            <p class="deal-desc">指定新款波鞋 8 折。透過我們代購可提供「去鞋盒」服務大減國際運費！</p>
+            <div class="deal-foot"><span class="time"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>至本週末</span><a href="https://folderstyle.com/" target="_blank" rel="noopener">前往掃貨 ↗</a></div>
+          </div>
+        </article>
+        <article class="deal">
+          <div class="deal-top"><span class="deal-badge">SALE</span>OLIVE YOUNG</div>
+          <div class="deal-body">
+            <span class="deal-brand">Olive Young</span>
+            <h3 class="deal-title">人氣精華 1+1 企劃套裝</h3>
+            <p class="deal-desc">Torriden、Goodal 等大熱精華推出 1+1 超值組合，韓國門市及網店同步優惠。</p>
+            <div class="deal-foot"><span class="time"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>售完即止</span><a href="https://www.oliveyoung.co.kr/" target="_blank" rel="noopener">前往掃貨 ↗</a></div>
+          </div>
+        </article>
+        <article class="deal">
+          <div class="deal-top"><span class="deal-badge">特典</span>ALADIN</div>
+          <div class="deal-body">
+            <span class="deal-brand">Aladin (阿拉丁)</span>
+            <h3 class="deal-title">女團新專 獨家明信片特典</h3>
+            <p class="deal-desc">於 Aladin 預購最新韓國女團專輯，即送獨家官方明信片一張。</p>
+            <div class="deal-foot"><span class="time"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>預售期間</span><a href="https://www.aladin.co.kr/" target="_blank" rel="noopener">前往掃貨 ↗</a></div>
+          </div>
+        </article>
+        <article class="deal">
+          <div class="deal-top"><span class="deal-badge">免首重</span>KTOWN4U</div>
+          <div class="deal-body">
+            <span class="deal-brand">Ktown4u</span>
+            <h3 class="deal-title">男團回歸 特典小卡預售</h3>
+            <p class="deal-desc">獨家特典小卡釋出！經本網代購可享免費「代拆專及只寄小卡」服務，免首重！</p>
+            <div class="deal-foot"><span class="time"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>預售期間</span><a href="https://kr.ktown4u.com/" target="_blank" rel="noopener">前往掃貨 ↗</a></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="guide">
+    <div class="wrap">
+      <div class="sec-head"><span class="no">No.02</span><span class="kicker">Shop Guide A–Z</span><h2>韓國熱門網購指南</h2></div>
+      <div class="cat-tabs" role="group" aria-label="分類篩選">
+        <button type="button" class="cat-tab active" aria-pressed="true" onclick="filterCategory('all',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="7" height="7"/><rect x="13" y="4" width="7" height="7"/><rect x="4" y="13" width="7" height="7"/><rect x="13" y="13" width="7" height="7"/></svg>全部</button>
+        <button type="button" class="cat-tab" aria-pressed="false" onclick="filterCategory('apparel',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7a2 2 0 1 1 2-2"/><path d="M12 7v1l-8.6 6.6A1.5 1.5 0 0 0 4.3 17.3h15.4a1.5 1.5 0 0 0 .9-2.7L12 8"/></svg>潮流服飾</button>
+        <button type="button" class="cat-tab" aria-pressed="false" onclick="filterCategory('shoes',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>鞋履手袋</button>
+        <button type="button" class="cat-tab" aria-pressed="false" onclick="filterCategory('beauty',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21h6V11H9z"/><path d="M10 11V6l4-3v8"/></svg>美妝護膚</button>
+        <button type="button" class="cat-tab" aria-pressed="false" onclick="filterCategory('kpop',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/><path d="M12 5.5a6.5 6.5 0 0 1 6.5 6.5"/></svg>追星周邊</button>
+        <button type="button" class="cat-tab" aria-pressed="false" onclick="filterCategory('pet',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6.5" cy="10" r="1.8"/><circle cx="10" cy="6" r="1.8"/><circle cx="14" cy="6" r="1.8"/><circle cx="17.5" cy="10" r="1.8"/><path d="M12 12c-3 0-5.5 3.5-5.5 6 0 1.5 1.2 2 2.5 2 1.2 0 2-.6 3-.6s1.8.6 3 .6c1.3 0 2.5-.5 2.5-2 0-2.5-2.5-6-5.5-6z"/></svg>寵物用品</button>
+      </div>
+      <ul class="brand-list" id="brandList">
+        <li class="brand-row" data-category="shoes">
+          <span class="idx">01</span>
+          <div><h4>ABC-Mart (Korea)</h4><p>綜合運動鞋履連鎖店</p><span class="cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>鞋履手袋</span></div>
+          <a href="https://abcmart.a-rt.com/" target="_blank" rel="noopener">前往網站 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+        </li>
+        <li class="brand-row" data-category="kpop">
+          <span class="idx">02</span>
+          <div><h4>Aladin (阿拉丁)</h4><p>韓國實體專輯、雜誌網購</p><span class="cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/><path d="M12 5.5a6.5 6.5 0 0 1 6.5 6.5"/></svg>追星周邊</span></div>
+          <a href="https://www.aladin.co.kr/" target="_blank" rel="noopener">前往網站 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+        </li>
+        <li class="brand-row" data-category="pet">
+          <span class="idx">03</span>
+          <div><h4>BITE ME (바이트미)</h4><p>韓國超人氣萌寵玩具、零食與日常用品</p><span class="cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6.5" cy="10" r="1.8"/><circle cx="10" cy="6" r="1.8"/><circle cx="14" cy="6" r="1.8"/><circle cx="17.5" cy="10" r="1.8"/><path d="M12 12c-3 0-5.5 3.5-5.5 6 0 1.5 1.2 2 2.5 2 1.2 0 2-.6 3-.6s1.8.6 3 .6c1.3 0 2.5-.5 2.5-2 0-2.5-2.5-6-5.5-6z"/></svg>寵物用品</span></div>
+          <a href="https://biteme.co.kr/" target="_blank" rel="noopener">前往網站 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+        </li>
+        <li class="brand-row" data-category="pet">
+          <span class="idx">04</span>
+          <div><h4>Bridge.Dog (브릿지독)</h4><p>極簡美學韓系寵物陶瓷慢食碗與餐具</p><span class="cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6.5" cy="10" r="1.8"/><circle cx="10" cy="6" r="1.8"/><circle cx="14" cy="6" r="1.8"/><circle cx="17.5" cy="10" r="1.8"/><path d="M12 12c-3 0-5.5 3.5-5.5 6 0 1.5 1.2 2 2.5 2 1.2 0 2-.6 3-.6s1.8.6 3 .6c1.3 0 2.5-.5 2.5-2 0-2.5-2.5-6-5.5-6z"/></svg>寵物用品</span></div>
+          <a href="https://bridgedog.co.kr/" target="_blank" rel="noopener">前往網站 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+        </li>
+        <li class="brand-row" data-category="shoes">
+          <span class="idx">05</span>
+          <div><h4>Folder Style</h4><p>韓國本土熱門潮鞋連鎖店</p><span class="cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>鞋履手袋</span></div>
+          <a href="https://folderstyle.com/" target="_blank" rel="noopener">前往網站 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+        </li>
+        <li class="brand-row" data-category="pet">
+          <span class="idx">06</span>
+          <div><h4>HarrySpet (해리스펫)</h4><p>韓國頂級寵物推車車墊、護枕及配件專賣</p><span class="cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6.5" cy="10" r="1.8"/><circle cx="10" cy="6" r="1.8"/><circle cx="14" cy="6" r="1.8"/><circle cx="17.5" cy="10" r="1.8"/><path d="M12 12c-3 0-5.5 3.5-5.5 6 0 1.5 1.2 2 2.5 2 1.2 0 2-.6 3-.6s1.8.6 3 .6c1.3 0 2.5-.5 2.5-2 0-2.5-2.5-6-5.5-6z"/></svg>寵物用品</span></div>
+          <a href="https://harryspet.com/" target="_blank" rel="noopener">前往網站 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+        </li>
+        <li class="brand-row" data-category="pet">
+          <span class="idx">07</span>
+          <div><h4>It's Dog (잇츠독)</h4><p>韓系精緻狗狗時尚服飾、保暖衣與外出配件</p><span class="cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6.5" cy="10" r="1.8"/><circle cx="10" cy="6" r="1.8"/><circle cx="14" cy="6" r="1.8"/><circle cx="17.5" cy="10" r="1.8"/><path d="M12 12c-3 0-5.5 3.5-5.5 6 0 1.5 1.2 2 2.5 2 1.2 0 2-.6 3-.6s1.8.6 3 .6c1.3 0 2.5-.5 2.5-2 0-2.5-2.5-6-5.5-6z"/></svg>寵物用品</span></div>
+          <a href="https://itsdog.com/" target="_blank" rel="noopener">前往網站 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+        </li>
+        <li class="brand-row" data-category="kpop">
+          <span class="idx">08</span>
+          <div><h4>Ktown4u</h4><p>K-pop 專輯、明星周邊專門店</p><span class="cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/><path d="M12 5.5a6.5 6.5 0 0 1 6.5 6.5"/></svg>追星周邊</span></div>
+          <a href="https://kr.ktown4u.com/" target="_blank" rel="noopener">前往網站 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+        </li>
+        <li class="brand-row" data-category="apparel">
+          <span class="idx">09</span>
+          <div><h4>Musinsa</h4><p>韓國最大本土潮牌集合店</p><span class="cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7a2 2 0 1 1 2-2"/><path d="M12 7v1l-8.6 6.6A1.5 1.5 0 0 0 4.3 17.3h15.4a1.5 1.5 0 0 0 .9-2.7L12 8"/></svg>潮流服飾</span></div>
+          <a href="https://www.musinsa.com/" target="_blank" rel="noopener">前往網站 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+        </li>
+        <li class="brand-row" data-category="beauty">
+          <span class="idx">10</span>
+          <div><h4>Olive Young</h4><p>韓國 No.1 藥妝及護膚品店</p><span class="cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21h6V11H9z"/><path d="M10 11V6l4-3v8"/></svg>美妝護膚</span></div>
+          <a href="https://www.oliveyoung.co.kr/" target="_blank" rel="noopener">前往網站 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+        </li>
+        <li class="brand-row" data-category="pet">
+          <span class="idx">11</span>
+          <div><h4>OWWW Studio (아우스튜디오)</h4><p>韓系質感手作狗狗童裝風衣服與質感選品</p><span class="cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6.5" cy="10" r="1.8"/><circle cx="10" cy="6" r="1.8"/><circle cx="14" cy="6" r="1.8"/><circle cx="17.5" cy="10" r="1.8"/><path d="M12 12c-3 0-5.5 3.5-5.5 6 0 1.5 1.2 2 2.5 2 1.2 0 2-.6 3-.6s1.8.6 3 .6c1.3 0 2.5-.5 2.5-2 0-2.5-2.5-6-5.5-6z"/></svg>寵物用品</span></div>
+          <a href="https://owww.kr/" target="_blank" rel="noopener">前往網站 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+        </li>
+        <li class="brand-row" data-category="beauty">
+          <span class="idx">12</span>
+          <div><h4>Parnell</h4><p>人氣積雪草舒緩護膚品牌</p><span class="cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21h6V11H9z"/><path d="M10 11V6l4-3v8"/></svg>美妝護膚</span></div>
+          <a href="https://parnell.co.kr/" target="_blank" rel="noopener">前往網站 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+        </li>
+        <li class="brand-row" data-category="apparel">
+          <span class="idx">13</span>
+          <div><h4>SPAO</h4><p>韓國平價國民服飾品牌</p><span class="cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7a2 2 0 1 1 2-2"/><path d="M12 7v1l-8.6 6.6A1.5 1.5 0 0 0 4.3 17.3h15.4a1.5 1.5 0 0 0 .9-2.7L12 8"/></svg>潮流服飾</span></div>
+          <a href="https://spao.com/" target="_blank" rel="noopener">前往網站 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+        </li>
+        <li class="brand-row" data-category="apparel">
+          <span class="idx">14</span>
+          <div><h4>The North Face (KR)</h4><p>韓國獨家版型戶外服飾</p><span class="cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7a2 2 0 1 1 2-2"/><path d="M12 7v1l-8.6 6.6A1.5 1.5 0 0 0 4.3 17.3h15.4a1.5 1.5 0 0 0 .9-2.7L12 8"/></svg>潮流服飾</span></div>
+          <a href="https://www.thenorthfacekorea.co.kr/" target="_blank" rel="noopener">前往網站 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+        </li>
+        <li class="brand-row" data-category="kpop">
+          <span class="idx">15</span>
+          <div><h4>Weverse Shop</h4><p>HYBE 等官方藝人周邊商城</p><span class="cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/><path d="M12 5.5a6.5 6.5 0 0 1 6.5 6.5"/></svg>追星周邊</span></div>
+          <a href="https://weverseshop.io/" target="_blank" rel="noopener">前往網站 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+        </li>
+      </ul>
+      <p class="empty-state" id="emptyState" hidden>此分類暫時未有推薦網站。</p>
+    </div>
+  </section>
+
+  <section class="ig-follow" id="follow">
+    <span class="kicker">Follow for Intel</span>
+    <h2>&#64;serenestudio_</h2>
+    <p>韓國折扣快、斷碼更快。追蹤我哋 Instagram，新優惠、預售特典同集運安排第一時間通知你。</p>
+    <ul class="ig-perks"><li>每週折扣快訊</li><li>K-pop 預售特典</li><li>新品到貨</li><li>集運及假期安排</li></ul>
+    <a class="btn btn-ivory" href="https://www.instagram.com/serenestudio_/" target="_blank" rel="noopener"><svg class="ig-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>追蹤 Instagram</a>
+  </section>
+
+  <section><div class="wrap" style="text-align:center"><a class="btn btn-primary" href="https://wa.me/85200000000" target="_blank" rel="noopener">WhatsApp 代購查詢 <span class="arrow">→</span></a><p class="small" style="margin-top:12px"><a href="index.html">← 返回首頁</a></p></div></section>
+</main>
+
+
+<footer><div class="wrap">
+  <div><a href="login.html">客戶登入</a><a href="privacy.html">私隱政策</a><a href="#" class="todo">[Instagram]</a></div>
+  <span>© 2026 Serene Studio</span>
+</div></footer>
+
+<div class="mbar">
+  <a class="btn btn-line" href="login.html">客戶登入</a>
+  <a class="btn btn-primary" href="https://wa.me/85200000000" target="_blank" rel="noopener">WhatsApp 報價</a>
+</div>
+
+<script>
+/* 通知欄：輪流顯示 + 可關閉（記住關閉狀態，直至 ANNOUNCE_VERSION 改變） */
+(function(){
+  var bar=document.getElementById('announce'), el=document.getElementById('annText');
+  var list=(typeof ANNOUNCEMENTS!=='undefined'?ANNOUNCEMENTS:[]).filter(function(a){return a.text && a.text.charAt(0)!=='[';});
+  if(!bar||!list.length||localStorage.getItem('serene_announce_closed')===ANNOUNCE_VERSION){ if(bar) bar.remove(); return; }
+  var i=0;
+  function show(){ var a=list[i]; el.textContent=a.text; if(a.link){el.href=a.link;el.target='_blank';el.rel='noopener';}else{el.removeAttribute('href');} el.classList.remove('fade'); void el.offsetWidth; el.classList.add('fade'); }
+  show();
+  if(list.length>1) setInterval(function(){ i=(i+1)%list.length; show(); },4500);
+  window.closeAnnounce=function(){ localStorage.setItem('serene_announce_closed',ANNOUNCE_VERSION); bar.remove(); };
+})();
+</script>
+<script>
+function scrollDeals(d){ var t=document.getElementById('dealsTrack'), c=t.querySelector('.deal'); t.scrollBy({left:d*(c.offsetWidth+20),behavior:'smooth'}); }
+function filterCategory(cat,btn){
+  document.querySelectorAll('.cat-tab').forEach(function(t){ var on=t===btn; t.classList.toggle('active',on); t.setAttribute('aria-pressed',String(on)); });
+  var n=0;
+  document.querySelectorAll('.brand-row').forEach(function(r){ var show=cat==='all'||r.getAttribute('data-category')===cat; r.hidden=!show; if(show){ n++; r.querySelector('.idx').textContent=(n<10?'0':'')+n; } });
+  document.getElementById('emptyState').hidden=n>0;
+}
+</script>
+<script src="site-ui.js"></script>
+<script>
+/* 語言選單：English 版未推出，暫時顯示提示 */
+(function(){
+  var b=document.getElementById('langBtn'), m=document.getElementById('langMenu'); if(!b||!m) return;
+  function close(){ m.hidden=true; b.setAttribute('aria-expanded','false'); }
+  b.addEventListener('click',function(e){ e.stopPropagation(); var open=m.hidden; m.hidden=!open; b.setAttribute('aria-expanded',String(open)); });
+  document.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
+  m.querySelector('[data-lang="zh"]').addEventListener('click',close);
+  m.querySelector('[data-lang="en"]').addEventListener('click',function(){ close(); (window.showToast||alert)('English version coming soon｜英文版即將推出'); });
+})();
+</script>
+</body>
+
+
+
+</html>

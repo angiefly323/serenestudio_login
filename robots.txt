@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard.html
+Disallow: /orders.html
+Disallow: /tracking.html
+Disallow: /consolidation.html
+Disallow: /profile.html
+Disallow: /calculator.html
+Disallow: /intel.html
+Disallow: /guidelines.html
+Sitemap: https://serenestudio-co.com/sitemap.xml

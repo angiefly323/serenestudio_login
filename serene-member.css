@@ -1,0 +1,91 @@
+/* =====================================================================
+   SERENE STUDIO — 會員頁雜誌風覆蓋樣式 (serene-member.css) v3 2026-11-09
+   放喺每個會員頁原本 <style> 之後，只改外觀，唔改功能。
+   規則：酒紅 #743133｜淡粉灰底｜1px 細線代替陰影｜2px 細圓角｜襯線標題
+===================================================================== */
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Noto+Serif+TC:wght@500;600;700&display=swap");
+@font-face{font-family:"Love Hewits";src:url("LoveHewits.ttf") format("truetype");font-display:swap}
+
+:root{
+  --wine:#743133; --wine-deep:#522223; --wine-10:rgba(116,49,51,.10); --wine-18:rgba(116,49,51,.18);
+  --bg:#F3EDEC; --paper:#FAF7F6; --ink:#1E1415; --text:#3A2E2F; --muted:#7D6E6F; --line:rgba(30,20,21,.12);
+  --f-display:"Cormorant Garamond","Noto Serif TC",Georgia,serif;
+  --f-serif:"Noto Serif TC","Cormorant Garamond",serif;
+  --bar-h:72px; --r:2px;
+}
+@media (max-width:768px){ :root{ --bar-h:64px; } }
+
+body{background:var(--bg) !important;color:var(--text) !important}
+::selection{background:var(--wine);color:#fff}
+
+/* ---------- 側邊欄 ---------- */
+.sidebar{background:var(--paper) !important;border-right:1px solid var(--line) !important}
+.logo-area{min-height:var(--bar-h) !important;height:var(--bar-h);padding:0 24px !important;background:linear-gradient(135deg,#743133 0%,#522223 100%) !important;border-bottom:1px solid rgba(255,255,255,.12)}
+.logo-area img{max-height:44px;width:auto !important}
+.menu-section-title{color:var(--wine) !important;font-size:11px !important;letter-spacing:.22em !important;padding-top:18px !important}
+.menu-list li a{border-radius:var(--r) !important;color:var(--text) !important;border-left:2px solid transparent}
+.menu-list li a:hover{background:var(--wine-10) !important;color:var(--wine) !important}
+.menu-list li.active a{background:transparent !important;color:var(--wine) !important;border-left-color:var(--wine)}
+.sidebar-footer{background:var(--paper) !important;border-top:1px solid var(--line) !important}
+.lang-switch-desktop{background:transparent !important;border:1px solid var(--line) !important;border-radius:var(--r) !important}
+.lang-btn-dt{border-radius:var(--r) !important}
+.lang-btn-dt.active{background:var(--wine) !important;color:#fff !important;box-shadow:none !important}
+.serene-privacy-link{display:block;font-size:12px;letter-spacing:.08em;color:var(--muted);text-decoration:none;padding:4px 8px;margin-bottom:4px}
+.serene-privacy-link:hover{color:var(--wine)}
+
+/* ---------- 頂欄 ---------- */
+.topbar{height:var(--bar-h);padding-top:0 !important;padding-bottom:0 !important;box-shadow:none !important;border-bottom:1px solid rgba(255,255,255,.12)}
+.mobile-lang-tag{border-radius:var(--r) !important}
+
+/* ---------- 內容區通用 ---------- */
+.content-area h1,.content-area h2,.content-area h3,
+.page-header-title,.section-header,.section-title,.section-title-text,.card-title-bar,.modal-title,.flow-title,.notice-title,.deal-title{font-family:var(--f-serif) !important;color:var(--ink)}
+.section-header,.section-title,.section-bar{border-bottom:1px solid var(--line);padding-bottom:12px}
+.section-header i,.section-title i{color:var(--wine) !important}
+
+/* 卡片：線條代替陰影、細圓角 */
+.content-area [class*="card"],.content-area [class*="box"],.content-area table,
+.content-area .accordion,.content-area .orders-container > *,.modal-overlay > *{
+  border-radius:var(--r) !important;box-shadow:none !important}
+.stat-card,.quick-item,.profile-card,.card,.deal-card,.option-card,.notice-card,.accordion-card,.brand-item,.flow-step,.result-box,.empty-box{
+  background:var(--paper) !important;border:1px solid var(--line) !important}
+.stat-card:hover,.quick-item:hover,.deal-card:hover,.brand-item:hover,.option-card:hover{transform:none !important;border-color:var(--wine) !important;box-shadow:none !important}
+
+/* 歡迎 Banner：酒紅 + 內框細線 */
+.welcome-card{border-radius:var(--r) !important;box-shadow:none !important;background:linear-gradient(135deg,#743133 0%,#522223 100%) !important}
+.welcome-card:before{content:"";position:absolute;inset:8px;border:1px solid rgba(255,255,255,.22);pointer-events:none}
+.welcome-card h2{font-family:var(--f-serif) !important;font-size:24px !important;color:#fff !important}
+
+/* 數字用雜誌襯線 */
+.stat-title{letter-spacing:.14em !important;text-transform:uppercase;color:var(--muted) !important;font-size:12px !important}
+.stat-value,.total-price,.summary-total-price,.price-tag,.shp-price{font-family:var(--f-display) !important;font-weight:600 !important;color:var(--ink)}
+.stat-value{font-size:40px !important;line-height:1}
+.stat-icon{background:transparent !important;border:1px solid var(--wine-18);border-radius:50% !important}
+.quick-item-title{font-family:var(--f-serif) !important}
+.quick-item-icon{color:var(--wine) !important}
+
+/* 標籤 / 狀態：線框全圓 */
+.status-tag,.badge,.deal-badge,.tier-badge,.tag-pending,.tag-arrived,.tag-shipped{border-radius:999px !important;box-shadow:none !important}
+
+/* 按鈕：細圓角、無陰影 */
+.content-area button,.content-area [class*="btn"],.modal-overlay button{border-radius:var(--r) !important;box-shadow:none !important;letter-spacing:.04em}
+.content-area .carousel-btn,.modal-close-btn{border-radius:50% !important}
+
+/* 表單：底線輸入框 */
+.content-area input:not([type="checkbox"]):not([type="radio"]),.content-area select,.content-area textarea,
+.form-input,.form-input-m{border-radius:var(--r) !important}
+.content-area input:focus,.content-area select:focus,.content-area textarea:focus{outline:none;border-color:var(--wine) !important;box-shadow:0 0 0 1px var(--wine) !important}
+.content-area label{letter-spacing:.06em}
+
+/* 表格 */
+.content-area table th{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+
+/* 手機底部導航 + 彈出選單 */
+.mobile-bottom-nav{background:rgba(250,247,246,.96) !important;border-top:1px solid var(--line) !important;box-shadow:none !important}
+.popup-menu{border-radius:var(--r) !important;background:var(--paper) !important}
+.popup-header{font-family:var(--f-serif);border-bottom:1px solid var(--line) !important}
+.popup-list a{border-radius:var(--r) !important;background:transparent !important;border:1px solid var(--line)}
+.popup-list a:hover{border-color:var(--wine)}
+
+/* 提示 Toast（配合 site-ui.js）*/
+.serene-toast{border-radius:var(--r) !important;background:var(--ink) !important}

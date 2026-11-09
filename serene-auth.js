@@ -7,7 +7,7 @@
  * 4. 提供 sereneLogoutRemote()：登出時通知後台即時作廢 token
  */
 (function () {
-  var KEY = 'serene_user', LOGIN_PAGE = 'index.html', DEFAULT_SEC = 1800;
+  var KEY = 'serene_user', LOGIN_PAGE = 'login.html', DEFAULT_SEC = 1800;
   var API = 'https://script.google.com/macros/s/AKfycbyTpnxEfQ9B2ysDjq-H7C1N_1BqRcEZVL0nPBInlHoYKOFQVTP-QM13pLEq3d3opbdm/exec';
 
   function getUser() { try { return JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) { return null; } }
@@ -20,7 +20,7 @@
   }
 
   // 開頁時檢查（登入頁唔檢查）
-  var isLogin = /(^|\/)(index\.html)?$/.test(window.location.pathname);
+  var isLogin = /(^|\/)(index(\.html)?|login(\.html)?)?$/.test(window.location.pathname);
   if (!isLogin) {
     var u = getUser();
     if (!u) kick();
