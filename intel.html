@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serene Studio - 韓國網購情報 / Korea Shopping Intel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: #faf7f7; color: #333; display: flex; min-height: 100vh; overflow-x: hidden; }
+        
+        /* 電腦版側邊欄 */
+        .sidebar { width: 250px; background-color: #ffffff; border-right: 1px solid rgba(0,0,0,0.05); position: fixed; height: 100%; z-index: 1000; transition: 0.3s ease; display: flex; flex-direction: column; }
+        .logo-area { background: linear-gradient(135deg, #743133 0%, #522223 100%); padding: 24px; text-align: center; display: flex; justify-content: center; align-items: center; min-height: 100px; }
+        .logo-area img { width: 85%; max-width: 160px; height: auto; filter: brightness(0) invert(1); }
+
+        .menu-wrapper { flex: 1; overflow-y: auto; padding: 16px 10px; }
+        .menu-section-title { font-size: 11px; font-weight: 700; color: #a0a0a0; text-transform: uppercase; letter-spacing: 0.8px; padding: 14px 16px 6px 16px; }
+
+        .menu-list { list-style: none; margin-bottom: 8px; }
+        .menu-list li { margin-bottom: 2px; }
+        .menu-list li a { display: flex; align-items: center; padding: 11px 16px; color: #444; text-decoration: none; font-size: 14px; border-radius: 10px; font-weight: 500; transition: all 0.2s ease; }
+        .menu-list li a i { width: 22px; font-size: 16px; margin-right: 10px; color: #a0a0a0; }
+        .menu-list li a:hover { background-color: #f8f3f3; color: #743133; }
+        .menu-list li a:hover i { color: #743133; }
+        .menu-list li.active a { background-color: #fdf2f2; color: #743133; font-weight: 700; }
+        .menu-list li.active a i { color: #743133; }
+
+        .sidebar-footer { padding: 16px; border-top: 1px solid rgba(0,0,0,0.05); background: #fff; }
+        .lang-switch-desktop { display: flex; background: #faf7f7; padding: 3px; border-radius: 10px; border: 1px solid rgba(116,49,51,0.1); margin-bottom: 10px; }
+        .lang-btn-dt { flex: 1; border: none; background: none; padding: 6px; font-size: 12px; font-weight: 600; color: #777; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+        .lang-btn-dt.active { background: #ffffff; color: #743133; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+
+        /* 主內容區 */
+        .main-content { flex: 1; margin-left: 250px; transition: 0.3s; width: calc(100% - 250px); padding-bottom: 80px; }
+        
+        .topbar { 
+            background: linear-gradient(135deg, #743133 0%, #522223 100%); 
+            padding: 16px 24px; 
+            display: flex; align-items: center; justify-content: center; 
+            position: sticky; top: 0; z-index: 99; 
+            box-shadow: 0 4px 15px rgba(116, 49, 51, 0.15);
+        }
+        .topbar-logo { height: 38px; width: auto; filter: brightness(0) invert(1); }
+
+        .mobile-lang-tag {
+            position: absolute; right: 16px;
+            background: rgba(255,255,255,0.15); backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.25); color: #fff;
+            font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px;
+            cursor: pointer; display: none;
+        }
+
+        .content-area { padding: 32px; max-width: 1100px; margin: 0 auto; }
+        .section-title { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 800; color: #111; margin-bottom: 18px; margin-top: 10px; }
+        .section-title i { color: #743133; }
+
+        /* 上半部：輪播區 */
+        .carousel-wrapper { position: relative; margin-bottom: 40px; display: flex; align-items: center; }
+        
+        .carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: #fff; border: 1px solid #ddd; border-radius: 50%; width: 44px; height: 44px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer; z-index: 10; display: flex; justify-content: center; align-items: center; color: #743133; font-size: 18px; transition: 0.2s; }
+        .carousel-btn:hover { background: #fdf8f8; border-color: #743133; transform: translateY(-50%) scale(1.05); }
+        .left-btn { left: -22px; }
+        .right-btn { right: -22px; }
+
+        .deals-carousel { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; padding: 10px 4px 20px 4px; width: 100%; }
+        .deals-carousel::-webkit-scrollbar { display: none; }
+        
+        .deal-card { flex: 0 0 calc(33.333% - 13.33px); scroll-snap-align: start; background: #fff; border-radius: 16px; border: 1px solid rgba(0,0,0,0.06); overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.03); transition: transform 0.25s ease; position: relative; }
+        .deal-card:hover { transform: translateY(-4px); box-shadow: 0 10px 25px rgba(116,49,51,0.08); }
+        
+        .deal-badge { position: absolute; top: 12px; right: 12px; background: #e11d48; color: #fff; font-size: 13px; font-weight: 800; padding: 5px 12px; border-radius: 20px; box-shadow: 0 4px 10px rgba(225, 29, 72, 0.3); z-index: 10; }
+        
+        .deal-image { height: 130px; background: #f9f9f9; display: flex; justify-content: center; align-items: center; font-size: 24px; font-weight: 900; color: #ccc; border-bottom: 1px solid #eee; position: relative; overflow: hidden; text-align: center; line-height: 1.1; letter-spacing: -0.02em; }
+        .bg-tnf { background: linear-gradient(135deg, #111 0%, #333 100%); color: #fff; }
+        .bg-musinsa { background: #000; color: #fff; }
+        .bg-folder { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #fff; }
+        .bg-oy { background: linear-gradient(135deg, #84cc16 0%, #4d7c0f 100%); color: #fff; font-size: 22px; }
+        .bg-aladin { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: #fff; font-size: 22px; }
+        .bg-ktown { background: linear-gradient(135deg, #ec4899 0%, #be185d 100%); color: #fff; font-size: 22px;}
+        
+        .deal-content { padding: 20px; }
+        .deal-brand { font-size: 12.5px; color: #666; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; }
+        .deal-title { font-size: 16px; font-weight: 800; color: #111; margin-bottom: 8px; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .deal-desc { font-size: 13px; color: #555; margin-bottom: 16px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 36px; line-height: 1.4; }
+        .deal-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed #eee; padding-top: 16px; }
+        .deal-time { font-size: 12px; color: #e11d48; font-weight: 600; }
+        
+        .btn-go { background: #743133; color: #fff; text-decoration: none; padding: 8px 16px; border-radius: 10px; font-size: 13px; font-weight: 700; transition: 0.2s; white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; }
+        .btn-go:hover { background: #5a2527; }
+
+        /* 下半部：Directory A-Z 指南 */
+        .directory-container { background: #fff; border-radius: 20px; border: 1px solid rgba(0,0,0,0.05); padding: 28px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
+        
+        .cat-tabs { display: flex; gap: 10px; margin-bottom: 24px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: none; }
+        .cat-tabs::-webkit-scrollbar { display: none; }
+        .cat-tab { padding: 9px 18px; background: #faf7f7; color: #555; border-radius: 20px; font-size: 13.5px; font-weight: 700; cursor: pointer; border: 1px solid transparent; white-space: nowrap; transition: 0.2s; }
+        .cat-tab.active { background: #fdf2f2; color: #743133; border-color: rgba(116, 49, 51, 0.2); }
+        .cat-tab:hover:not(.active) { background: #f0ecec; }
+
+        .brand-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+        .brand-item { display: flex; justify-content: space-between; align-items: center; padding: 18px; border: 1px solid #eee; border-radius: 14px; transition: 0.2s; background: #fff; }
+        .brand-item:hover { border-color: #743133; background: #fdf2f2; }
+        
+        .brand-info h4 { font-size: 15px; color: #111; font-weight: 800; margin-bottom: 4px; }
+        .brand-info p { font-size: 12.5px; color: #666; font-weight: 500; }
+        .brand-link { color: #743133; font-size: 13px; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 6px; }
+        .brand-link:hover { text-decoration: underline; }
+        
+        .empty-state { grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: #888; display: none; }
+
+        /* 手機版 Bottom Nav */
+        .mobile-bottom-nav {
+            display: none; position: fixed; bottom: 0; left: 0; right: 0;
+            height: 65px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(0, 0, 0, 0.08); z-index: 1000;
+            justify-content: space-around; align-items: center;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            color: #888; text-decoration: none; font-size: 11px; font-weight: 600; gap: 4px;
+            width: 20%; background: none; border: none; cursor: pointer; transition: 0.2s;
+        }
+
+        .nav-item i { font-size: 18px; }
+        .nav-item.active, .nav-item:hover { color: #743133; }
+
+        .popup-overlay {
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 1001; opacity: 0; transition: opacity 0.25s ease;
+        }
+        .popup-overlay.show { display: block; opacity: 1; }
+        .popup-menu {
+            position: fixed; bottom: -250px; left: 16px; right: 16px;
+            background: #ffffff; border-radius: 20px; padding: 20px 16px;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.15); z-index: 1002; transition: bottom 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .popup-overlay.show .popup-menu { bottom: 80px; }
+        .popup-header { font-size: 14px; font-weight: 700; color: #743133; text-align: center; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px dashed #eee; }
+        .popup-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+        .popup-list a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #faf7f7; border-radius: 12px; color: #333; text-decoration: none; font-size: 14px; font-weight: 600; transition: 0.2s; }
+        .popup-list a i { color: #743133; font-size: 16px; width: 20px; }
+
+        @media (max-width: 992px) {
+            .deal-card { flex: 0 0 calc(50% - 10px); }
+        }
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; width: 100%; padding-bottom: 80px; }
+            .topbar { padding: 14px 20px; }
+            .topbar-logo { height: 32px; }
+            .mobile-lang-tag { display: block; }
+            .content-area { padding: 20px; }
+            .brand-list { grid-template-columns: 1fr; }
+            .deal-card { flex: 0 0 calc(100% - 10px); margin-right: 10px; }
+            .carousel-btn { display: none; }
+            .deals-carousel { gap: 0; padding-left: 0; }
+            .mobile-bottom-nav { display: flex; }
+        }
+    </style>
+    <script src="serene-auth.js"></script>
+</head>
+<body>
+
+    <!-- 電腦版側邊選單 -->
+    <nav class="sidebar">
+        <div class="logo-area">
+            <img src="Serenestudio.png" alt="Serene Studio Logo">
+        </div>
+
+        <div class="menu-wrapper">
+            <div class="menu-section-title" data-zh="帳戶總覽" data-en="Overview">帳戶總覽</div>
+            <ul class="menu-list">
+                <li><a href="dashboard.html"><i class="fa-solid fa-house"></i> <span data-zh="我的帳戶首頁" data-en="Home Dashboard">我的帳戶首頁</span></a></li>
+                <li><a href="profile.html"><i class="fa-solid fa-id-card"></i> <span data-zh="會員帳戶資料" data-en="Profile Settings">會員帳戶資料</span></a></li>
+            </ul>
+
+            <div class="menu-section-title" data-zh="訂單及物流" data-en="Orders & Shipping">訂單及物流</div>
+            <ul class="menu-list">
+                <li><a href="orders.html"><i class="fa-solid fa-file-invoice-dollar"></i> <span data-zh="代購訂單紀錄" data-en="Proxy Orders">代購訂單紀錄</span></a></li>
+                <li><a href="tracking.html"><i class="fa-solid fa-box-open"></i> <span data-zh="韓國倉及物流追蹤" data-en="Warehouse Tracking">韓國倉及物流追蹤</span></a></li>
+                <li><a href="consolidation.html"><i class="fa-solid fa-plane-departure"></i> <span data-zh="集運單及國際運費" data-en="Consolidations">集運單及國際運費</span></a></li>
+            </ul>
+
+            <div class="menu-section-title" data-zh="服務與情報" data-en="Services & Info">服務與情報</div>
+            <ul class="menu-list">
+                <li><a href="calculator.html"><i class="fa-solid fa-calculator"></i> <span data-zh="運費計算機" data-en="Shipping Calculator">運費計算機</span></a></li>
+                <li class="active"><a href="intel.html"><i class="fa-solid fa-fire"></i> <span data-zh="韓國網購情報" data-en="Korea Shopping Intel">韓國網購情報</span></a></li>
+                <li><a href="guidelines.html"><i class="fa-solid fa-book-open"></i> <span data-zh="購物流程及須知" data-en="Guidelines">購物流程及須知</span></a></li>
+            </ul>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="lang-switch-desktop">
+                <button onclick="switchLanguage('zh')" id="btnZhDt" class="lang-btn-dt active">繁體中文</button>
+                <button onclick="switchLanguage('en')" id="btnEnDt" class="lang-btn-dt">English</button>
+            </div>
+            <a href="index.html" onclick="logout()" style="display:flex; align-items:center; gap:8px; color:#e11d48; text-decoration:none; font-size:13px; font-weight:600; padding:6px 8px;">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                <span data-zh="登出帳戶" data-en="Logout">登出帳戶</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- 主內容區 -->
+    <main class="main-content">
+        <header class="topbar">
+            <img src="Serenestudio.png" alt="Serene Studio Logo" class="topbar-logo">
+            <div class="mobile-lang-tag" onclick="toggleMobileLang()" id="mobileLangBtn">EN</div>
+        </header>
+
+        <div class="content-area">
+            
+            <!-- 上半部：輪播 -->
+            <div class="section-title">
+                <i class="fa-solid fa-fire-flame-curved"></i>
+                <span data-zh="期間限定！韓國最新折扣情報" data-en="Limited Time Deals & Promotions">期間限定！韓國最新折扣情報</span>
+            </div>
+            
+            <div class="carousel-wrapper">
+                <button class="carousel-btn left-btn" onclick="scrollCarousel(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+                
+                <div class="deals-carousel" id="dealsCarousel">
+                    <div class="deal-card">
+                        <div class="deal-badge">30% OFF</div>
+                        <div class="deal-image bg-tnf">THE NORTH FACE</div>
+                        <div class="deal-content">
+                            <div class="deal-brand">The North Face (KR)</div>
+                            <div class="deal-title" data-zh="韓國站轉季大減價" data-en="Korea Outlet Seasonal Sale">韓國站轉季大減價</div>
+                            <div class="deal-desc" data-zh="精選羽絨、防風外套及背囊低至 7 折！韓國版獨家剪裁，極速斷碼中。" data-en="Down jackets & windbreakers up to 30% off. Exclusive Korea fits.">精選羽絨、防風外套及背囊低至 7 折！韓國版獨家剪裁，極速斷碼中。</div>
+                            <div class="deal-footer">
+                                <span class="deal-time"><i class="fa-regular fa-clock"></i> <span data-zh="至 11 月 5 日" data-en="Until Nov 5">至 11 月 5 日</span></span>
+                                <a href="https://www.thenorthfacekorea.co.kr/" target="_blank" class="btn-go"><span data-zh="前往掃貨" data-en="Shop Now">前往掃貨</span> <i class="fa-solid fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="deal-card">
+                        <div class="deal-badge">10% OFF</div>
+                        <div class="deal-image bg-musinsa">MUSINSA</div>
+                        <div class="deal-content">
+                            <div class="deal-brand">Musinsa</div>
+                            <div class="deal-title" data-zh="全網服飾類快閃優惠" data-en="Site-wide Apparel Flash Sale">全網服飾類快閃優惠</div>
+                            <div class="deal-desc" data-zh="韓國最大潮牌集合店，過百個韓國本土設計師品牌全線額外 9 折。" data-en="Korea's largest fashion store, extra 10% off top designer brands.">韓國最大潮牌集合店，過百個韓國本土設計師品牌全線額外 9 折。</div>
+                            <div class="deal-footer">
+                                <span class="deal-time"><i class="fa-regular fa-clock"></i> <span data-zh="隨時完結" data-en="Ends Soon">隨時完結</span></span>
+                                <a href="https://www.musinsa.com/" target="_blank" class="btn-go"><span data-zh="前往掃貨" data-en="Shop Now">前往掃貨</span> <i class="fa-solid fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="deal-card">
+                        <div class="deal-badge">20% OFF</div>
+                        <div class="deal-image bg-folder">FOLDER</div>
+                        <div class="deal-content">
+                            <div class="deal-brand">Folder Style</div>
+                            <div class="deal-title" data-zh="Nike 新款折扣" data-en="Nike New Arrivals Sale">Nike 新款折扣</div>
+                            <div class="deal-desc" data-zh="指定新款波鞋 8 折。透過我們代購可提供「去鞋盒」服務大減國際運費！" data-en="Selected shoes 20% off. Shoe box removal available to save shipping!">指定新款波鞋 8 折。透過我們代購可提供「去鞋盒」服務大減國際運費！</div>
+                            <div class="deal-footer">
+                                <span class="deal-time"><i class="fa-regular fa-clock"></i> <span data-zh="至本週末" data-en="Until Weekend">至本週末</span></span>
+                                <a href="https://folderstyle.com/" target="_blank" class="btn-go"><span data-zh="前往掃貨" data-en="Shop Now">前往掃貨</span> <i class="fa-solid fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="deal-card">
+                        <div class="deal-badge">SALE</div>
+                        <div class="deal-image bg-oy">OLIVE YOUNG</div>
+                        <div class="deal-content">
+                            <div class="deal-brand">Olive Young</div>
+                            <div class="deal-title" data-zh="人氣精華 1+1 企劃套裝" data-en="Best Serum 1+1 Sets">人氣精華 1+1 企劃套裝</div>
+                            <div class="deal-desc" data-zh="Torriden、Goodal 等大熱精華推出 1+1 超值組合，韓國門市及網店同步優惠。" data-en="Torriden, Goodal serum 1+1 special bundles available now.">Torriden、Goodal 等大熱精華推出 1+1 超值組合，韓國門市及網店同步優惠。</div>
+                            <div class="deal-footer">
+                                <span class="deal-time"><i class="fa-regular fa-clock"></i> <span data-zh="售完即止" data-en="While Stock Lasts">售完即止</span></span>
+                                <a href="https://www.oliveyoung.co.kr/" target="_blank" class="btn-go"><span data-zh="前往掃貨" data-en="Shop Now">前往掃貨</span> <i class="fa-solid fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="deal-card">
+                        <div class="deal-badge">特典</div>
+                        <div class="deal-image bg-aladin">ALADIN (阿拉丁)</div>
+                        <div class="deal-content">
+                            <div class="deal-brand">Aladin</div>
+                            <div class="deal-title" data-zh="女團新專 獨家明信片特典" data-en="Exclusive Photocard Pre-orders">女團新專 獨家明信片特典</div>
+                            <div class="deal-desc" data-zh="於 Aladin 預購最新韓國女團專輯，即送獨家官方明信片一張。" data-en="Pre-order K-Pop albums at Aladin to get official exclusive photocards.">於 Aladin 預購最新韓國女團專輯，即送獨家官方明信片一張。</div>
+                            <div class="deal-footer">
+                                <span class="deal-time"><i class="fa-regular fa-clock"></i> <span data-zh="預售期間" data-en="Pre-order Period">預售期間</span></span>
+                                <a href="https://www.aladin.co.kr/" target="_blank" class="btn-go"><span data-zh="前往掃貨" data-en="Shop Now">前往掃貨</span> <i class="fa-solid fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="deal-card">
+                        <div class="deal-badge">免首重</div>
+                        <div class="deal-image bg-ktown">Ktown4u</div>
+                        <div class="deal-content">
+                            <div class="deal-brand">Ktown4u</div>
+                            <div class="deal-title" data-zh="男團回歸 特典小卡預售" data-en="Boygroup Photocard Special">男團回歸 特典小卡預售</div>
+                            <div class="deal-desc" data-zh="獨家特典小卡釋出！經本網代購可享免費「代拆專及只寄小卡」服務，免首重！" data-en="Unbox album & ship photocards only service available for free!">獨家特典小卡釋出！經本網代購可享免費「代拆專及只寄小卡」服務，免首重！</div>
+                            <div class="deal-footer">
+                                <span class="deal-time"><i class="fa-regular fa-clock"></i> <span data-zh="預售期間" data-en="Pre-order Period">預售期間</span></span>
+                                <a href="https://kr.ktown4u.com/" target="_blank" class="btn-go"><span data-zh="前往掃貨" data-en="Shop Now">前往掃貨</span> <i class="fa-solid fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="carousel-btn right-btn" onclick="scrollCarousel(1)"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+
+            <!-- 下半部：A-Z 指南 (新增寵物用品) -->
+            <div class="section-title">
+                <i class="fa-solid fa-list-check"></i>
+                <span data-zh="韓國熱門網購指南 (A-Z 排列)" data-en="Korea Shopping Directory (A-Z)">韓國熱門網購指南 (A-Z 排列)</span>
+            </div>
+
+            <div class="directory-container">
+                <div class="cat-tabs" id="categoryTabs">
+                    <div class="cat-tab active" onclick="filterCategory('all')" data-zh="全部分類" data-en="All Categories">全部分類</div>
+                    <div class="cat-tab" onclick="filterCategory('apparel')" data-zh="👕 潮流服飾" data-en="👕 Fashion">👕 潮流服飾</div>
+                    <div class="cat-tab" onclick="filterCategory('shoes')" data-zh="👟 鞋履手袋" data-en="👟 Shoes & Bags">👟 鞋履手袋</div>
+                    <div class="cat-tab" onclick="filterCategory('beauty')" data-zh="💄 美妝護膚" data-en="💄 Beauty & Skincare">💄 美妝護膚</div>
+                    <div class="cat-tab" onclick="filterCategory('kpop')" data-zh="💿 追星周邊" data-en="💿 K-Pop & Idol">💿 追星周邊</div>
+                    <div class="cat-tab" onclick="filterCategory('pet')" data-zh="🐶 寵物用品" data-en="🐶 Pet Supplies">🐶 寵物用品</div>
+                </div>
+
+                <div class="brand-list" id="brandList">
+                    <div class="brand-item" data-category="shoes">
+                        <div class="brand-info"><h4>ABC-Mart (Korea)</h4><p data-zh="綜合運動鞋履連鎖店" data-en="Multi-brand sneakers & footwear">綜合運動鞋履連鎖店</p></div>
+                        <a href="https://abcmart.a-rt.com/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    </div>
+
+                    <div class="brand-item" data-category="kpop">
+                        <div class="brand-info"><h4>Aladin (阿拉丁)</h4><p data-zh="韓國實體專輯、雜誌網購" data-en="K-Pop albums & magazines">韓國實體專輯、雜誌網購</p></div>
+                        <a href="https://www.aladin.co.kr/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    </div>
+
+                    <!-- 🐶 寵物用品 1 -->
+                    <div class="brand-item" data-category="pet">
+                        <div class="brand-info"><h4>BITE ME (바이트미)</h4><p data-zh="韓國超人氣萌寵玩具、零食與日常用品" data-en="Cute pet toys, treats & accessories">韓國超人氣萌寵玩具、零食與日常用品</p></div>
+                        <a href="https://biteme.co.kr/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    </div>
+
+                    <!-- 🐶 寵物用品 2 -->
+                    <div class="brand-item" data-category="pet">
+                        <div class="brand-info"><h4>Bridge.Dog (브릿지독)</h4><p data-zh="極簡美學韓系寵物陶瓷慢食碗與餐具" data-en="Minimalist pet ceramic bowls & tableware">極簡美學韓系寵物陶瓷慢食碗與餐具</p></div>
+                        <a href="https://bridgedog.co.kr/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    </div>
+                    
+                    <div class="brand-item" data-category="shoes">
+                        <div class="brand-info"><h4>Folder Style</h4><p data-zh="韓國本土熱門潮鞋連鎖店" data-en="Korea trend sneakers store">韓國本土熱門潮鞋連鎖店</p></div>
+                        <a href="https://folderstyle.com/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    </div>
+
+                    <!-- 🐶 寵物用品 3 -->
+                    <div class="brand-item" data-category="pet">
+                        <div class="brand-info"><h4>HarrySpet (해리스펫)</h4><p data-zh="韓國頂級寵物推車車墊、護枕及配件專賣" data-en="Premium pet stroller cushions & accessories">韓國頂級寵物推車車墊、護枕及配件專賣</p></div>
+                        <a href="https://harryspet.com/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    </div>
+
+                    <!-- 🐶 寵物用品 4 -->
+                    <div class="brand-item" data-category="pet">
+                        <div class="brand-info"><h4>It's Dog (잇츠독)</h4><p data-zh="韓系精緻狗狗時尚服飾、保暖衣與外出配件" data-en="Stylish pet apparel & cozy wear">韓系精緻狗狗時尚服飾、保暖衣與外出配件</p></div>
+                        <a href="https://itsdog.com/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    </div>
+
+                    <div class="brand-item" data-category="kpop">
+                        <div class="brand-info"><h4>Ktown4u</h4><p data-zh="K-pop 專輯、明星周邊專門店" data-en="Global K-Pop store">K-pop 專輯、明星周邊專門店</p></div>
+                        <a href="https://kr.ktown4u.com/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    </div>
+
+                    <div class="brand-item" data-category="apparel">
+                        <div class="brand-info"><h4>Musinsa</h4><p data-zh="韓國最大本土潮牌集合店" data-en="Korea's #1 fashion marketplace">韓國最大本土潮牌集合店</p></div>
+                        <a href="https://www.musinsa.com/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    </div>
+
+                    <div class="brand-item" data-category="beauty">
+                        <div class="brand-info"><h4>Olive Young</h4><p data-zh="韓國 No.1 藥妝及護膚品店" data-en="Korea No.1 K-beauty store">韓國 No.1 藥妝及護膚品店</p></div>
+                        <a href="https://www.oliveyoung.co.kr/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    </div>
+
+                    <!-- 🐶 寵物用品 5 -->
+                    <div class="brand-item" data-category="pet">
+                        <div class="brand-info"><h4>OWWW Studio (아우스튜디오)</h4><p data-zh="韓系質感手作狗狗童裝風衣服與質感選品" data-en="Korean boutique handmade pet clothing">韓系質感手作狗狗童裝風衣服與質感選品</p></div>
+                        <a href="https://owww.kr/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    </div>
+
+                    <div class="brand-item" data-category="beauty">
+                        <div class="brand-info"><h4>Parnell</h4><p data-zh="人氣積雪草舒緩護膚品牌" data-en="Cicamanu skincare line">人氣積雪草舒緩護膚品牌</p></div>
+                        <a href="https://parnell.co.kr/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    </div>
+
+                    <div class="brand-item" data-category="apparel">
+                        <div class="brand-info"><h4>SPAO</h4><p data-zh="韓國平價國民服飾品牌" data-en="Korean trendy casual wear">韓國平價國民服饰品牌</p></div>
+                        <a href="https://spao.com/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    </div>
+
+                    <div class="brand-item" data-category="apparel">
+                        <div class="brand-info"><h4>The North Face (KR)</h4><p data-zh="韓國獨家版型戶外服飾" data-en="Korea exclusive outdoor wear">韓國獨家版型戶外服飾</p></div>
+                        <a href="https://www.thenorthfacekorea.co.kr/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    </div>
+
+                    <div class="brand-item" data-category="kpop">
+                        <div class="brand-info"><h4>Weverse Shop</h4><p data-zh="HYBE 等官方藝人周邊商城" data-en="Official K-Pop merch store">HYBE 等官方藝人周邊商城</p></div>
+                        <a href="https://weverseshop.io/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    </div>
+
+                    <div class="empty-state" id="emptyState">
+                        <i class="fa-solid fa-box-open" style="font-size:32px; color:#ddd; margin-bottom:10px;"></i>
+                        <p data-zh="此分類暫時未有推薦網站。" data-en="No sites available in this category yet.">此分類暫時未有推薦網站。</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- 手機版 Bottom Nav -->
+    <nav class="mobile-bottom-nav">
+        <a href="dashboard.html" class="nav-item">
+            <i class="fa-solid fa-house"></i>
+            <span data-zh="首頁" data-en="Home">首頁</span>
+        </a>
+
+        <button type="button" class="nav-item" onclick="toggleOrderPopup()">
+            <i class="fa-solid fa-boxes-stacked"></i>
+            <span data-zh="管理訂單" data-en="Orders">管理訂單</span>
+        </button>
+
+        <a href="calculator.html" class="nav-item">
+            <i class="fa-solid fa-calculator"></i>
+            <span data-zh="運費試算" data-en="Calc">運費試算</span>
+        </a>
+
+        <a href="intel.html" class="nav-item active">
+            <i class="fa-solid fa-fire"></i>
+            <span data-zh="網購情報" data-en="Intel">網購情報</span>
+        </a>
+
+        <a href="profile.html" class="nav-item">
+            <i class="fa-solid fa-user"></i>
+            <span data-zh="我的帳戶" data-en="Account">我的帳戶</span>
+        </a>
+    </nav>
+
+    <!-- Pop-up List -->
+    <div class="popup-overlay" id="popupOverlay" onclick="closeOrderPopup()">
+        <div class="popup-menu" onclick="event.stopPropagation();">
+            <div class="popup-header" data-zh="請選擇訂單管理項目" data-en="Select Order Category">請選擇訂單管理項目</div>
+            <ul class="popup-list">
+                <li><a href="orders.html"><i class="fa-solid fa-file-invoice-dollar"></i> <span data-zh="代購訂單紀錄" data-en="Proxy Orders History">代購訂單紀錄</span></a></li>
+                <li><a href="tracking.html"><i class="fa-solid fa-box-open"></i> <span data-zh="韓國物流追蹤" data-en="KR Warehouse Inventory">韓國物流追蹤</span></a></li>
+                <li><a href="consolidation.html"><i class="fa-solid fa-plane-departure"></i> <span data-zh="集運單及國際運費" data-en="Consolidation Requests">集運單及國際運費</span></a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('serene_lang') || 'zh';
+            switchLanguage(savedLang);
+        });
+
+        function scrollCarousel(direction) {
+            const carousel = document.getElementById('dealsCarousel');
+            const cardWidth = carousel.querySelector('.deal-card').offsetWidth + 20; 
+            carousel.scrollBy({ left: direction * cardWidth, behavior: 'smooth' });
+        }
+
+        function filterCategory(category) {
+            const tabs = document.querySelectorAll('.cat-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            const items = document.querySelectorAll('.brand-item');
+            let visibleCount = 0;
+
+            items.forEach(item => {
+                const itemCat = item.getAttribute('data-category');
+                if (category === 'all' || itemCat === category) {
+                    item.style.display = 'flex';
+                    visibleCount++;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            const emptyState = document.getElementById('emptyState');
+            emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+        }
+
+        function switchLanguage(lang) {
+            localStorage.setItem('serene_lang', lang);
+            document.documentElement.lang = lang === 'en' ? 'en' : 'zh-HK';
+
+            document.getElementById('btnZhDt').classList.toggle('active', lang === 'zh');
+            document.getElementById('btnEnDt').classList.toggle('active', lang === 'en');
+            document.getElementById('mobileLangBtn').innerText = lang === 'en' ? '繁中' : 'EN';
+
+            document.querySelectorAll('[data-zh]').forEach(el => {
+                el.innerText = lang === 'en' ? el.getAttribute('data-en') : el.getAttribute('data-zh');
+            });
+        }
+
+        function toggleMobileLang() {
+            const currentLang = localStorage.getItem('serene_lang') || 'zh';
+            switchLanguage(currentLang === 'zh' ? 'en' : 'zh');
+        }
+
+        function toggleOrderPopup() { document.getElementById('popupOverlay').classList.toggle('show'); }
+        function closeOrderPopup() { document.getElementById('popupOverlay').classList.remove('show'); }
+
+        function logout() {
+            if (window.sereneLogoutRemote) sereneLogoutRemote();
+            localStorage.removeItem('serene_user');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
