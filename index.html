@@ -35,7 +35,7 @@ body{background:var(--grad-mist);padding-bottom:calc(76px + env(safe-area-inset-
 .facts span{font-size:13px;color:var(--muted)}
   .facts b{white-space:nowrap;font-size:clamp(18px,1.5vw,24px)}
 .facts div:last-child b{font-size:clamp(16px,1.35vw,22px)}
-@media(max-width:899px){.hero .kicker{font-size:11px;letter-spacing:.16em}.hero .display{font-size:40px}.hero h1{font-size:18px;white-space:nowrap}.hero .lead{font-size:14px}.hero .ctas{flex-wrap:nowrap;gap:8px}.hero .ctas .btn{flex:1 1 auto;min-width:0;padding:0 12px;font-size:13px;gap:6px;white-space:nowrap}.hero .ctas .arrow{display:none}.index a{grid-template-columns:28px 1fr auto;gap:8px}.index h3{font-size:17px}.index .n,.index .en{font-size:14px}}
+@media(max-width:899px){.hero .kicker{font-size:11px;letter-spacing:.16em}.hero .display{font-size:40px}.hero h1{font-size:18px;white-space:nowrap}.hero .lead{font-size:14px}.hero .ctas{flex-wrap:nowrap;gap:8px}.hero .ctas .btn{flex:1 1 auto;min-width:0;padding:0 12px;font-size:13px;gap:6px;white-space:nowrap}.hero .ctas .arrow{display:none}.index a{grid-template-columns:76px 1fr;column-gap:14px;row-gap:6px;padding:18px 0}.index .n{grid-column:1;grid-row:1}.index .en{grid-column:1;grid-row:2;font-size:15px}.index h3{grid-column:2;grid-row:1}.index p{grid-column:2;grid-row:2}}
 @media(min-width:900px){.hero-grid{grid-template-columns:1.25fr .75fr;align-items:end}.facts{grid-template-columns:repeat(4,1fr)}.facts div{border-right:1px solid var(--line);padding:16px 14px!important}.facts div:last-child{border-right:0}}
 section{padding:var(--section) 0}
 /* Index list (categories) */
@@ -43,7 +43,6 @@ section{padding:var(--section) 0}
 .index a:first-child{border-top:1px solid var(--ink)}
 .index a:hover{padding-left:10px;color:var(--wine)}
 .index .n{font-family:var(--f-display);font-style:italic;color:var(--wine);font-size:18px}
-.index h3{font-size:clamp(20px,2.6vw,30px)}
 .index p{grid-column:2/4;font-size:14px;color:var(--muted)}
 .index .en{font-family:var(--f-display);font-style:italic;font-size:18px;color:var(--muted)}
 @media(min-width:900px){.cat-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:56px;align-items:start}.index p{grid-column:auto}.index a{grid-template-columns:56px 1fr 1fr auto}}
