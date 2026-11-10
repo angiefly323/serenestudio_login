@@ -158,8 +158,18 @@ footer a{margin-right:16px}
         </div>
       </div>
       <figure>
-        <div class="photo ratio-45"><span>Cover photo · 4:5</span></div>
-        <figcaption class="caption">— 本期封面：<span class="todo">[例如 11 月開箱]</span></figcaption>
+        <!-- cover-carousel v1 -->
+        <div class="photo ratio-45 cover-carousel" id="coverCarousel" aria-roledescription="carousel" aria-label="本期封面">
+          <div class="cc-track">
+            <a class="cc-slide is-active" href="https://wa.me/85200000000?text=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%83%B3%E6%9F%A5%E8%A9%A2%E9%9F%93%E5%9C%8B%E9%BB%91%E4%BA%94%E4%BB%A3%E8%B3%BC" target="_blank" rel="noopener"><img src="cover-bf-1.jpg" alt="韓國黑五 減價日期一次看" width="1080" height="1350"></a>
+            <a class="cc-slide" href="https://wa.me/85200000000?text=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%83%B3%E6%9F%A5%E8%A9%A2%E9%9F%93%E5%9C%8B%E9%BB%91%E4%BA%94%E4%BB%A3%E8%B3%BC" target="_blank" rel="noopener"><img src="cover-bf-2.jpg" alt="11月黑五日曆" width="1080" height="1350" loading="lazy"></a>
+            <a class="cc-slide" href="https://wa.me/85200000000?text=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%83%B3%E6%9F%A5%E8%A9%A2%E9%9F%93%E5%9C%8B%E9%BB%91%E4%BA%94%E4%BB%A3%E8%B3%BC" target="_blank" rel="noopener"><img src="cover-bf-3.jpg" alt="固定代購費 ₩5,000/件 代購品牌" width="1080" height="1350" loading="lazy"></a>
+          </div>
+          <button class="cc-arrow cc-prev" type="button" aria-label="上一張">‹</button>
+          <button class="cc-arrow cc-next" type="button" aria-label="下一張">›</button>
+          <div class="cc-dots" role="tablist"><button type="button" class="is-active" aria-label="第 1 張"></button><button type="button" aria-label="第 2 張"></button><button type="button" aria-label="第 3 張"></button></div>
+        </div>
+        <figcaption class="caption">— 本期封面：11 月韓國黑五</figcaption>
       </figure>
     </div>
   </section>
@@ -282,6 +292,40 @@ footer a{margin-right:16px}
   document.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
   m.querySelector('[data-lang="zh"]').addEventListener('click',close);
   m.querySelector('[data-lang="en"]').addEventListener('click',function(){ close(); (window.showToast||alert)('English version coming soon｜英文版即將推出'); });
+})();
+</script>
+<!-- cover-carousel v1 -->
+<style>
+.cover-carousel{display:block;touch-action:pan-y}
+.cover-carousel .cc-track{position:absolute;inset:0}
+.cover-carousel .cc-slide{position:absolute;inset:0;opacity:0;transition:opacity .6s ease;pointer-events:none}
+.cover-carousel .cc-slide.is-active{opacity:1;pointer-events:auto}
+.cover-carousel .cc-slide img{width:100%;height:100%;object-fit:cover;display:block}
+.cover-carousel .cc-arrow{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border:0;border-radius:50%;background:rgba(255,255,255,.82);color:#743133;font-size:24px;line-height:34px;cursor:pointer;z-index:2;padding:0}
+.cover-carousel .cc-prev{left:10px}.cover-carousel .cc-next{right:10px}
+.cover-carousel .cc-arrow:hover{background:#fff}
+.cover-carousel .cc-dots{position:absolute;left:0;right:0;bottom:12px;display:flex;justify-content:center;gap:8px;z-index:2}
+.cover-carousel .cc-dots button{width:8px;height:8px;border-radius:50%;border:1px solid #fff;background:rgba(255,255,255,.4);padding:0;cursor:pointer}
+.cover-carousel .cc-dots button.is-active{background:#fff}
+@media (prefers-reduced-motion:reduce){.cover-carousel .cc-slide{transition:none}}
+</style>
+<script>
+(function(){
+  var root=document.getElementById('coverCarousel'); if(!root) return;
+  var slides=root.querySelectorAll('.cc-slide'), dots=root.querySelectorAll('.cc-dots button'), i=0, timer=null, x0=null;
+  function go(n){ i=(n+slides.length)%slides.length;
+    slides.forEach(function(s,k){s.classList.toggle('is-active',k===i)});
+    dots.forEach(function(d,k){d.classList.toggle('is-active',k===i)}); }
+  function start(){ stop(); timer=setInterval(function(){go(i+1)},5000); }
+  function stop(){ if(timer){clearInterval(timer);timer=null;} }
+  root.querySelector('.cc-prev').addEventListener('click',function(){go(i-1);start();});
+  root.querySelector('.cc-next').addEventListener('click',function(){go(i+1);start();});
+  dots.forEach(function(d,k){d.addEventListener('click',function(){go(k);start();});});
+  root.addEventListener('mouseenter',stop); root.addEventListener('mouseleave',start);
+  root.addEventListener('touchstart',function(e){x0=e.touches[0].clientX;stop();},{passive:true});
+  root.addEventListener('touchend',function(e){ if(x0===null) return; var dx=e.changedTouches[0].clientX-x0;
+    if(Math.abs(dx)>40){ go(dx<0?i+1:i-1); e.preventDefault(); } x0=null; start(); });
+  start();
 })();
 </script>
 </body>
