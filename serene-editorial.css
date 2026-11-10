@@ -137,7 +137,7 @@ select.input{appearance:none;background-image:linear-gradient(45deg,transparent 
 /* Announcement bar */
 .announce{position:relative;display:flex;align-items:center;justify-content:center;gap:12px;min-height:40px;padding:6px 52px;background:linear-gradient(90deg,#522223,#743133 50%,#522223);color:#F3EDEC;font-size:13px;letter-spacing:.04em;text-align:center}
 .announce[hidden]{display:none}
-.ann-tag{flex:none;border:1px solid rgba(243,237,236,.55);border-radius:2px;padding:1px 8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+.ann-tag{display:none;flex:none;border:1px solid rgba(243,237,236,.55);border-radius:2px;padding:1px 8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
 .ann-text{color:#fff;text-decoration:none;transition:opacity .35s ease}
 .ann-text.fade{animation:annFade .45s ease}@keyframes annFade{from{opacity:0}to{opacity:1}}
 .ann-close{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:44px;height:40px;border:0;background:transparent;color:#F3EDEC;font-size:20px;line-height:1;cursor:pointer}
