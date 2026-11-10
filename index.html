@@ -34,7 +34,8 @@ body{background:var(--grad-mist);padding-bottom:calc(76px + env(safe-area-inset-
 .facts b{display:block;font-family:var(--f-display);font-size:28px;font-weight:500;color:var(--ink);line-height:1.1}
 .facts span{font-size:13px;color:var(--muted)}
   .facts b{white-space:nowrap;font-size:clamp(18px,1.5vw,24px)}
-.tier-strip{display:grid;grid-template-columns:repeat(2,1fr);margin-top:14px;border-top:1px solid var(--line)}.tier-strip span{display:flex;flex-direction:column;gap:2px;padding:10px 0 10px 14px;border-bottom:1px solid var(--line);font-size:12px;color:var(--muted)}.tier-strip span:nth-child(odd){padding-left:0;padding-right:12px;border-right:1px solid var(--line)}.tier-strip b{font-family:var(--f-display);font-size:20px;font-weight:500;color:var(--ink);line-height:1.1}.tier-strip span:last-child b{color:var(--wine)}@media(min-width:900px){.tier-strip{grid-template-columns:repeat(4,1fr)}.tier-strip span,.tier-strip span:nth-child(odd){padding:10px 14px;border-right:1px solid var(--line)}.tier-strip span:first-child{padding-left:0}.tier-strip span:last-child{border-right:0}}
+.facts div:last-child b{font-size:clamp(16px,1.35vw,22px)}
+@media(max-width:899px){.hero .kicker{font-size:10px;letter-spacing:.16em}.hero .display{font-size:40px}.hero h1{font-size:4.6vw;white-space:nowrap}.hero .ctas{flex-wrap:nowrap;gap:8px}.hero .ctas .btn{flex:1 1 auto;min-width:0;padding:0 12px;font-size:13px;gap:6px;white-space:nowrap}.hero .ctas .arrow{display:none}}
 @media(min-width:900px){.hero-grid{grid-template-columns:1.25fr .75fr;align-items:end}.facts{grid-template-columns:repeat(4,1fr)}.facts div{border-right:1px solid var(--line);padding:16px 14px!important}.facts div:last-child{border-right:0}}
 section{padding:var(--section) 0}
 /* Index list (categories) */
@@ -154,12 +155,11 @@ footer a{margin-right:16px}
           <a class="btn btn-line" href="pricing.html#calc"><svg class="b-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8"/><path d="M8.5 11h0M12 11h0M15.5 11h0M8.5 14.5h0M12 14.5h0M15.5 14.5h0M8.5 18h0M12 18h0M15.5 18h0" stroke-width="2.2"/></svg>試算總價</a>
         </div>
         <div class="facts">
-          <div><b>₩5,000</b><span>／件手續費・多買低至 ₩3,500</span></div>
+          <div><b>₩5,000</b><span>/件，多買低至₩3,500</span></div>
           <div><b>HK$24</b><span>首 0.5kg 運費</span></div>
           <div><b>FPS/PayMe</b><span>零手續費轉帳</span></div>
           <div><b>順豐/門市自取</b><span>靈活本地派送</span></div>
         </div>
-        <div class="tier-strip" aria-label="代購手續費分級"><span>1–4 件 <b>₩5,000</b></span><span>5–9 件 <b>₩4,500</b></span><span>10–19 件 <b>₩4,000</b></span><span>20 件或以上 <b>₩3,500</b></span></div>
       </div>
       <figure>
         <!-- cover-carousel v1 -->
