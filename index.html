@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Serenestudio｜韓國代購 · 集運到香港</title>
-<meta name="description" content="韓國代購及集運：K-pop 專輯周邊、服飾、美妝、零食、寵物用品。手續費 ₩3,500 起／件，首 0.5kg 運費 HK$24。">
+<meta name="description" content="韓國代購及集運：K-pop 專輯周邊、服飾、美妝、零食、寵物用品。手續費 ₩5,000／件（多買低至 ₩3,500），首 0.5kg 運費 HK$24。">
 <!-- 設計稿：公開首頁（雜誌風）· 黃色 = 待填 · 斜線框 = 相片留位 -->
 <link rel="stylesheet" href="serene-editorial.css">
 <style>
@@ -34,6 +34,7 @@ body{background:var(--grad-mist);padding-bottom:calc(76px + env(safe-area-inset-
 .facts b{display:block;font-family:var(--f-display);font-size:28px;font-weight:500;color:var(--ink);line-height:1.1}
 .facts span{font-size:13px;color:var(--muted)}
   .facts b{white-space:nowrap;font-size:clamp(18px,1.5vw,24px)}
+.tier-strip{display:flex;flex-wrap:wrap;gap:6px 0;margin-top:12px;font-size:12px;color:var(--muted)}.tier-strip span{padding:0 12px;border-left:1px solid var(--line)}.tier-strip span:first-child{padding-left:0;border-left:0}.tier-strip b{color:var(--ink);font-weight:600}
 @media(min-width:900px){.hero-grid{grid-template-columns:1.25fr .75fr;align-items:end}.facts{grid-template-columns:repeat(4,1fr)}.facts div{border-right:1px solid var(--line);padding:16px 14px!important}.facts div:last-child{border-right:0}}
 section{padding:var(--section) 0}
 /* Index list (categories) */
@@ -115,11 +116,11 @@ footer a{margin-right:16px}
   <script>
     /* ✏️ 喺度更新優惠：text = 顯示文字；link = 撳落去去邊（可留空）
        改咗內容記得將 ANNOUNCE_VERSION 改新，之前撳咗關閉嘅客人會再見到 */
-    const ANNOUNCE_VERSION = "2026-11-d";
+    const ANNOUNCE_VERSION = "2026-11-e";
     const ANNOUNCEMENTS = [
       { text: "首張訂單可獲順豐包郵優惠", link: "https://wa.me/85200000000" },
       { text: "🔥 11 月黑五大促進行中！韓國官網限時低至 3 折｜即時私訊報價，幫你搶購心水好物", link: "" },
-      { text: "✨ 韓國倉享 14 天免費存倉｜提供代拆件與去鞋盒減重服務｜手續費低至 ₩3,500/件", link: "" }
+      { text: "✨ 韓國倉享 14 天免費存倉｜提供代拆件與去鞋盒減重服務｜代購費 ₩5,000/件，多買低至 ₩3,500", link: "" }
     ];
   </script>
 
@@ -153,11 +154,12 @@ footer a{margin-right:16px}
           <a class="btn btn-line" href="pricing.html#calc"><svg class="b-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8"/><path d="M8.5 11h0M12 11h0M15.5 11h0M8.5 14.5h0M12 14.5h0M15.5 14.5h0M8.5 18h0M12 18h0M15.5 18h0" stroke-width="2.2"/></svg>試算總價</a>
         </div>
         <div class="facts">
-          <div><b>₩3,500</b><span>起／件手續費</span></div>
+          <div><b>₩5,000</b><span>／件手續費・多買低至 ₩3,500</span></div>
           <div><b>HK$24</b><span>首 0.5kg 運費</span></div>
           <div><b>FPS/PayMe</b><span>零手續費轉帳</span></div>
           <div><b>順豐/門市自取</b><span>靈活本地派送</span></div>
         </div>
+        <div class="tier-strip" aria-label="代購手續費分級"><span>1–4 件 <b>₩5,000</b></span><span>5–9 件 <b>₩4,500</b></span><span>10–19 件 <b>₩4,000</b></span><span>20 件或以上 <b>₩3,500</b></span></div>
       </div>
       <figure>
         <!-- cover-carousel v1 -->
@@ -165,7 +167,7 @@ footer a{margin-right:16px}
           <div class="cc-track">
             <a class="cc-slide is-active" href="https://wa.me/85200000000?text=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%83%B3%E6%9F%A5%E8%A9%A2%E9%9F%93%E5%9C%8B%E9%BB%91%E4%BA%94%E4%BB%A3%E8%B3%BC" target="_blank" rel="noopener"><img src="cover-bf-1.jpg" alt="韓國黑五 減價日期一次看" width="1080" height="1350"></a>
             <a class="cc-slide" href="https://wa.me/85200000000?text=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%83%B3%E6%9F%A5%E8%A9%A2%E9%9F%93%E5%9C%8B%E9%BB%91%E4%BA%94%E4%BB%A3%E8%B3%BC" target="_blank" rel="noopener"><img src="cover-bf-2.jpg" alt="11月黑五日曆" width="1080" height="1350" loading="lazy"></a>
-            <a class="cc-slide" href="https://wa.me/85200000000?text=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%83%B3%E6%9F%A5%E8%A9%A2%E9%9F%93%E5%9C%8B%E9%BB%91%E4%BA%94%E4%BB%A3%E8%B3%BC" target="_blank" rel="noopener"><img src="cover-bf-3.jpg" alt="固定代購費 ₩5,000/件 代購品牌" width="1080" height="1350" loading="lazy"></a>
+            <a class="cc-slide" href="https://wa.me/85200000000?text=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%83%B3%E6%9F%A5%E8%A9%A2%E9%9F%93%E5%9C%8B%E9%BB%91%E4%BA%94%E4%BB%A3%E8%B3%BC" target="_blank" rel="noopener"><img src="cover-bf-3.jpg" alt="代購費 ₩5,000/件，多買低至 ₩3,500 代購品牌" width="1080" height="1350" loading="lazy"></a>
           </div>
           <button class="cc-arrow cc-prev" type="button" aria-label="上一張">‹</button>
           <button class="cc-arrow cc-next" type="button" aria-label="下一張">›</button>
@@ -214,7 +216,7 @@ footer a{margin-right:16px}
     <div class="wrap">
       <div class="sec-head"><span class="no">No.03</span><span class="kicker">Pricing</span><h2>收費，一眼睇晒</h2></div>
       <div class="teaser">
-        <div class="t-item"><b>₩3,500</b><span>起／件手續費<br>買越多越平</span></div>
+        <div class="t-item"><b>₩5,000</b><span>／件手續費<br>多買低至 ₩3,500</span></div>
         <div class="t-item"><b>HK$24</b><span>首 0.5kg 國際運費<br>之後每 0.5kg HK$15</span></div>
         <div class="t-item"><b>HK$0</b><span>報價費用<br>WhatsApp 即問即答</span></div>
       </div>
