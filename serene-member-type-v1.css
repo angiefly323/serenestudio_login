@@ -1,0 +1,50 @@
+/* =====================================================================
+   SERENE STUDIO — 會員區字體統一 serene-member-type-v1.css  2026-11-11
+   放喺每個會員頁 </head> 之前（喺頁內 <style> 同 serene-member.css 之後）。
+   字體：區塊以上標題用 Noto Serif TC；其餘用 Pretendard／Noto Sans TC
+   字號（桌面）：頁面標題 26｜區塊標題 20｜卡片標題 16｜內文 14｜說明 13｜標籤 12
+   手機（≤899px）：頁面標題 22｜區塊標題 18｜其餘不變
+   ===================================================================== */
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&display=swap");
+:root{--t-page:26px;--t-sec:20px;--t-card:16px;--t-body:14px;--t-desc:13px;--t-tag:12px;
+  --f-sans:Pretendard,"Noto Sans TC",-apple-system,BlinkMacSystemFont,"PingFang HK",sans-serif;
+  --f-title:"Noto Serif TC","PingFang HK",serif}
+
+/* 全頁基本字體 */
+body,button,input,select,textarea{font-family:var(--f-sans) !important}
+body{font-size:var(--t-body)}
+
+/* ① 頁面標題 26 · 襯線 */
+.page-header-title,.content-area h1{font-family:var(--f-title) !important;font-size:var(--t-page) !important;font-weight:700 !important;line-height:1.3 !important}
+
+/* ② 區塊標題 20 · 襯線 */
+.section-header,.section-title,.section-title-text,.card-title,.card-title-bar,.card-header,.modal-title,
+.content-area h2,.welcome-card h2,.ss-pay h3{font-family:var(--f-title) !important;font-size:var(--t-sec) !important;font-weight:700 !important;line-height:1.35 !important}
+
+/* ③ 卡片／項目標題 16 · 無襯線 */
+.content-area h3,.content-area h4,.order-id-title,.shp-id-title,.deal-title,.option-title,.flow-title,.notice-title,
+.brand-info h4,.quick-item-title,.result-header,.header-center,.accordion-header,.total-row,
+.membership-info p strong,.table-summary-row,.popup-header{font-family:var(--f-sans) !important;font-size:var(--t-card) !important;font-weight:700 !important;line-height:1.45 !important}
+
+/* ④ 內文／表格／輸入 14 */
+.menu-list li a,.popup-list a,.detail-row,.fee-table td,.form-input,.form-input-m,.inventory-table,.items-table,
+.membership-info p,.welcome-card p,.accordion-body,.notice-list,.result-row,.btn-save,.btn-submit-consolidation,
+.filter-select,.cat-tab,.checkbox-use-default{font-size:var(--t-body) !important}
+
+/* ⑤ 說明字 13 */
+.deal-desc,.flow-desc,.option-desc,.order-date-sub,.shp-sub-info,.stat-title,.upsell-tip,.modal-subtitle,.brand-link,
+.page-info,.page-btn,.btn-go,.btn-pay-now,.form-group label,.form-group-m label,.fee-table th,.inventory-table th,
+.tier-info-box,.quick-item-desc,.progress-hint,.brand-info p,.item-link-btn,.input-hint,.ss-pay-note{font-size:var(--t-desc) !important}
+
+/* ⑥ 標籤／小字 12 */
+.badge,.status-tag,.tooltip-box,.deal-badge,.deal-time,.deal-brand,.tier-badge,.level-badge span,.flow-highlight,
+.sf-link,.lang-btn-dt,.menu-section-title,.nav-item,.mobile-lang-tag,.step-num,.ss-pay-item small{font-size:var(--t-tag) !important}
+
+/* 收費表價錢：同內文一致用無襯線粗體；集運總價大數字保留展示字體 */
+.price-tag{font-family:var(--f-sans) !important;font-size:var(--t-card) !important;font-weight:700 !important}
+.shp-price{font-size:18px !important}
+
+/* 手機版 */
+@media(max-width:899px){
+  :root{--t-page:22px;--t-sec:18px}
+}
