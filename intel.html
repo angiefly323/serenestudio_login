@@ -160,7 +160,22 @@
             .deals-carousel { gap: 0; padding-left: 0; }
             .mobile-bottom-nav { display: flex; }
         }
-    </style>
+    /* ===== 2026-11-11 品牌 logo＋吸睛情報卡 ===== */
+.deal-image.deal-logo{height:150px;background:#fff;padding:20px 28px}
+.deal-logo img{max-width:74%;max-height:72px;object-fit:contain}
+.deal-logo.dark,.brand-logo.dark{background:#1E1415}
+.deal-logo .wm{font:800 22px/1.15 Pretendard,"Noto Sans TC",sans-serif;letter-spacing:.06em;color:#1E1415;text-align:center}
+.deals-carousel .deal-badge{width:78px;height:78px;padding:0;border-radius:50%;background:#743133;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;line-height:1;top:10px;right:10px;transform:rotate(-8deg);box-shadow:0 6px 16px rgba(116,49,51,.35);font-size:15px !important;font-weight:800}
+.deals-carousel .deal-badge b{font:600 30px/1 "Cormorant Garamond",Georgia,serif}
+.deals-carousel .deal-badge small{font-size:10px;letter-spacing:.18em;margin-top:2px}
+.deal-count{display:inline-block;margin-left:6px;background:#743133;color:#fff;font-size:12px;font-weight:700;padding:2px 8px;border-radius:2px;letter-spacing:.04em}
+.deal-count.ended{background:#7D6E6F}
+.brand-item{display:flex;align-items:center;gap:14px}
+.brand-item .brand-info{flex:1;min-width:0}
+.brand-logo{flex:none;width:48px;height:48px;border:1px solid #E6DCDB;background:#fff;display:flex;align-items:center;justify-content:center;padding:5px;overflow:hidden}
+.brand-logo img{max-width:100%;max-height:100%;object-fit:contain}
+.brand-logo .wm{font:800 8px/1.1 Pretendard,sans-serif;text-align:center;color:#1E1415;word-break:break-word}
+</style>
     <link rel="stylesheet" href="serene-member.css">
     <link rel="icon" href="favicon.png">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -236,42 +251,42 @@
                 
                 <div class="deals-carousel" id="dealsCarousel">
                     <div class="deal-card">
-                        <div class="deal-badge">30% OFF</div>
-                        <div class="deal-image bg-tnf">THE NORTH FACE</div>
+                        <div class="deal-badge"><b>30%</b><small>OFF</small></div>
+                        <div class="deal-image deal-logo"><img src="images/brands/tnf-logo-v1.png" alt="THE NORTH FACE" loading="lazy" onerror="this.outerHTML='<span class=&quot;wm&quot;>THE NORTH FACE</span>'"></div>
                         <div class="deal-content">
                             <div class="deal-brand">The North Face (KR)</div>
                             <div class="deal-title" data-zh="韓國站轉季大減價" data-en="Korea Outlet Seasonal Sale">韓國站轉季大減價</div>
                             <div class="deal-desc" data-zh="精選羽絨、防風外套及背囊低至 7 折！韓國版獨家剪裁，極速斷碼中。" data-en="Down jackets & windbreakers up to 30% off. Exclusive Korea fits.">精選羽絨、防風外套及背囊低至 7 折！韓國版獨家剪裁，極速斷碼中。</div>
                             <div class="deal-footer">
-                                <span class="deal-time"><i class="fa-regular fa-clock"></i> <span data-zh="至 11 月 5 日" data-en="Until Nov 5">至 11 月 5 日</span></span>
+                                <span class="deal-time"><i class="fa-regular fa-clock"></i> <span data-zh="至 11 月 30 日" data-en="Until Nov 30">至 11 月 30 日</span> <span class="deal-count" data-end="2026-11-30T23:59:59+08:00"></span></span>
                                 <a href="https://www.thenorthfacekorea.co.kr/" target="_blank" class="btn-go"><span data-zh="前往掃貨" data-en="Shop Now">前往掃貨</span> <i class="fa-solid fa-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>
 
                     <div class="deal-card">
-                        <div class="deal-badge">10% OFF</div>
-                        <div class="deal-image bg-musinsa">MUSINSA</div>
+                        <div class="deal-badge"><b>10%</b><small>OFF</small></div>
+                        <div class="deal-image deal-logo"><img src="images/brands/musinsa-logo-v1.png" alt="MUSINSA" loading="lazy" onerror="this.outerHTML='<span class=&quot;wm&quot;>MUSINSA</span>'"></div>
                         <div class="deal-content">
                             <div class="deal-brand">Musinsa</div>
                             <div class="deal-title" data-zh="全網服飾類快閃優惠" data-en="Site-wide Apparel Flash Sale">全網服飾類快閃優惠</div>
                             <div class="deal-desc" data-zh="韓國最大潮牌集合店，過百個韓國本土設計師品牌全線額外 9 折。" data-en="Korea's largest fashion store, extra 10% off top designer brands.">韓國最大潮牌集合店，過百個韓國本土設計師品牌全線額外 9 折。</div>
                             <div class="deal-footer">
-                                <span class="deal-time"><i class="fa-regular fa-clock"></i> <span data-zh="隨時完結" data-en="Ends Soon">隨時完結</span></span>
+                                <span class="deal-time"><i class="fa-regular fa-clock"></i> <span data-zh="至 11 月 30 日" data-en="Until Nov 30">至 11 月 30 日</span> <span class="deal-count" data-end="2026-11-30T23:59:59+08:00"></span></span>
                                 <a href="https://www.musinsa.com/" target="_blank" class="btn-go"><span data-zh="前往掃貨" data-en="Shop Now">前往掃貨</span> <i class="fa-solid fa-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>
 
                     <div class="deal-card">
-                        <div class="deal-badge">20% OFF</div>
-                        <div class="deal-image bg-folder">FOLDER</div>
+                        <div class="deal-badge"><b>20%</b><small>OFF</small></div>
+                        <div class="deal-image deal-logo dark"><img src="images/brands/folder-logo-v1.png" alt="FOLDER" loading="lazy" onerror="this.outerHTML='<span class=&quot;wm&quot;>FOLDER</span>'"></div>
                         <div class="deal-content">
                             <div class="deal-brand">Folder Style</div>
                             <div class="deal-title" data-zh="Nike 新款折扣" data-en="Nike New Arrivals Sale">Nike 新款折扣</div>
                             <div class="deal-desc" data-zh="指定新款波鞋 8 折。透過我們代購可提供「去鞋盒」服務大減國際運費！" data-en="Selected shoes 20% off. Shoe box removal available to save shipping!">指定新款波鞋 8 折。透過我們代購可提供「去鞋盒」服務大減國際運費！</div>
                             <div class="deal-footer">
-                                <span class="deal-time"><i class="fa-regular fa-clock"></i> <span data-zh="至本週末" data-en="Until Weekend">至本週末</span></span>
+                                <span class="deal-time"><i class="fa-regular fa-clock"></i> <span data-zh="至 11 月 30 日" data-en="Until Nov 30">至 11 月 30 日</span> <span class="deal-count" data-end="2026-11-30T23:59:59+08:00"></span></span>
                                 <a href="https://folderstyle.com/" target="_blank" class="btn-go"><span data-zh="前往掃貨" data-en="Shop Now">前往掃貨</span> <i class="fa-solid fa-arrow-right"></i></a>
                             </div>
                         </div>
@@ -279,13 +294,13 @@
 
                     <div class="deal-card">
                         <div class="deal-badge">SALE</div>
-                        <div class="deal-image bg-oy">OLIVE YOUNG</div>
+                        <div class="deal-image deal-logo"><img src="images/brands/oliveyoung-logo-v1.png" alt="OLIVE YOUNG" loading="lazy" onerror="this.outerHTML='<span class=&quot;wm&quot;>OLIVE YOUNG</span>'"></div>
                         <div class="deal-content">
                             <div class="deal-brand">Olive Young</div>
                             <div class="deal-title" data-zh="人氣精華 1+1 企劃套裝" data-en="Best Serum 1+1 Sets">人氣精華 1+1 企劃套裝</div>
                             <div class="deal-desc" data-zh="Torriden、Goodal 等大熱精華推出 1+1 超值組合，韓國門市及網店同步優惠。" data-en="Torriden, Goodal serum 1+1 special bundles available now.">Torriden、Goodal 等大熱精華推出 1+1 超值組合，韓國門市及網店同步優惠。</div>
                             <div class="deal-footer">
-                                <span class="deal-time"><i class="fa-regular fa-clock"></i> <span data-zh="售完即止" data-en="While Stock Lasts">售完即止</span></span>
+                                <span class="deal-time"><i class="fa-regular fa-clock"></i> <span data-zh="至 11 月 30 日" data-en="Until Nov 30">至 11 月 30 日</span> <span class="deal-count" data-end="2026-11-30T23:59:59+08:00"></span></span>
                                 <a href="https://www.oliveyoung.co.kr/" target="_blank" class="btn-go"><span data-zh="前往掃貨" data-en="Shop Now">前往掃貨</span> <i class="fa-solid fa-arrow-right"></i></a>
                             </div>
                         </div>
@@ -293,13 +308,13 @@
 
                     <div class="deal-card">
                         <div class="deal-badge">特典</div>
-                        <div class="deal-image bg-aladin">ALADIN (阿拉丁)</div>
+                        <div class="deal-image deal-logo"><img src="images/brands/aladin-logo-v1.png" alt="ALADIN (阿拉丁)" loading="lazy" onerror="this.outerHTML='<span class=&quot;wm&quot;>ALADIN (阿拉丁)</span>'"></div>
                         <div class="deal-content">
                             <div class="deal-brand">Aladin</div>
                             <div class="deal-title" data-zh="女團新專 獨家明信片特典" data-en="Exclusive Photocard Pre-orders">女團新專 獨家明信片特典</div>
                             <div class="deal-desc" data-zh="於 Aladin 預購最新韓國女團專輯，即送獨家官方明信片一張。" data-en="Pre-order K-Pop albums at Aladin to get official exclusive photocards.">於 Aladin 預購最新韓國女團專輯，即送獨家官方明信片一張。</div>
                             <div class="deal-footer">
-                                <span class="deal-time"><i class="fa-regular fa-clock"></i> <span data-zh="預售期間" data-en="Pre-order Period">預售期間</span></span>
+                                <span class="deal-time"><i class="fa-regular fa-clock"></i> <span data-zh="至 11 月 30 日" data-en="Until Nov 30">至 11 月 30 日</span> <span class="deal-count" data-end="2026-11-30T23:59:59+08:00"></span></span>
                                 <a href="https://www.aladin.co.kr/" target="_blank" class="btn-go"><span data-zh="前往掃貨" data-en="Shop Now">前往掃貨</span> <i class="fa-solid fa-arrow-right"></i></a>
                             </div>
                         </div>
@@ -307,13 +322,13 @@
 
                     <div class="deal-card">
                         <div class="deal-badge">免首重</div>
-                        <div class="deal-image bg-ktown">Ktown4u</div>
+                        <div class="deal-image deal-logo"><img src="images/brands/ktown4u-logo-v1.png" alt="Ktown4u" loading="lazy" onerror="this.outerHTML='<span class=&quot;wm&quot;>Ktown4u</span>'"></div>
                         <div class="deal-content">
                             <div class="deal-brand">Ktown4u</div>
                             <div class="deal-title" data-zh="男團回歸 特典小卡預售" data-en="Boygroup Photocard Special">男團回歸 特典小卡預售</div>
                             <div class="deal-desc" data-zh="獨家特典小卡釋出！經本網代購可享免費「代拆專及只寄小卡」服務，免首重！" data-en="Unbox album & ship photocards only service available for free!">獨家特典小卡釋出！經本網代購可享免費「代拆專及只寄小卡」服務，免首重！</div>
                             <div class="deal-footer">
-                                <span class="deal-time"><i class="fa-regular fa-clock"></i> <span data-zh="預售期間" data-en="Pre-order Period">預售期間</span></span>
+                                <span class="deal-time"><i class="fa-regular fa-clock"></i> <span data-zh="至 11 月 30 日" data-en="Until Nov 30">至 11 月 30 日</span> <span class="deal-count" data-end="2026-11-30T23:59:59+08:00"></span></span>
                                 <a href="https://kr.ktown4u.com/" target="_blank" class="btn-go"><span data-zh="前往掃貨" data-en="Shop Now">前往掃貨</span> <i class="fa-solid fa-arrow-right"></i></a>
                             </div>
                         </div>
@@ -341,81 +356,96 @@
 
                 <div class="brand-list" id="brandList">
                     <div class="brand-item" data-category="shoes">
+                        <div class="brand-logo"><img src="images/brands/abcmart-logo-v1.png" alt="ABC-Mart (Korea)" loading="lazy" onerror="this.outerHTML='<span class=&quot;wm&quot;>ABC-Mart (Korea)</span>'"></div>
                         <div class="brand-info"><h4>ABC-Mart (Korea)</h4><p data-zh="綜合運動鞋履連鎖店" data-en="Multi-brand sneakers & footwear">綜合運動鞋履連鎖店</p></div>
                         <a href="https://abcmart.a-rt.com/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                     </div>
 
                     <div class="brand-item" data-category="kpop">
+                        <div class="brand-logo"><img src="images/brands/aladin-logo-v1.png" alt="Aladin (阿拉丁)" loading="lazy" onerror="this.outerHTML='<span class=&quot;wm&quot;>Aladin (阿拉丁)</span>'"></div>
                         <div class="brand-info"><h4>Aladin (阿拉丁)</h4><p data-zh="韓國實體專輯、雜誌網購" data-en="K-Pop albums & magazines">韓國實體專輯、雜誌網購</p></div>
                         <a href="https://www.aladin.co.kr/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                     </div>
 
                     <!-- 🐶 寵物用品 1 -->
                     <div class="brand-item" data-category="pet">
+                        <div class="brand-logo"><img src="images/brands/biteme-logo-v1.png" alt="BITE ME (바이트미)" loading="lazy" onerror="this.outerHTML='<span class=&quot;wm&quot;>BITE ME (바이트미)</span>'"></div>
                         <div class="brand-info"><h4>BITE ME (바이트미)</h4><p data-zh="韓國超人氣萌寵玩具、零食與日常用品" data-en="Cute pet toys, treats & accessories">韓國超人氣萌寵玩具、零食與日常用品</p></div>
                         <a href="https://biteme.co.kr/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                     </div>
 
                     <!-- 🐶 寵物用品 2 -->
                     <div class="brand-item" data-category="pet">
+                        <div class="brand-logo dark"><img src="images/brands/bridgedog-logo-v1.png" alt="Bridge.Dog (브릿지독)" loading="lazy" onerror="this.outerHTML='<span class=&quot;wm&quot;>Bridge.Dog (브릿지독)</span>'"></div>
                         <div class="brand-info"><h4>Bridge.Dog (브릿지독)</h4><p data-zh="極簡美學韓系寵物陶瓷慢食碗與餐具" data-en="Minimalist pet ceramic bowls & tableware">極簡美學韓系寵物陶瓷慢食碗與餐具</p></div>
                         <a href="https://bridgedog.co.kr/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                     </div>
                     
                     <div class="brand-item" data-category="shoes">
+                        <div class="brand-logo dark"><img src="images/brands/folder-logo-v1.png" alt="Folder Style" loading="lazy" onerror="this.outerHTML='<span class=&quot;wm&quot;>Folder Style</span>'"></div>
                         <div class="brand-info"><h4>Folder Style</h4><p data-zh="韓國本土熱門潮鞋連鎖店" data-en="Korea trend sneakers store">韓國本土熱門潮鞋連鎖店</p></div>
                         <a href="https://folderstyle.com/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                     </div>
 
                     <!-- 🐶 寵物用品 3 -->
                     <div class="brand-item" data-category="pet">
+                        <div class="brand-logo dark"><img src="images/brands/harryspet-logo-v1.png" alt="HarrySpet (해리스펫)" loading="lazy" onerror="this.outerHTML='<span class=&quot;wm&quot;>HarrySpet (해리스펫)</span>'"></div>
                         <div class="brand-info"><h4>HarrySpet (해리스펫)</h4><p data-zh="韓國頂級寵物推車車墊、護枕及配件專賣" data-en="Premium pet stroller cushions & accessories">韓國頂級寵物推車車墊、護枕及配件專賣</p></div>
                         <a href="https://harryspet.com/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                     </div>
 
                     <!-- 🐶 寵物用品 4 -->
                     <div class="brand-item" data-category="pet">
+                        <div class="brand-logo"><img src="images/brands/itsdog-logo-v1.png" alt="It's Dog (잇츠독)" loading="lazy" onerror="this.outerHTML='<span class=&quot;wm&quot;>It's Dog (잇츠독)</span>'"></div>
                         <div class="brand-info"><h4>It's Dog (잇츠독)</h4><p data-zh="韓系精緻狗狗時尚服飾、保暖衣與外出配件" data-en="Stylish pet apparel & cozy wear">韓系精緻狗狗時尚服飾、保暖衣與外出配件</p></div>
                         <a href="https://itsdog.com/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                     </div>
 
                     <div class="brand-item" data-category="kpop">
+                        <div class="brand-logo"><img src="images/brands/ktown4u-logo-v1.png" alt="Ktown4u" loading="lazy" onerror="this.outerHTML='<span class=&quot;wm&quot;>Ktown4u</span>'"></div>
                         <div class="brand-info"><h4>Ktown4u</h4><p data-zh="K-pop 專輯、明星周邊專門店" data-en="Global K-Pop store">K-pop 專輯、明星周邊專門店</p></div>
                         <a href="https://kr.ktown4u.com/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                     </div>
 
                     <div class="brand-item" data-category="apparel">
+                        <div class="brand-logo"><img src="images/brands/musinsa-logo-v1.png" alt="Musinsa" loading="lazy" onerror="this.outerHTML='<span class=&quot;wm&quot;>Musinsa</span>'"></div>
                         <div class="brand-info"><h4>Musinsa</h4><p data-zh="韓國最大本土潮牌集合店" data-en="Korea's #1 fashion marketplace">韓國最大本土潮牌集合店</p></div>
                         <a href="https://www.musinsa.com/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                     </div>
 
                     <div class="brand-item" data-category="beauty">
+                        <div class="brand-logo"><img src="images/brands/oliveyoung-logo-v1.png" alt="Olive Young" loading="lazy" onerror="this.outerHTML='<span class=&quot;wm&quot;>Olive Young</span>'"></div>
                         <div class="brand-info"><h4>Olive Young</h4><p data-zh="韓國 No.1 藥妝及護膚品店" data-en="Korea No.1 K-beauty store">韓國 No.1 藥妝及護膚品店</p></div>
                         <a href="https://www.oliveyoung.co.kr/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                     </div>
 
                     <!-- 🐶 寵物用品 5 -->
                     <div class="brand-item" data-category="pet">
+                        <div class="brand-logo"><img src="images/brands/owww-logo-v1.png" alt="OWWW Studio (아우스튜디오)" loading="lazy" onerror="this.outerHTML='<span class=&quot;wm&quot;>OWWW Studio (아우스튜디오)</span>'"></div>
                         <div class="brand-info"><h4>OWWW Studio (아우스튜디오)</h4><p data-zh="韓系質感手作狗狗童裝風衣服與質感選品" data-en="Korean boutique handmade pet clothing">韓系質感手作狗狗童裝風衣服與質感選品</p></div>
                         <a href="https://owww.kr/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                     </div>
 
                     <div class="brand-item" data-category="beauty">
+                        <div class="brand-logo dark"><img src="images/brands/parnell-logo-v1.png" alt="Parnell" loading="lazy" onerror="this.outerHTML='<span class=&quot;wm&quot;>Parnell</span>'"></div>
                         <div class="brand-info"><h4>Parnell</h4><p data-zh="人氣積雪草舒緩護膚品牌" data-en="Cicamanu skincare line">人氣積雪草舒緩護膚品牌</p></div>
                         <a href="https://parnell.co.kr/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                     </div>
 
                     <div class="brand-item" data-category="apparel">
+                        <div class="brand-logo"><img src="images/brands/spao-logo-v1.png" alt="SPAO" loading="lazy" onerror="this.outerHTML='<span class=&quot;wm&quot;>SPAO</span>'"></div>
                         <div class="brand-info"><h4>SPAO</h4><p data-zh="韓國平價國民服飾品牌" data-en="Korean trendy casual wear">韓國平價國民服饰品牌</p></div>
                         <a href="https://spao.com/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                     </div>
 
                     <div class="brand-item" data-category="apparel">
+                        <div class="brand-logo"><img src="images/brands/tnf-logo-v1.png" alt="The North Face (KR)" loading="lazy" onerror="this.outerHTML='<span class=&quot;wm&quot;>The North Face (KR)</span>'"></div>
                         <div class="brand-info"><h4>The North Face (KR)</h4><p data-zh="韓國獨家版型戶外服飾" data-en="Korea exclusive outdoor wear">韓國獨家版型戶外服飾</p></div>
                         <a href="https://www.thenorthfacekorea.co.kr/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                     </div>
 
                     <div class="brand-item" data-category="kpop">
+                        <div class="brand-logo"><img src="images/brands/weverse-logo-v1.png" alt="Weverse Shop" loading="lazy" onerror="this.outerHTML='<span class=&quot;wm&quot;>Weverse Shop</span>'"></div>
                         <div class="brand-info"><h4>Weverse Shop</h4><p data-zh="HYBE 等官方藝人周邊商城" data-en="Official K-Pop merch store">HYBE 等官方藝人周邊商城</p></div>
                         <a href="https://weverseshop.io/" target="_blank" class="brand-link"><span data-zh="前往網站" data-en="Visit Site">前往網站</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                     </div>
@@ -531,5 +561,11 @@
             window.location.href = 'login.html';
         }
     </script>
+<script>
+(function(){function run(){var en=(document.querySelector('.deal-title')||{}).textContent;var isEn=false;var t=document.querySelector('.deal-title');if(t&&t.getAttribute('data-en')&&t.textContent.trim()===t.getAttribute('data-en').trim())isEn=true;
+document.querySelectorAll('.deal-count').forEach(function(el){var end=new Date(el.getAttribute('data-end'));var ms=end-new Date();var days=Math.ceil(ms/86400000);
+if(ms<=0){el.textContent=isEn?'Ended':'已完結';el.classList.add('ended');}else if(days<=1){el.textContent=isEn?'Last day':'最後一日';}else{el.textContent=isEn?(days+' days left'):('剩餘 '+days+' 日');}});}
+run();document.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('.lang-btn-dt,.mobile-lang-tag,[onclick*="Lang"]'))setTimeout(run,50);});})();
+</script>
 </body>
 </html>
