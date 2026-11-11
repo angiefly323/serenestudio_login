@@ -1,0 +1,28 @@
+/* serene-public-type-v1.css — 公開頁字級統一 (2026-11-11)
+   標題 26 / 小標題(卡片標題) 20 / 內文 14 / 小字 12 / 頂部選單 14
+   手機 (≤899px)：標題 22 / 小標題 18 / 內文 14 / 小字 12 / 選單 13
+   不改：hero 大字 (.display)、hero h1、wordmark、大數字 (.facts b / .receipt .t b / .step .big 等) */
+
+/* 大標題 */
+html body h2, html body .h2, html body .ig-follow h2, html body main h1:not(.display){font-size:26px !important;line-height:1.3 !important}
+/* 卡片標題 */
+html body h3, html body .h3, html body .index h3, html body .deal-title, html body .brand-row h4,
+html body .faq summary, html body .ptable caption{font-size:20px !important;line-height:1.35 !important}
+/* 內文 / 簡介 */
+html body .lead, html body .hero .lead, html body .deal-desc, html body .brand-row p, html body .faq p,
+html body .step p, html body .index p, html body .ptable td:not(:last-child), html body .receipt .l,
+html body main p, html body main li{font-size:14px !important;line-height:1.7 !important}
+/* 小字 */
+html body .deal-brand, html body .deal-foot, html body .deal-foot *, html body .deal-badge,
+html body .brand-row .cat, html body .brand-row > a, html body .index .en, html body .small,
+html body .facts span, html body .tip, html body .quote cite, html body .kicker, html body .hero .kicker,
+html body .topline, html body .updated, html body footer, html body footer p, html body footer a, html body footer li{font-size:12px !important}
+/* 頂部選單 */
+html body .navbar, html body .navbar a, html body .site-head .navbar a, html body .login-link{font-size:14px !important}
+
+@media (max-width:899px){
+  html body h2, html body .h2, html body .ig-follow h2, html body main h1:not(.display){font-size:22px !important}
+  html body h3, html body .h3, html body .index h3, html body .deal-title, html body .brand-row h4,
+  html body .faq summary, html body .ptable caption{font-size:18px !important}
+  html body .navbar, html body .navbar a, html body .site-head .navbar a, html body .login-link{font-size:13px !important}
+}
